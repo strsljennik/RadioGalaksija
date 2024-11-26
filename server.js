@@ -4,6 +4,7 @@ const socketIo = require('socket.io');
 const { connectDB } = require('./mongo');
 const { register, login } = require('./prijava');
 const { setupSocketEvents } = require('./banmodul'); // Uvoz funkcije iz banmodula
+const pingService = require('./ping');
 require('dotenv').config();
 
 const app = express();
