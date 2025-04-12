@@ -33,54 +33,35 @@ socket.on('chat-cleared', function() {
     const chatWindow = document.getElementById('messageArea');
     chatWindow.innerHTML = ""; // Briše sve unutar chata
 });
-// ZENO STRIM
+// ZENO PLAYER NA DUGME
 document.addEventListener("DOMContentLoaded", function() {
     var audio = document.getElementById('radioStream');
     var button = document.getElementById('sound');
     var isPlaying = false;
 
-    // Funkcija za početak streama
-    function playStream() {
-        audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  // URL za strim (isti za Auto-DJ i live stream)
-        audio.load();  
-        audio.play().then(() => {
-            button.textContent = "Zaustavi Muziku";
-            isPlaying = true;
-        }).catch(error => {
-            console.error("Greška pri puštanju zvuka:", error);
-            restartStream();  // Ako se desi greška, pokušaj ponovo
-        });
-    }
-
-    // Prebacivanje između pauze i puštanja streama
     button.addEventListener('click', function() {
         if (isPlaying) {
             audio.pause();
             button.textContent = "Muzika";
             isPlaying = false;
         } else {
-            playStream();  // Ponovno pokreni strim
+            playStream();
         }
     });
 
-    // Restartuj stream na različite događaje
-    audio.addEventListener('stalled', restartStream);  // Ako stream stane
-    audio.addEventListener('error', restartStream);  // Ako se desi greška
-    audio.addEventListener('ended', restartStream);  // Ako stream završi
-    audio.addEventListener('waiting', restartStream);  // Ako stream čeka
-
-    // Intervencija ako stream ne ide (na svakih 5 sekundi)
-    setInterval(() => {
-        if (isPlaying && audio.readyState < 3) { // Ako stream nije u dobrom stanju, restartuj
-            restartStream();
-        }
-    }, 5000);
-
-    // Restart funkcija koja samo ponovo pokreće isti stream
-    function restartStream() {
-        isPlaying = false;
-        playStream();  // Ponovno pokreni stream
+    function playStream() {
+        audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
+        audio.load();  
+        audio.play().then(() => {
+            button.textContent = "Zaustavi Muziku";
+            isPlaying = true;
+        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
     }
+
+    // Automatsko ponovno pokretanje pri gubitku konekcije
+    audio.addEventListener('error', function() {
+        setTimeout(playStream, 3000);
+    });
 });
 
 
