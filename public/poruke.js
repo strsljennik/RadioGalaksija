@@ -34,7 +34,6 @@ socket.on('chat-cleared', function() {
     chatWindow.innerHTML = ""; // Briše sve unutar chata
 });
 
-// ZENO PLAYER NA DUGME
 document.addEventListener("DOMContentLoaded", function() {
     var audio = document.getElementById('radioStream');
     var button = document.getElementById('sound');
@@ -52,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function playStream() {
         audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
-        audio.load();  
         audio.play().then(() => {
             button.textContent = "Zaustavi Muziku";
             isPlaying = true;
@@ -75,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
         playStream();
     }
 });
+
 
 //  REGISTRACIJA I LOGIN TABLA
 document.getElementById('NIK').addEventListener('click', function() {
