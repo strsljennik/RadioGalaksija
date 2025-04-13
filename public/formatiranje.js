@@ -120,7 +120,6 @@ socket.on('updateGuestList', function (users) {
     });
 
     // Dodaj nove goste
-   // Dodaj nove goste
 users.forEach(nickname => {
     const guestId = `guest-${nickname}`;
     if (!guestsData[guestId]) {
@@ -140,14 +139,17 @@ users.forEach(nickname => {
             event.preventDefault(); // Spreči standardni desni klik meni
             const clickedGuestId = event.target.getAttribute('data-guest-id');
             if (clickedGuestId === guestId.toString()) {
+                // Otvori color picker za tog gosta
                 currentGuestId = guestId;
                 const colorPicker = document.getElementById('colorPicker');
                 colorPicker.value = guestsData[guestId].color || '#000000';
 
-                // Dodavanje event listener-a za promenu boje
+                // Dodaj event listener za promenu boje
                 colorPicker.addEventListener('input', function() {
+                    // Čuvaj novu boju u guestsData i sessionStorage za tog gosta
                     guestsData[guestId].color = colorPicker.value;
                     newGuest.style.color = colorPicker.value;
+                    sessionStorage.setItem(guestId, colorPicker.value); // Čuvanje u sessionStorage
                 });
             }
         });
