@@ -119,8 +119,7 @@ socket.on('updateGuestList', function (users) {
         }
     });
 
-    // Dodaj nove goste
-const colorPicker = document.getElementById('colorPicker');
+ const colorPicker = document.getElementById('colorPicker');
 let currentGuestId = null;
 let currentInputHandler = null;
 
