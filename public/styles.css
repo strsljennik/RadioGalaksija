@@ -88,18 +88,25 @@ body {
     position: absolute;
     top: 60px;
     left: 120px;
-    width: 500px;  /* Ostavite širinu nepromenjenu */
+    width: 500px;
     height: 20px;
     padding: 5px;
     border-radius: 5px;
-    border: 2px solid white;
-   border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
+    border: 2px solid;
+    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
     resize: none;
     font-size: 17px;
     background-color: black;
-   overflow: hidden;
+    color: white;
+    overflow: hidden;
+    outline: none;
 }
 
+#chatInput:focus {
+    border: 2px solid;
+    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
+    outline: none;
+}
 
 #guestList {
     position: absolute;
