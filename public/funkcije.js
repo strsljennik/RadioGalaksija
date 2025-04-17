@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // Unos poruka
-        document.getElementById('chatInput').addEventListener('keydown', function(event) {
+        document.getElementById('chat-input').addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
                 if (isBanned) return;
