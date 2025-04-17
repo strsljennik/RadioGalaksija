@@ -194,8 +194,3 @@ if (colorPicker) {
         }
     });
 }
-
-// Slanje "živ sam" poruke serveru svakih 10 sekundi
-setInterval(() => {
-    socket.emit('clientAlive');
-}, 10000);
