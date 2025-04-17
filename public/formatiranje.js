@@ -173,7 +173,7 @@ const colorPicker = document.getElementById('colorPicker');
 if (colorPicker) {
     colorPicker.addEventListener('input', function () {
         if (currentGuestId) {
-            updateGuestColor(currentGuestId, this.value);
+            updateGuestColor(GuestId, this.value);
         }
     });
 }
