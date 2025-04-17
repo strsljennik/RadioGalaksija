@@ -64,40 +64,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
-// MYSTREAM PLAYER NA DUGME
-document.addEventListener("DOMContentLoaded", function() {
-    var audio = document.getElementById('radioStream1');
-    var button = document.getElementById('sound1');
-    var isPlaying = false;
-
-    button.addEventListener('click', function() {
-        if (isPlaying) {
-            audio.pause();
-            button.textContent = "Muzika1";
-            isPlaying = false;
-        } else {
-            playStream();
-        }
-    });
-
-    function playStream() {
-        audio.src = "http://s23.myradiostream.com:20112/";  
-        audio.load();  
-        audio.play().then(() => {
-            button.textContent = "Zaustavi Muziku";
-            isPlaying = true;
-        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
-    }
-
-    // Automatsko ponovno pokretanje pri gubitku konekcije
-    audio.addEventListener('error', function() {
-        setTimeout(playStream, 3000);
-    });
-});
-
-
-
 //  REGISTRACIJA I LOGIN TABLA
 document.getElementById('NIK').addEventListener('click', function() {
     var container = document.getElementById('authContainer');
