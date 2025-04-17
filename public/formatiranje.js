@@ -1,4 +1,3 @@
-
 let isBold = false;
 let isItalic = false;
 let currentColor = '';
@@ -6,6 +5,7 @@ let newColor;
 let isUnderline = false;
 let isOverline = false;
 const guestsData = {};
+let guestId;
 
 document.getElementById('boldBtn').addEventListener('click', function() {
     isBold = !isBold;
