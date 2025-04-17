@@ -1,3 +1,4 @@
+
 let isBold = false;
 let isItalic = false;
 let currentColor = '';
@@ -5,7 +6,7 @@ let newColor;
 let isUnderline = false;
 let isOverline = false;
 const guestsData = {};
-let guestId;
+let currentGuestId;
 
 document.getElementById('boldBtn').addEventListener('click', function() {
     isBold = !isBold;
@@ -173,7 +174,7 @@ const colorPicker = document.getElementById('colorPicker');
 if (colorPicker) {
     colorPicker.addEventListener('input', function () {
         if (currentGuestId) {
-            updateGuestColor(guestId, this.value);
+            updateGuestColor(currentGuestId, this.value);
         }
     });
 }
