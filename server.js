@@ -84,20 +84,6 @@ io.emit('updateGuestList', Object.values(guests));
  console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
  io.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 
-    // Postavi početni timestamp kada se korisnik poveže
-guestsData[socket.id] = {
-    nickname: guests[socket.id],
-    lastSeen: Date.now()
-};
-
-// Primi "clientAlive" signal sa klijenta
-socket.on('clientAlive', () => {
-    if (guestsData[socket.id]) {
-        guestsData[socket.id].lastSeen = Date.now();
-    }
-});
-
-
  // Obrada prijave korisnika
 socket.on('userLoggedIn', (username) => {
     const oldNickname = guests[socket.id]; // Sačuvamo trenutni nadimak
@@ -199,18 +185,6 @@ socket.on('updateGuestColor', ({ guestId, newColor }) => {
         io.emit('updateGuestList', Object.values(guests));
     });
      });
-
-setInterval(() => {
-    for (let id in guestsData) {
-        if (Date.now() - guestsData[id].lastSeen > 20000) {
-            delete guests[id];
-            delete guestsData[id];
-            io.emit('updateGuestList', Object.values(guests));
-        }
-    }
-}, 15000);
-
-
 // Pokretanje servera na definisanom portu
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
