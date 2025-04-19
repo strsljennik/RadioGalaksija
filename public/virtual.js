@@ -68,7 +68,8 @@ const virtualGuests = [
             const messageArea = document.getElementById('messageArea');
 
             const messageElement = document.createElement('div');
-            messageElement.innerHTML = `<span style="color: ${guest.color}; font-weight: bold; font-style: italic;">${guest.nickname}: ${message}</span>`;
+        messageElement.innerHTML = `<span style="background: linear-gradient(45deg, red, blue, green, orange); -webkit-background-clip: text; color: transparent; font-weight: bold; font-style: italic;">${guest.nickname}: ${message}</span>`;
+
             
             // Dodavanje poruke na vrh
             messageArea.insertBefore(messageElement, messageArea.firstChild);
