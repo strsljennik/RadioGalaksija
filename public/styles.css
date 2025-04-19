@@ -79,7 +79,7 @@ body {
     
 }
 .message {
-    margin-bottom: 5px;
+    margin-bottom: 3px;
     word-wrap: break-word;  /* Prelamanje reči unutar svake poruke */
     white-space: normal; /* Osigurava prelamanje teksta, bez da se poruke šire horizontalno */
     }
