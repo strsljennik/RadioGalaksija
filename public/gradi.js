@@ -159,28 +159,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Primer gradijenata
   const borderGradijenti = [
-    "linear-gradient(45deg, red, yellow)",
-    "linear-gradient(45deg, blue, green)",
+    "linear-gradient(135deg, red, yellow)",
+    "linear-gradient(25deg, blue, green)",
     "linear-gradient(45deg, purple, orange)",
-    "linear-gradient(45deg, pink, cyan)",
-    "linear-gradient(45deg, violet, indigo, blue)",
-    "linear-gradient(45deg, lime, pink)",
-    "linear-gradient(45deg, red, blue, green)",
-    "linear-gradient(45deg, purple, yellow, teal)",
-    "linear-gradient(45deg, orange, red, purple, blue)",
-    "linear-gradient(45deg, gold, silver, bronze)"
+    "linear-gradient(38deg, pink, cyan)",
+    "linear-gradient(115deg, violet, indigo, blue)",
+    "linear-gradient(64deg, lime, pink)",
+    "linear-gradient(82deg, red, blue, green)",
+    "linear-gradient(36deg, purple, yellow, teal)",
+    "linear-gradient(15deg, orange, red, purple, blue)",
+    "linear-gradient(79deg, gold, silver, bronze)"
   ];
 
   const textGradijenti = [
-    "linear-gradient(45deg, red, yellow)",
-    "linear-gradient(45deg, blue, green)",
+    "linear-gradient(135deg, red, yellow)",
+    "linear-gradient(25deg, blue, green)",
     "linear-gradient(45deg, purple, orange)",
-    "linear-gradient(45deg, pink, cyan)",
-    "linear-gradient(45deg, violet, indigo, blue)",
-    "linear-gradient(45deg, lime, pink)",
-    "linear-gradient(45deg, red, blue, green)",
-    "linear-gradient(45deg, purple, yellow, teal)",
-    "linear-gradient(45deg, orange, red, purple, blue)",
-    "linear-gradient(45deg, gold, silver, bronze)"
+    "linear-gradient(38deg, pink, cyan)",
+    "linear-gradient(115deg, violet, indigo, blue)",
+    "linear-gradient(64deg, lime, pink)",
+    "linear-gradient(82deg, red, blue, green)",
+    "linear-gradient(36deg, purple, yellow, teal)",
+    "linear-gradient(15deg, orange, red, purple, blue)",
+    "linear-gradient(79deg, gold, silver, bronze)"
   ];
 });
