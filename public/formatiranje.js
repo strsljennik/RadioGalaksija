@@ -90,7 +90,8 @@ let lastMessages = {}; // Objekt koji prati poslednju poruku svakog korisnika
 socket.on('chatMessage', function(data) {
     if (!myNickname) return; // ne prikazuj dok ne znaš svoj nick
 
-    let text = data.text.replace(/#n/g, myNickname);
+    const myName = currentUser ? currentUser : myNickname;
+    let text = data.text.replace(/#n/g, myName);
 
     // Ako je trenutna poruka ista kao poslednja poslata od tog korisnika, blokiraj je
     if (lastMessages[data.nickname] === text) return;
