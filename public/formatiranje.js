@@ -1,8 +1,3 @@
-let myNickname = ''; // biće postavljen od servera
-
-socket.on('yourNickname', function(nick) {
-    myNickname = nick;
-});
 // Kada korisnik dobije nickname od servera
 socket.on('setNickname', function(nickname) {
     // Prikazivanje početnog nadimka
