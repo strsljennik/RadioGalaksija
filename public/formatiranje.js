@@ -1,3 +1,9 @@
+let myNickname = ''; // biće postavljen od servera
+
+socket.on('yourNickname', function(nick) {
+    myNickname = nick;
+});
+
 let isBold = false;
 let isItalic = false;
 let currentColor = '';
@@ -63,8 +69,11 @@ document.getElementById('chatInput').addEventListener('keydown', function(event)
 let lastMessage = '';
 
 socket.on('chatMessage', function(data) {
-    if (data.text === lastMessage) return;
-    lastMessage = data.text;
+    if (!myNickname) return; // ne prikazuj dok ne znaš svoj nick
+
+    let text = data.text.replace(/#n/g, myNickname);
+    if (text === lastMessage) return;
+    lastMessage = text;
 
     let messageArea = document.getElementById('messageArea');
     let newMessage = document.createElement('div');
@@ -73,10 +82,11 @@ socket.on('chatMessage', function(data) {
     newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
     newMessage.style.color = data.color;
     newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
-    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${data.text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
     messageArea.scrollTop = 0;
 });
+
 
 socket.on('private_message', function(data) {
     let messageArea = document.getElementById('messageArea');
