@@ -1,4 +1,3 @@
-
 let isBold = false;
 let isItalic = false;
 let currentColor = '';
@@ -69,7 +68,7 @@ socket.on('chatMessage', function(data) {
     newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
     newMessage.style.color = data.color;
     newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
-    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${data.text} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${data.text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
     messageArea.scrollTop = 0;
 });
