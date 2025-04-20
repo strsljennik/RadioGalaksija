@@ -91,6 +91,7 @@ socket.on('chatMessage', function(data) {
     messageArea.scrollTop = 0;
 });
 
+
 socket.on('private_message', function(data) {
     let messageArea = document.getElementById('messageArea');
     let newMessage = document.createElement('div');
