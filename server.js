@@ -65,6 +65,7 @@ io.on('connection', (socket) => {
     const nickname = `Gost-${uniqueNumber}`; // Nadimak korisnika
     guests[socket.id] = nickname; // Dodajemo korisnika u guest list
  socket.emit('setNickname', nickname);
+    socket.emit('yourNickname', nickname);
     const ipList = socket.handshake.headers['x-forwarded-for'];
 const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.address;
 
