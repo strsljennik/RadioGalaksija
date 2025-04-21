@@ -10,8 +10,6 @@ setInterval(() => {
     }
 }, 20000);
 
-const socket = io(); // tvoj socket konektor
-
 // Kada korisnik dobije nadimak
 socket.on('setNickname', function(nickname) {
     // Sačuvaj nadimak u sessionStorage
