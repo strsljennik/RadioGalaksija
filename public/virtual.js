@@ -65,22 +65,31 @@ const virtualGuests = [
 ];
 
         function sendMessageToChat(guest, message) {
-            const messageArea = document.getElementById('messageArea');
+    const messageArea = document.getElementById('messageArea');
+    const gradientBoxes = document.querySelectorAll('#gradijent .gradient-box');
 
-            const messageElement = document.createElement('div');
-        messageElement.innerHTML = `<span style="background: linear-gradient(45deg, red, blue, green, orange); -webkit-background-clip: text; color: transparent; font-weight: bold; font-style: italic;">${guest.nickname}: ${message}</span>`;
+    // Funkcija koja vraća nasumičan gradijent
+    function getRandomGradient() {
+        const randomBox = gradientBoxes[Math.floor(Math.random() * gradientBoxes.length)];
+        return window.getComputedStyle(randomBox).backgroundImage;
+    }
 
-            
-            // Dodavanje poruke na vrh
-            messageArea.insertBefore(messageElement, messageArea.firstChild);
-            
-            // Dodavanje razmaka između poruka
-            const spacingElement = document.createElement('div');
-            spacingElement.style.height = '10px';
-            messageArea.insertBefore(spacingElement, messageArea.firstChild.nextSibling);
+    // Kreiranje poruke sa nasumičnim gradijentom
+    const randomGradient = getRandomGradient();
+    
+    const messageElement = document.createElement('div');
+    messageElement.innerHTML = `<span style="background: ${randomGradient}; -webkit-background-clip: text; color: transparent; font-weight: bold; font-style: italic;">${guest.nickname}: ${message}</span>`;
 
-            messageArea.scrollTop = 0; // Skrolovanje na vrh
-        }
+    // Dodavanje poruke na vrh
+    messageArea.insertBefore(messageElement, messageArea.firstChild);
+
+    // Dodavanje razmaka između poruka
+    const spacingElement = document.createElement('div');
+    spacingElement.style.height = '10px';
+    messageArea.insertBefore(spacingElement, messageArea.firstChild.nextSibling);
+
+    // Skrolovanje na vrh
+    messageArea.scrollTop = 0;
 
         function populatePermanentGuestList() {
             const guestList = document.getElementById('guestList');
