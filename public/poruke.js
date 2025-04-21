@@ -40,10 +40,11 @@ document.addEventListener("DOMContentLoaded", function() {
     var isPlaying = false;
 
     button.addEventListener('click', function() {
+          button.blur();
         if (isPlaying) {
             audio.pause();
-            button.textContent = "Muzika";
-            isPlaying = false;
+          button.innerHTML = '<img src="emoji gif/slusalice.jpg">';
+          isPlaying = false;
         } else {
             playStream();
         }
@@ -53,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function() {
         audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
         audio.load();  
         audio.play().then(() => {
-            button.textContent = "Pauziraj";
-            isPlaying = true;
+          button.innerHTML = '<img src="emoji gif/slusalice.jpg">';
+          isPlaying = true;
         }).catch(error => console.error("Greška pri puštanju zvuka:", error));
     }
 
