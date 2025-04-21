@@ -179,6 +179,18 @@ socket.on('updateGuestColor', ({ guestId, newColor }) => {
         socket.broadcast.emit('positionChange', data);
     });
 
+    socket.on('pingAktivan', () => {
+    socket.lastPing = Date.now();
+});
+
+setInterval(() => {
+    const sada = Date.now();
+    if (sada - (socket.lastPing || 0) > 60000) {
+        // ovde ide logika za neaktivnog korisnika
+    }
+}, 30000);
+
+
 // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
