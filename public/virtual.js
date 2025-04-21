@@ -1,20 +1,10 @@
 const permanentGuests = [
     { nickname: 'Bala Hatun', color: 'deepskyblue' },
-      { nickname: 'Gost-5364', color: 'deepskyblue' },
-      { nickname: 'Gost-7822', color: 'deepskyblue' },
     { nickname: 'Halime', color: 'purple' },
-     { nickname: 'Gost-9632', color: 'purple' },
-     { nickname: 'Gost-4457', color: 'purple' },
     { nickname: 'Holofira', color: 'red' },
-      { nickname: 'Gost-6564', color: 'red' },
-        { nickname: 'Gost-7745', color: 'red' },
-    { nickname: 'Papagaj', color: 'green' },
-     { nickname: 'Osman', color: 'green' },
-     { nickname: 'Security', color: 'blue' },
-      { nickname: 'Ahmet', color: 'green' },
-      { nickname: 'Gost-9891', color: 'green' },
-     { nickname: 'Gost-1155', color: 'green' },
-    { nickname: 'Higijenicar', color: 'olive' },
+     { nickname: 'Robot-X', color: 'green' },
+    { nickname: 'Security', color: 'blue' },
+  { nickname: 'Higijenicar', color: 'olive' },
 ];
 
 const virtualGuests = [
