@@ -103,6 +103,27 @@ socket.on('private_message', function(data) {
     messageArea.prepend(newMessage);
     messageArea.scrollTop = 0;
 });
+
+// Lista CSS gradijenata
+const gradientBackgrounds = [
+  'linear-gradient(45deg, #ff6347, #ffea00, #ff1493, #00ff00)',
+  'radial-gradient(circle, #ff6347, #ffea00, #ff1493, #00ff00)',
+  'linear-gradient(to right, #00f, #ff6347, #ff1493, #ffea00)',
+  'radial-gradient(circle, #00ff00, #00f, #ff1493, #ff6347)',
+  'linear-gradient(to left, #f00, #0f0, #00f)',
+  'radial-gradient(circle, #00ffff, #ff00ff)',
+  'linear-gradient(45deg, #ff6347, #ff1493, #00f)',
+  'radial-gradient(circle, #ffea00, #00ff00)',
+  'linear-gradient(to right, #ff1493, #00f)',
+  'radial-gradient(circle, #00ff00, #ff6347)'
+];
+
+// Funkcija za random gradijent
+function getRandomGradient() {
+  return gradientBackgrounds[Math.floor(Math.random() * gradientBackgrounds.length)];
+}
+
+
 // Kada nov gost dođe
 socket.on('newGuest', function (nickname) {
     const guestId = `guest-${nickname}`;
@@ -111,6 +132,12 @@ socket.on('newGuest', function (nickname) {
     newGuest.classList.add('guest');
     newGuest.id = guestId; // Dodaj ID za svakog gosta
     newGuest.textContent = nickname;
+
+const gradient = getRandomGradient();
+newGuest.style.background = gradient;
+newGuest.style.webkitBackgroundClip = 'text';
+newGuest.style.webkitTextFillColor = 'transparent';
+
 
     // Dodaj novog gosta u guestsData ako ne postoji
     if (!guestsData[guestId]) {
@@ -146,6 +173,12 @@ socket.on('updateGuestList', function (users) {
             newGuest.id = guestId; // Postavi ID za svakog gosta
             newGuest.textContent = nickname;
             newGuest.style.color = ''; // Podrazumevana boja ako nije postavljena
+
+const gradient = getRandomGradient();
+newGuest.style.background = gradient;
+newGuest.style.webkitBackgroundClip = 'text';
+newGuest.style.webkitTextFillColor = 'transparent';
+
 
            guestsData[guestId] = { nickname, color: newGuest.style.color }; // Dodaj podatke o gostu
 
