@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
         audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
         audio.load();  
         audio.play().then(() => {
-            button.textContent = "Zaustavi Muziku";
+            button.textContent = "Pauziraj";
             isPlaying = true;
         }).catch(error => console.error("Greška pri puštanju zvuka:", error));
     }
