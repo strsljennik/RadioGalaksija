@@ -1,0 +1,62 @@
+/* Gradijenti */
+#gradijent .gradient-1 {
+  background-image: linear-gradient(45deg, #ff6347, #ffea00, #ff1493, #00ff00);
+}
+#gradijent .gradient-2 {
+  background-image: radial-gradient(circle, #ff6347, #ffea00, #ff1493, #00ff00);
+}
+#gradijent .gradient-3 {
+  background-image: linear-gradient(to right, #00f, #ff6347, #ff1493, #ffea00);
+}
+#gradijent .gradient-4 {
+  background-image: radial-gradient(circle, #00ff00, #00f, #ff1493, #ff6347);
+}
+#gradijent .gradient-5 {
+  background-image: linear-gradient(to left, #f00, #0f0, #00f);
+}
+#gradijent .gradient-6 {
+  background-image: radial-gradient(circle, #00ffff, #ff00ff);
+}
+#gradijent .gradient-7 {
+  background-image: linear-gradient(45deg, #ff6347, #ff1493, #00f);
+}
+#gradijent .gradient-8 {
+  background-image: radial-gradient(circle, #ffea00, #00ff00);
+}
+#gradijent .gradient-9 {
+  background-image: linear-gradient(to right, #ff1493, #00f);
+}
+#gradijent .gradient-10 {
+  background-image: radial-gradient(circle, #00ff00, #ff6347);
+}
+
+.gradient-box {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #ccc;
+  margin: 10px;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Raspored */
+#gradijent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+/* Pozicioniranje */
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+#gradijent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+}
