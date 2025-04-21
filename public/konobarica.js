@@ -23,12 +23,6 @@ socket.on('message', (data) => {
     messageArea.insertBefore(messageElement, messageArea.firstChild);
 });
 
-// Dodavanje Konobarice u listu gostiju (ako je potrebno)
-const konobaricaItem = document.createElement('div');
-konobaricaItem.classList.add('guest-konobarica');
-konobaricaItem.innerHTML = 'Konobarica'; // Dodajemo samo tekst bez tagova
-guestList.appendChild(konobaricaItem);
-
 // GOSTI MODAL 
 var modal = document.getElementById("gostimodal");
 var btn = document.getElementById("GBtn");
