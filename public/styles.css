@@ -61,10 +61,6 @@ body {
     transition: background-color 0.3s;
 }
 
-.toolbarBtn:hover {
-    background-color: #666;
-}
-
 #messageArea {
     position: absolute;
     top: 95px;
