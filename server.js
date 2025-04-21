@@ -190,6 +190,14 @@ setInterval(() => {
     }
 }, 30000);
 
+    socket.on('restoreNickname', (nickname) => {
+    // Ažuriraj korisnički nadimak sa sačuvanim nickname-om
+    guests[socket.id] = nickname;
+    console.log(`${nickname} je ponovo povezan sa istim nadimkom.`);
+    
+    // Emituj korisniku njegov nadimak
+    socket.emit('setNickname', nickname);
+});
 
 // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
