@@ -86,7 +86,7 @@ const virtualGuests = [
 
     // Dodavanje razmaka između poruka
     const spacingElement = document.createElement('div');
-    spacingElement.style.height = '10px';
+    spacingElement.style.height = '20px';
     messageArea.insertBefore(spacingElement, messageArea.firstChild.nextSibling);
 
     // Skrolovanje na vrh
