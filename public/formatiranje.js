@@ -4,12 +4,19 @@ socket.on('setNickname', function(nickname) {
     console.log(`Tvoj početni nadimak je: ${nickname}`);
 });
 
-// Kada korisnik pošalje svoje ime (prijava)
-socket.on('userLoggedIn', function(username) {
-    console.log(`Tvoj username je sada: ${username}`);
-    // Prikazivanje korisničkog imena u interfejsu
-    document.getElementById('usernameDisplay').innerText = username;
+// Dodajemo dinamicki element na stranici
+window.addEventListener('DOMContentLoaded', function() {
+    const usernameDisplay = document.createElement('span');  // Kreiramo novi element
+    usernameDisplay.id = 'usernameDisplay';  // Dodeljujemo mu ID
+    document.body.appendChild(usernameDisplay);  // Dodajemo ga na kraj tela stranice (možeš promeniti lokaciju)
+
+    // Kada korisnik pošalje svoje ime (prijava)
+    socket.on('userLoggedIn', function(username) {
+        console.log(`Tvoj username je sada: ${username}`);
+        usernameDisplay.innerText = username;  // Postavljamo korisničko ime u novi element
+    });
 });
+
 
 let myNickname = ''; // biće postavljen od servera
 
