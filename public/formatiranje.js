@@ -1,16 +1,3 @@
-// Kada korisnik dobije nickname od servera
-socket.on('setNickname', function(nickname) {
-    // Prikazivanje početnog nadimka
-    console.log(`Tvoj početni nadimak je: ${nickname}`);
-});
-
-// Kada korisnik pošalje svoje ime (prijava)
-socket.on('userLoggedIn', function(username) {
-    console.log(`Tvoj username je sada: ${username}`);
-    // Prikazivanje korisničkog imena u interfejsu
-    document.getElementById('usernameDisplay').innerText = username;
-});
-
 let myNickname = ''; // biće postavljen od servera
 
 socket.on('yourNickname', function(nick) {
