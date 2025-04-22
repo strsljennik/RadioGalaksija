@@ -1,8 +1,15 @@
+// Kada korisnik dobije nickname od servera
+socket.on('setNickname', function(nickname) {
+    // Prikazivanje početnog nadimka
+    console.log(`Tvoj početni nadimak je: ${nickname}`);
+});
+
 let myNickname = ''; // biće postavljen od servera
 
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
 });
+
 
 let isBold = false;
 let isItalic = false;
