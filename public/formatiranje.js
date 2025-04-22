@@ -53,24 +53,36 @@ function updateInputStyle() {
 let lastMessages = {}; // Objekt koji prati poslednju poruku svakog korisnika
 
 socket.on('chatMessage', function(data) {
-    if (!myNickname) return; // ne prikazuj dok ne znaš svoj nick
+    if (!myNickname) return;
 
     const myName = currentUser ? currentUser : myNickname;
     let text = data.text.replace(/#n/g, myName);
-
-    // Ako je trenutna poruka ista kao poslednja poslata od tog korisnika, blokiraj je
     if (lastMessages[data.nickname] === text) return;
-
-    // Updajtuj poslednju poruku za tog korisnika
     lastMessages[data.nickname] = text;
 
-    let messageArea = document.getElementById('messageArea');
-    let newMessage = document.createElement('div');
+    const messageArea = document.getElementById('messageArea');
+    const newMessage = document.createElement('div');
     newMessage.classList.add('message');
-    newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
-    newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
-    newMessage.style.color = data.color;
-    newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
+
+    // Ako je autorizovan korisnik – primeni random gradijent
+    if (authorizedUsers.has(data.nickname)) {
+        const gradientBoxes = document.querySelectorAll('#gradijent .gradient-box');
+        const randomBox = gradientBoxes[Math.floor(Math.random() * gradientBoxes.length)];
+        const gradient = window.getComputedStyle(randomBox).backgroundImage;
+
+        newMessage.style.backgroundImage = gradient;
+        newMessage.style.webkitBackgroundClip = 'text';
+        newMessage.style.backgroundClip = 'text';
+        newMessage.style.color = 'transparent';
+        newMessage.style.fontWeight = 'bold';
+        newMessage.style.fontStyle = 'italic';
+    } else {
+        newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
+        newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
+        newMessage.style.color = data.color;
+        newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
+    }
+
     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
     messageArea.scrollTop = 0;
