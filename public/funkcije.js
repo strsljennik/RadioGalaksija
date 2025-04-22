@@ -84,24 +84,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             });
 
-            if (nickname === socket.id) {
+                   if (nickname === socket.id) {
                 isBanned = false;
                 document.getElementById('chat-input').disabled = false;
                 chatContainer.style.display = 'block';
             }
-        });
+        }); 
+    }); 
+}); 
 
-        // Unos poruka
-        document.getElementById('chatInput').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-                if (isBanned) return;
-
-                const message = this.value;
-                socket.emit('chatMessage', { text: message, bold: false, italic: false, color: 'black' });
-                this.value = ''; 
-            }
-        });
-    }); // <== OVA ZAGRADA JE FALILA!
-
-}); // <== ZATVARA document.addEventListener
