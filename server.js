@@ -49,8 +49,8 @@ const bannedUsers = new Set();
 // Skladištenje informacija o gostima
 const guests = {};
 const guestsData = {};
-let newColor;
 const assignedNumbers = new Set(); // Set za generisane brojeve
+const userColors = {}; // Ovdje čuvamo boje korisnika
 
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
@@ -127,23 +127,13 @@ socket.on('userLoggedIn', (username) => {
         io.emit('chat-cleared');
     });
  
-// Poslati trenutne goste sa bojama novom gostu
-socket.emit('currentGuests', Object.keys(guestsData).map(guestId => ({
-    guestId: guestId,
-    color: guestsData[guestId].color
-})));
+ socket.emit('allColors', userColors);
 
-// Kada gost menja svoju boju
-socket.on('updateGuestColor', ({ guestId, newColor }) => {
-    // Ažuriraj boju gosta na serveru
-    if (!guestsData[guestId]) {
-        guestsData[guestId] = { color: '' }; // Osiguraj da postoji guestId
-    }
-    guestsData[guestId].color = newColor;
-
-    // Emituje promenu boje svim klijentima
-    io.emit('updateGuestColor', { guestId, newColor });
-});
+    // Slušanje na promene boje
+    socket.on('colorChange', (data) => {
+        userColors[data.nickname] = data.color;  // Spremanje boje za korisnika
+        io.emit('colorChange', data);  // Emitovanje promene boje svim korisnicima
+    });
       socket.emit("updateBackground", currentBackground);
 
     socket.on("changeBackground", (url) => {
