@@ -153,10 +153,7 @@ body {
     padding-left: 20px;
     font-weight: bold;
     font-style: italic;
-    color: silver;
-    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00); /* Dodaj gradijent boje */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  
 }
 
 .guest::before, .virtual-guest::before {
