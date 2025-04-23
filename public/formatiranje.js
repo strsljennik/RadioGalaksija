@@ -51,6 +51,12 @@ function updateInputStyle() {
 }
 
 let lastMessages = {}; // Objekt koji prati poslednju poruku svakog korisnika
+let gradijentAktivan = false;
+
+document.getElementById("sar").addEventListener("click", () => {
+    gradijentAktivan = !gradijentAktivan;
+});
+
 
 socket.on('chatMessage', function(data) {
     if (!myNickname) return;
@@ -65,23 +71,24 @@ socket.on('chatMessage', function(data) {
     newMessage.classList.add('message');
 
     // Ako je autorizovan korisnik – primeni random gradijent
-    if (authorizedUsers.has(data.nickname)) {
-        const gradientBoxes = document.querySelectorAll('#gradijent .gradient-box');
-        const randomBox = gradientBoxes[Math.floor(Math.random() * gradientBoxes.length)];
-        const gradient = window.getComputedStyle(randomBox).backgroundImage;
+   if (authorizedUsers.has(data.nickname) && gradijentAktivan) {
+    const gradientBoxes = document.querySelectorAll('#gradijent .gradient-box');
+    const randomBox = gradientBoxes[Math.floor(Math.random() * gradientBoxes.length)];
+    const gradient = window.getComputedStyle(randomBox).backgroundImage;
 
-        newMessage.style.backgroundImage = gradient;
-        newMessage.style.webkitBackgroundClip = 'text';
-        newMessage.style.backgroundClip = 'text';
-        newMessage.style.color = 'transparent';
-        newMessage.style.fontWeight = 'bold';
-        newMessage.style.fontStyle = 'italic';
-    } else {
-        newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
-        newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
-        newMessage.style.color = data.color;
-        newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
-    }
+    newMessage.style.backgroundImage = gradient;
+    newMessage.style.webkitBackgroundClip = 'text';
+    newMessage.style.backgroundClip = 'text';
+    newMessage.style.color = 'transparent';
+    newMessage.style.fontWeight = 'bold';
+    newMessage.style.fontStyle = 'italic';
+} else {
+    newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
+    newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
+    newMessage.style.color = data.color;
+    newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
+}
+
 
     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
