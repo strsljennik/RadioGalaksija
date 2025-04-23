@@ -59,7 +59,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
 });
 
 socket.on('userLoggedIn', (data) => {
-    currentUser = data.username;  // Čuvamo username u globalnoj promenljivoj
+    currentUser = data.username;
+    myNickname = data.username; // <-- DODATO OVO
+    window.currentUser = { username: data.username };
     console.log("Prijavljeni korisnik:", currentUser);
 
     if (data.role === 'admin') {
@@ -68,7 +70,6 @@ socket.on('userLoggedIn', (data) => {
         enableGuestFeatures();
     }
 });
-
 
 // Funkcija za omogućavanje admin funkcionalnosti
 function enableAdminFeatures() {
