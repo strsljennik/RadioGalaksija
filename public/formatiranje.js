@@ -43,12 +43,6 @@ function updateInputStyle() {
 }
 
 let lastMessages = {}; // Objekt koji prati poslednju poruku svakog korisnika
-let gradijentAktivan = false;
-
-document.getElementById("sar").addEventListener("click", () => {
-    gradijentAktivan = !gradijentAktivan;
-});
-
 
 socket.on('chatMessage', function(data) {
     if (!myNickname) return;
@@ -62,25 +56,11 @@ socket.on('chatMessage', function(data) {
     const newMessage = document.createElement('div');
     newMessage.classList.add('message');
 
-    // Ako je autorizovan korisnik – primeni random gradijent
-   if (authorizedUsers.has(data.nickname) && gradijentAktivan) {
-    const gradientBoxes = document.querySelectorAll('#gradijent .gradient-box');
-    const randomBox = gradientBoxes[Math.floor(Math.random() * gradientBoxes.length)];
-    const gradient = window.getComputedStyle(randomBox).backgroundImage;
-
-    newMessage.style.backgroundImage = gradient;
-    newMessage.style.webkitBackgroundClip = 'text';
-    newMessage.style.backgroundClip = 'text';
-    newMessage.style.color = 'transparent';
-    newMessage.style.fontWeight = 'bold';
-    newMessage.style.fontStyle = 'italic';
-} else {
     newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
     newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
     newMessage.style.color = data.color;
     newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
 }
-
 
     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
@@ -100,25 +80,6 @@ socket.on('private_message', function(data) {
     messageArea.prepend(newMessage);
     messageArea.scrollTop = 0;
 });
-
-// Lista CSS gradijenata
-const gradientBackgrounds = [
-  'linear-gradient(45deg, #ff6347, #ffea00, #ff1493, #00ff00)',
-  'radial-gradient(circle, #ff6347, #ffea00, #ff1493, #00ff00)',
-  'linear-gradient(to right, #00f, #ff6347, #ff1493, #ffea00)',
-  'radial-gradient(circle, #00ff00, #00f, #ff1493, #ff6347)',
-  'linear-gradient(to left, #f00, #0f0, #00f)',
-  'radial-gradient(circle, #00ffff, #ff00ff)',
-  'linear-gradient(45deg, #ff6347, #ff1493, #00f)',
-  'radial-gradient(circle, #ffea00, #00ff00)',
-  'linear-gradient(to right, #ff1493, #00f)',
-  'radial-gradient(circle, #00ff00, #ff6347)'
-];
-
-// Funkcija za random gradijent
-function getRandomGradient() {
-  return gradientBackgrounds[Math.floor(Math.random() * gradientBackgrounds.length)];
-}
 
 // Kada nov gost dođe
 socket.on('newGuest', function (nickname) {
