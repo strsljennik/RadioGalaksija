@@ -170,27 +170,7 @@ socket.on('userLoggedIn', (username) => {
         socket.broadcast.emit('positionChange', data);
     });
 
-    socket.on('pingAktivan', () => {
-    socket.lastPing = Date.now();
-});
-
-setInterval(() => {
-    const sada = Date.now();
-    if (sada - (socket.lastPing || 0) > 60000) {
-        // ovde ide logika za neaktivnog korisnika
-    }
-}, 30000);
-
-    socket.on('restoreNickname', (nickname) => {
-    // Ažuriraj korisnički nadimak sa sačuvanim nickname-om
-    guests[socket.id] = nickname;
-    console.log(`${nickname} je ponovo povezan sa istim nadimkom.`);
-    
-    // Emituj korisniku njegov nadimak
-    socket.emit('setNickname', nickname);
-});
-
-     socket.on('register', (data) => {
+   socket.on('register', (data) => {
     username = data.username;
     sviAvatari[username] = data.avatar || 'defaultna/slika.webp';
     
