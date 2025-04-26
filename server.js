@@ -52,6 +52,7 @@ const guestsData = {};
 const assignedNumbers = new Set(); // Set za generisane brojeve
 const userColors = {}; // Ovdje čuvamo boje korisnika
 const sviAvatari = {};
+const userGradients = {};
 
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
@@ -135,6 +136,14 @@ socket.on('userLoggedIn', (username) => {
         userColors[data.nickname] = data.color;  // Spremanje boje za korisnika
         io.emit('colorChange', data);  // Emitovanje promene boje svim korisnicima
     });
+
+    socket.emit('allGradients', userGradients);
+
+socket.on('gradientChange', (data) => {
+    userGradients[data.nickname] = data.gradient;
+    io.emit('gradientChange', data);
+});
+
       socket.emit("updateBackground", currentBackground);
 
     socket.on("changeBackground", (url) => {
