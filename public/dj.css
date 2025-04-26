@@ -9,7 +9,7 @@
 .konobarica {
     font-weight: bold;
     font-style: italic;
-    background: linear-gradient(45deg, #ff6347, #ffea00, #ff1493, #00ff00); /* Crvena, žuta, roza, zelena */
+    background: linear-gradient(45deg, #ff6347, #0000ff, #ff1493, #808080); /* Crvena, plava, roza, siva */
     -webkit-background-clip: text;
     color: transparent; /* Tekst je transparentan da bi se video gradijent */
 }
