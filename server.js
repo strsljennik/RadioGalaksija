@@ -51,6 +51,7 @@ const guests = {};
 const guestsData = {};
 const assignedNumbers = new Set(); // Set za generisane brojeve
 const userColors = {}; // Ovdje čuvamo boje korisnika
+const sviAvatari = {};
 
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
@@ -188,6 +189,22 @@ setInterval(() => {
     // Emituj korisniku njegov nadimak
     socket.emit('setNickname', nickname);
 });
+
+     socket.on('register', (data) => {
+    username = data.username;
+    sviAvatari[username] = data.avatar || 'defaultna/slika.webp';
+    
+    // Pošalji mu sve trenutno postojeće avatare
+    socket.emit('initialAvatars', sviAvatari);
+  });
+
+  // Kad korisnik promeni avatar
+  socket.on('avatarChange', (data) => {
+    if (data.username && data.avatar) {
+      sviAvatari[data.username] = data.avatar; // Update stanje
+      socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
+    }
+  });
 
 // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
