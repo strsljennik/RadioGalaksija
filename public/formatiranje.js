@@ -83,13 +83,12 @@ socket.on('chatMessage', function(data) {
     }
 
     // Ako je gradijent postavljen, koristi 'currentGradient' za pozadinu i primeni na tekst
-    if (currentGradient) {
-        newMessage.style.backgroundClip = 'text'; // Za WebKit pretraživače
-        newMessage.style.webkitBackgroundClip = 'text'; // Za WebKit pretraživače
-        newMessage.style.webkitTextFillColor = 'transparent'; // Napraviti tekst prozračnim da gradijent bude vidljiv
-        newMessage.style.backgroundImage = getComputedStyle(document.querySelector(`.${currentGradient}`)).backgroundImage; // Postavljanje gradijenta kao pozadinu za tekst
-    }
-
+  if (data.gradient) {
+    newMessage.style.backgroundClip = 'text';
+    newMessage.style.webkitBackgroundClip = 'text';
+    newMessage.style.webkitTextFillColor = 'transparent';
+    newMessage.style.backgroundImage = getComputedStyle(document.querySelector(`.${data.gradient}`)).backgroundImage;
+}
     // Dodavanje sadržaja poruke
     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
