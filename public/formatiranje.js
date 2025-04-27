@@ -78,17 +78,19 @@ socket.on('chatMessage', function(data) {
     newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
 
     // Ako je boja postavljena, postavi je
-    if (data.color) {
-        newMessage.style.color = data.color;
-    }
-
-    // Ako je gradijent postavljen, koristi 'currentGradient' za pozadinu i primeni na tekst
-  if (data.gradient) {
+if (data.color) {
+    newMessage.style.backgroundImage = '';
+    newMessage.style.backgroundClip = '';
+    newMessage.style.webkitBackgroundClip = '';
+    newMessage.style.webkitTextFillColor = '';
+    newMessage.style.color = data.color;
+} else if (data.gradient) {
     newMessage.style.backgroundClip = 'text';
     newMessage.style.webkitBackgroundClip = 'text';
     newMessage.style.webkitTextFillColor = 'transparent';
     newMessage.style.backgroundImage = getComputedStyle(document.querySelector(`.${data.gradient}`)).backgroundImage;
 }
+
     // Dodavanje sadržaja poruke
     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
