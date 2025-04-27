@@ -10,7 +10,7 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const pingPong = require('./ping-pong');
+
 
 
 
@@ -71,8 +71,7 @@ io.on('connection', (socket) => {
     socket.emit('yourNickname', nickname);
     const ipList = socket.handshake.headers['x-forwarded-for'];
 const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.address;
-     pingPong(socket);
-
+   
 // Funkcija za generisanje jedinstvenog broja
     function generateUniqueNumber() {
         let number;
