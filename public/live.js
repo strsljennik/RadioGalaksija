@@ -1,36 +1,22 @@
-document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible') {
-        socket.emit('pingAktivan');
-    }
+// Kada server pošalje ping, šaljemo pong nazad
+socket.on('ping', () => {
+    socket.emit('pong');
 });
 
+// Čuvanje vremena poslednje aktivnosti korisnika
+let lastActiveTime = Date.now();
+
+// Detektuj aktivnost korisnika (klik, skrolovanje, tastatura)
+window.addEventListener('mousemove', () => {
+    lastActiveTime = Date.now();  // Ažuriraj poslednju aktivnost korisnika
+});
+window.addEventListener('keydown', () => {
+    lastActiveTime = Date.now();
+});
+
+// Ako korisnik nije aktivan duže vreme, server ga neće isključiti
 setInterval(() => {
-    if (document.visibilityState === 'visible') {
-        socket.emit('pingAktivan');
+    if (Date.now() - lastActiveTime > 60000) {  // Ako nije bilo aktivnosti poslednjih 60 sekundi
+        console.log("Korisnik je neaktivan.");
     }
-}, 20000);
-
-// Kada korisnik dobije nadimak
-socket.on('setNickname', function(nickname) {
-    // Sačuvaj nadimak u sessionStorage
-    sessionStorage.setItem('nickname', nickname);
-    console.log(`Tvoj početni nadimak je: ${nickname}`);
-});
-
-// Kada se korisnik ponovo poveže, proveri sessionStorage
-socket.on('reconnect', () => {
-    const savedNickname = sessionStorage.getItem('nickname');
-    if (savedNickname) {
-        socket.emit('restoreNickname', savedNickname); // Pošaljite sačuvani nadimak na server
-        console.log(`Ponovo povezivanje sa nadimkom: ${savedNickname}`);
-    }
-});
-
-// Kada korisnik šalje ime (prijava), sačuvaj ga
-socket.on('userLoggedIn', function(username) {
-    console.log(`Tvoj username je sada: ${username}`);
-    document.getElementById('usernameDisplay').innerText = username;
-
-    // Sačuvaj ime u sessionStorage (ako je prijavljen)
-    sessionStorage.setItem('nickname', username);
-});
+}, 10000);  // Provjeravaj svakih 10 sekundi
