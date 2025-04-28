@@ -219,9 +219,20 @@ socket.on('colorChange', (data) => {
     const myDivId = `guest-${data.nickname}`;
     const myDiv = document.getElementById(myDivId);
     if (myDiv) {
+        // Ukloni sve gradijente
+        myDiv.classList.forEach(cls => {
+            if (cls.startsWith('gradient-')) {
+                myDiv.classList.remove(cls);
+            }
+        });
+        myDiv.classList.remove('use-gradient');
+        myDiv.style.backgroundImage = ''; 
+
+        // Postavi boju
         myDiv.style.color = data.color;
     }
 });
+
 
 //     ZA GRADIJENTE 
 document.getElementById('farbe').addEventListener('click', function () {
