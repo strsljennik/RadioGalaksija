@@ -1,15 +1,16 @@
 #gradijent {
-  width: 50px; /* Povećaj širinu kontejnera kako bi stale 5 kockica */
-  height: 450px; /* Visina se postavlja za samo jedan red */
-  background-color: black;
+  width: 300px; /* Širina kontejnera */
+  height: calc(6 * 30px); /* Dinamička visina bez razmaka */
+  background-color: transparent;
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  right: 0px;
   z-index: 9999;
-  display: flex; /* Prikaz kockica u horizontalnom rasporedu */
-  flex-wrap: nowrap; /* Sprečava prelazak u drugi red */
-  gap: 8px; /* Razmak između kockica */
-  padding: 10px;
+  display: grid; /* Koristi grid za raspored kockica */
+  grid-template-columns: repeat(5, 1fr); /* 5 kolona */
+  grid-template-rows: repeat(6, 1fr); /* 6 redova */
+  gap: 0; /* Uklonjeno - razmak između kockica */
+  padding: 0; /* Uklonjeno - padding u kontejneru */
   box-sizing: border-box;
   border-radius: 10px;
   box-shadow: 0 0 10px #000;
@@ -17,8 +18,8 @@
 
 /* Gradijent kutije */
 #gradijent .gradijent-box {
-  width: 45px; /* Širina svake kockice */
-  height: 45px; /* Visina svake kockice */
+  width: 100%; /* Prilagođeno na 100% da ispuni prostor */
+  height: 100%; /* Prilagođeno na 100% da ispuni prostor */
   border-radius: 6px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -42,6 +43,28 @@
 #gradijent .gradijent-box.gradient-8 { background-image: radial-gradient(circle, #ffea00, #00ff00); }
 #gradijent .gradijent-box.gradient-9 { background-image: linear-gradient(to right, #ff1493, #00f); }
 #gradijent .gradijent-box.gradient-10 { background-image: radial-gradient(circle, #00ff00, #ff6347); }
+
+#gradijent .gradijent-box.gradient-11 { background-image: linear-gradient(45deg, #ff6347, #f00, #ff1493); }
+#gradijent .gradijent-box.gradient-12 { background-image: radial-gradient(circle, #ff6347, #f00, #ff1493, #00ff00); }
+#gradijent .gradijent-box.gradient-13 { background-image: linear-gradient(to right, #ff1493, #ff6347, #f00, #ffea00); }
+#gradijent .gradijent-box.gradient-14 { background-image: radial-gradient(circle, #ff1493, #ff6347, #00ff00, #f00); }
+#gradijent .gradijent-box.gradient-15 { background-image: linear-gradient(to right, #ff6347, #ffea00, #ff1493, #00ffff); }
+#gradijent .gradijent-box.gradient-16 { background-image: radial-gradient(circle, #ff6347, #ff1493, #ff00ff, #ffea00); }
+#gradijent .gradijent-box.gradient-17 { background-image: linear-gradient(45deg, #f00, #ff6347, #ff1493, #00ffff); }
+#gradijent .gradijent-box.gradient-18 { background-image: radial-gradient(circle, #ff6347, #ff1493, #ff00ff); }
+#gradijent .gradijent-box.gradient-19 { background-image: linear-gradient(45deg, #f00, #00ff00, #ff1493); }
+#gradijent .gradijent-box.gradient-20 { background-image: radial-gradient(circle, #ff6347, #00ffff, #ff1493); }
+
+#gradijent .gradijent-box.gradient-21 { background-image: linear-gradient(45deg, #ff6347, #ff00ff, #ff1493, #00ff00); }
+#gradijent .gradijent-box.gradient-22 { background-image: radial-gradient(circle, #f00, #ff1493, #00ff00, #ffea00); }
+#gradijent .gradijent-box.gradient-23 { background-image: linear-gradient(to right, #ff6347, #ffea00, #ff00ff); }
+#gradijent .gradijent-box.gradient-24 { background-image: radial-gradient(circle, #ff00ff, #ff1493, #ff6347, #00f); }
+#gradijent .gradijent-box.gradient-25 { background-image: linear-gradient(to left, #ff6347, #ff1493, #f00, #ffea00); }
+#gradijent .gradijent-box.gradient-26 { background-image: radial-gradient(circle, #ff00ff, #ff1493, #00f, #ff6347); }
+#gradijent .gradijent-box.gradient-27 { background-image: linear-gradient(to right, #ff6347, #00ff00, #ff1493, #00ffff); }
+#gradijent .gradijent-box.gradient-28 { background-image: radial-gradient(circle, #ff1493, #f00, #ff6347); }
+#gradijent .gradijent-box.gradient-29 { background-image: linear-gradient(45deg, #ffea00, #ff6347, #ff1493, #f00); }
+#gradijent .gradijent-box.gradient-30 { background-image: radial-gradient(circle, #ff6347, #00ffff, #ff1493, #ff00ff); }
 
 /* Tekst sa gradijentom */
 .guest[class*="gradient-"] {
