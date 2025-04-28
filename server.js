@@ -131,13 +131,18 @@ socket.on('userLoggedIn', (username) => {
         io.emit('chat-cleared');
     });
  
- socket.emit('allColors', userColors);
+socket.on('colorChange', (data) => {
+    userColors[data.nickname] = data.color;  
 
-    // Slušanje na promene boje
-    socket.on('colorChange', (data) => {
-        userColors[data.nickname] = data.color;  // Spremanje boje za korisnika
-        io.emit('colorChange', data);  // Emitovanje promene boje svim korisnicima
-    });
+  
+    if (userGradients[data.nickname]) {
+        delete userGradients[data.nickname];  
+    }
+
+    io.emit('colorChange', data);
+});
+
+socket.emit('allColors', userColors);
 
     socket.emit('allGradients', userGradients);
 
