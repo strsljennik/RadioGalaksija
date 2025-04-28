@@ -232,13 +232,11 @@ socket.on('colorChange', (data) => {
         myDiv.style.color = data.color;
     }
 });
-
-
 //     ZA GRADIJENTE 
 document.getElementById('farbe').addEventListener('click', function () {
     const gradijentDiv = document.getElementById('gradijent');
     gradijentOpen = !gradijentOpen;
-    gradijentDiv.style.display = gradijentOpen ? 'block' : 'none';
+    gradijentDiv.style.display = gradijentOpen ? 'grid' : 'none';
 
     if (gradijentOpen) {
         setTimeout(() => {
