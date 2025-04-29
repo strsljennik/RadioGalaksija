@@ -163,10 +163,9 @@ newGuest.setAttribute('data-guest-id', guestId);
     });
 });
 
-// Signal da je korisnik još uvek tu (na svakih 3 minuta)
 setInterval(() => {
-    socket.emit('stillHere', { userId: myNickname });
-}, 180000);  // Na svakih 3 minuta (180000 milisekundi) šaljemo signal da je korisnik aktivan
+    socket.emit('stillHere', { userId: myNickname });  // Send nickname, ili socket.id ako koristiš samo ID
+}, 180000);  // Na svakih 3 minuta šaljemo signal da je korisnik aktivan
 
 // Kada korisnik zatvori tab, šaljemo signal serveru da je otišao
 window.addEventListener("beforeunload", () => {
