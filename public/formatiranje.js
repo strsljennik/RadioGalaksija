@@ -4,6 +4,10 @@ socket.on('yourNickname', function(nick) {
     myNickname = nick;
 });
 
+setInterval(() => {
+    socket.emit('heartbeat');
+}, 10000);
+
 let isBold = false;
 let isItalic = false;
 let currentColor = '';
