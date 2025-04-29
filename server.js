@@ -11,9 +11,6 @@ const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom 
 require('dotenv').config();
 const cors = require('cors');
 
-
-
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
