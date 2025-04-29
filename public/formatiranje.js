@@ -164,12 +164,12 @@ newGuest.setAttribute('data-guest-id', guestId);
 });
 
 setInterval(() => {
-    socket.emit('stillHere', { userId: myNickname });  // Send nickname, ili socket.id ako koristiš samo ID
+    socket.emit('stillHere', { nickname: myNickname });  // Pošaljemo nickname, koristićeš ga na serveru
 }, 180000);  // Na svakih 3 minuta šaljemo signal da je korisnik aktivan
 
 // Kada korisnik zatvori tab, šaljemo signal serveru da je otišao
 window.addEventListener("beforeunload", () => {
-    socket.emit('userLeft', { userId: myNickname });
+    socket.emit('userLeft', { nickname: myNickname });
 });
 
 
