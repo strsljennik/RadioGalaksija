@@ -3,6 +3,11 @@ let myNickname = ''; // biće postavljen od servera
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
 });
+setInterval(() => {
+    socket.emit('stillHere');
+}, 180000); // svakih 3 minuta
+
+
 let isBold = false;
 let isItalic = false;
 let currentColor = '';
@@ -162,16 +167,6 @@ newGuest.setAttribute('data-guest-id', guestId);
         }
     });
 });
-
-setInterval(() => {
-    socket.emit('stillHere', { nickname: myNickname });  // Pošaljemo nickname, koristićeš ga na serveru
-}, 180000);  // Na svakih 3 minuta šaljemo signal da je korisnik aktivan
-
-// Kada korisnik zatvori tab, šaljemo signal serveru da je otišao
-window.addEventListener("beforeunload", () => {
-    socket.emit('userLeft', { nickname: myNickname });
-});
-
 
 //  COLOR PICKER -OBICNE BOJE
 document.getElementById('colorBtn').addEventListener('click', function() {
