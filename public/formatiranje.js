@@ -3,14 +3,9 @@ let myNickname = ''; // biće postavljen od servera
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
 });
-socket.on('connect', () => {
-    function sendPing() {
-        socket.emit('stillHere');
-        setTimeout(sendPing, 180000);
-    }
-    sendPing();
-});
-
+socket.io.opts.reconnection = true;
+socket.io.opts.reconnectionAttempts = Infinity;
+socket.io.opts.reconnectionDelay = 5000; // Pokušaj ponovo nakon 5 sekundi
 
 let isBold = false;
 let isItalic = false;
@@ -63,8 +58,6 @@ function updateInputStyle() {
         inputField.style.webkitTextFillColor = '';  // Ukloni tekst boje sa gradijentom
     }
 }
-
-
 
 let lastMessages = {}; // Objekt koji prati poslednju poruku svakog korisnika
 
@@ -208,8 +201,6 @@ document.getElementById('colorPicker').addEventListener('input', function() {
     }, 300);
 });
 
-
-
 // Slušanje svih boja pri povezivanju
 socket.on('allColors', (colors) => {
     // Primena boja za sve korisnike
@@ -282,8 +273,6 @@ document.getElementById('farbe').addEventListener('click', function () {
     }
 });
 
-
-
 socket.on('gradientChange', function (data) {
     const myDivId = `guest-${data.nickname}`;
     const myDiv = document.getElementById(myDivId);
@@ -304,7 +293,6 @@ socket.on('gradientChange', function (data) {
         myDiv.style.backgroundImage = getComputedStyle(document.querySelector(`.${data.gradient}`)).backgroundImage;
     }
 });
-
 
 // Slušanje svih gradijenata pri povezivanju novih korisnika
 socket.on('allGradients', (gradients) => {
