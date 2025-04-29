@@ -3,9 +3,6 @@ let myNickname = ''; // biće postavljen od servera
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
 });
-socket.io.opts.reconnection = true;
-socket.io.opts.reconnectionAttempts = Infinity;
-socket.io.opts.reconnectionDelay = 5000; // Pokušaj ponovo nakon 5 sekundi
 
 let isBold = false;
 let isItalic = false;
