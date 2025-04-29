@@ -202,13 +202,9 @@ socket.on('gradientChange', (data) => {
     }
   });
 
-  socket.on('stillHere', (data) => {
-    console.log(`${guests[socket.id]} je još uvek tu.`);
-    // Održavanje korisnika u listi dokle god prima signal o aktivnosti
-    guests[socket.id] = { lastActive: Date.now() };  // Ažuriraj vreme aktivnosti korisnika
-});
+setInterval(() => { socket.emit('stillHere'); }, 180000);
 
- // Obrada diskonekcije korisnika
+    // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
