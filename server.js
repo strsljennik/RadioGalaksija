@@ -54,7 +54,6 @@ const assignedNumbers = new Set(); // Set za generisane brojeve
 const userColors = {}; // Ovdje čuvamo boje korisnika
 const sviAvatari = {};
 const userGradients = {};
-let activeUsers = {};
 
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
@@ -202,8 +201,6 @@ socket.on('gradientChange', (data) => {
       socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
     }
   });
-
-    socket.on('heartbeat', () => activeUsers[socket.id] = Date.now());
 
     // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
