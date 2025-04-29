@@ -211,6 +211,7 @@ socket.on('gradientChange', (data) => {
         }
     }, 60000); // čekaj 60 sekundi pre nego što izbrišeš
 });
+    });
 
 // Pokretanje servera na definisanom portu
 const PORT = process.env.PORT || 3000;
