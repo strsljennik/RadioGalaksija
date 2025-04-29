@@ -3,9 +3,13 @@ let myNickname = ''; // biće postavljen od servera
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
 });
-setInterval(() => {
-    socket.emit('stillHere');
-}, 180000); // svakih 3 minuta
+socket.on('connect', () => {
+    function sendPing() {
+        socket.emit('stillHere');
+        setTimeout(sendPing, 180000);
+    }
+    sendPing();
+});
 
 
 let isBold = false;
