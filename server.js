@@ -203,12 +203,15 @@ socket.on('gradientChange', (data) => {
     }
   });
     // Obrada diskonekcije korisnika
-    socket.on('disconnect', () => {
-        console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
-        delete guests[socket.id];
-        io.emit('updateGuestList', Object.values(guests));
-    });
-     });
+  socket.on('disconnect', () => {
+    setTimeout(() => {
+        if (!io.sockets.sockets.get(socket.id)) {
+            delete guests[socket.id];
+            io.emit('updateGuestList', Object.values(guests));
+        }
+    }, 60000); // čekaj 60 sekundi pre nego što izbrišeš
+});
+
 // Pokretanje servera na definisanom portu
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
