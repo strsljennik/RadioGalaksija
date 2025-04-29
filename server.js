@@ -202,7 +202,9 @@ socket.on('gradientChange', (data) => {
     }
   });
 
-// Obrada diskonekcije korisnika
+    socket.on('heartbeat', () => activeUsers[socket.id] = Date.now());
+
+    // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
