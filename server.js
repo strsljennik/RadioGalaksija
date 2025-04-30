@@ -15,16 +15,12 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: '*',
+        origin: '*', // Omogućava svim domenima da se povežu putem WebSocket-a
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type'],
         credentials: true
-    },
-    pingInterval: 10000,
-    pingTimeout: 60000,
-    allowEIO3: true
+    }
 });
-
 
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
@@ -202,17 +198,16 @@ socket.on('gradientChange', (data) => {
       socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
     }
   });
-    // Obrada diskonekcije korisnika
-  socket.on('disconnect', () => {
-    setTimeout(() => {
-        if (!io.sockets.sockets.get(socket.id)) {
-            delete guests[socket.id];
-            io.emit('updateGuestList', Object.values(guests));
-        }
-    }, 60000); // čekaj 60 sekundi pre nego što izbrišeš
-});
-    });
 
+setInterval(() => { socket.emit('stillHere'); }, 180000);
+
+    // Obrada diskonekcije korisnika
+    socket.on('disconnect', () => {
+        console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
+        delete guests[socket.id];
+        io.emit('updateGuestList', Object.values(guests));
+    });
+     });
 // Pokretanje servera na definisanom portu
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
