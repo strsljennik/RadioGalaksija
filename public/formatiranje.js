@@ -1,12 +1,3 @@
-socket.on('connect', () => {
-    console.log("Povezan sa serverom.");
-});
-
-// Ako je disconektovan, dobijamo notifikaciju (ovo se desi ako je tab stvarno zatvoren ili korisnik isključi internet)
-socket.on('disconnect', () => {
-    console.log("Povezanost sa serverom izgubljena.");
-});
-
 let myNickname = ''; // biće postavljen od servera
 
 socket.on('yourNickname', function(nick) {
