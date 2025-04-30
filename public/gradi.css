@@ -72,22 +72,21 @@
 #gradijent .gradijent-box.gradient-34 { background-image: radial-gradient(circle, #00ced1, #f5f5f5); } /* tirkiz, bela */
 #gradijent .gradijent-box.gradient-35 { background-image: linear-gradient(to left, #1e90ff, #00fa9a); } /* more plavo, zelena */
 
-#gradijent .gradijent-box.gradient-36 { background-image: linear-gradient(45deg, #4682b4, #2e8b57, #f5f5f5); }
-#gradijent .gradijent-box.gradient-37 { background-image: radial-gradient(circle, #00ced1, #ffa500, #708090); }
-#gradijent .gradijent-box.gradient-38 { background-image: linear-gradient(to right, #8b4513, #1e90ff, #00fa9a); }
-#gradijent .gradijent-box.gradient-39 { background-image: radial-gradient(circle, #2e8b57, #f5f5f5, #000000cc); }
-#gradijent .gradijent-box.gradient-40 { background-image: linear-gradient(45deg, #4682b4, #ffa500, #8b4513); }
-#gradijent .gradijent-box.gradient-41 { background-image: radial-gradient(circle, #00fa9a, #708090, #00ced1); }
-#gradijent .gradijent-box.gradient-42 { background-image: linear-gradient(to right, #1e90ff, #f5f5f5, #2e8b57); }
-#gradijent .gradijent-box.gradient-43 { background-image: radial-gradient(circle, #000000cc, #00ced1, #ffa500); }
-#gradijent .gradijent-box.gradient-44 { background-image: linear-gradient(45deg, #708090, #8b4513, #1e90ff); }
-#gradijent .gradijent-box.gradient-45 { background-image: radial-gradient(circle, #00fa9a, #4682b4, #f5f5f5); }
-
-#gradijent .gradijent-box.gradient-46 { background-image: linear-gradient(to left, #2e8b57, #ffa500, #00ced1, #000000cc); }
-#gradijent .gradijent-box.gradient-47 { background-image: radial-gradient(circle, #1e90ff, #00fa9a, #708090, #f5f5f5); }
-#gradijent .gradijent-box.gradient-48 { background-image: linear-gradient(45deg, #8b4513, #2e8b57, #00ced1, #ffa500); }
-#gradijent .gradijent-box.gradient-49 { background-image: radial-gradient(circle, #4682b4, #f5f5f5, #000000cc, #00fa9a); }
-#gradijent .gradijent-box.gradient-50 { background-image: linear-gradient(to right, #708090, #1e90ff, #2e8b57, #8b4513); }
+#gradijent .gradijent-box.gradient-36 { background-image: linear-gradient(45deg, #ff4da6, #ff66cc); } /* neon roze */
+#gradijent .gradijent-box.gradient-37 { background-image: radial-gradient(circle, #ff99cc, #ff4da6); } /* neon ružičasta */
+#gradijent .gradijent-box.gradient-38 { background-image: linear-gradient(to right, #da70d6, #ff00ff); } /* neon ljubičasta */
+#gradijent .gradijent-box.gradient-39 { background-image: radial-gradient(circle, #ff0033, #ff6666); } /* neon crvena */
+#gradijent .gradijent-box.gradient-40 { background-image: linear-gradient(45deg, #ffb6b6, #ffd1dc); } /* neon breskva */
+#gradijent .gradijent-box.gradient-41 { background-image: radial-gradient(circle, #e6e6fa, #d8bfff); } /* neon lavanda */
+#gradijent .gradijent-box.gradient-42 { background-image: linear-gradient(to right, #ffd700, #fff700); } /* neon zlatna */
+#gradijent .gradijent-box.gradient-43 { background-image: radial-gradient(circle, #00f5ff, #00ffff); } /* neon tirkiz */
+#gradijent .gradijent-box.gradient-44 { background-image: linear-gradient(45deg, #00bfff, #1e90ff); } /* neon plava */
+#gradijent .gradijent-box.gradient-45 { background-image: radial-gradient(circle, #ffff33, #ffff00); } /* neon žuta */
+#gradijent .gradijent-box.gradient-46 { background-image: linear-gradient(to left, #39ff14, #00ff00); } /* neon zelena */
+#gradijent .gradijent-box.gradient-47 { background-image: radial-gradient(circle, #8b4513, #d2691e); } /* neon kafena */
+#gradijent .gradijent-box.gradient-48 { background-image: linear-gradient(45deg, #ff8c00, #ff6600); } /* neon narandžasta */
+#gradijent .gradijent-box.gradient-49 { background-image: radial-gradient(circle, #a9a9a9, #d3d3d3); } /* neon siva (miš) */
+#gradijent .gradijent-box.gradient-50 { background-image: linear-gradient(to right, #c0c0c0, #ffffff); } /* neon srebrna + bela */
 
 
 /* Tekst sa gradijentom */
