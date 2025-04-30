@@ -51,6 +51,7 @@ const assignedNumbers = new Set(); // Set za generisane brojeve
 const userColors = {}; // Ovdje čuvamo boje korisnika
 const sviAvatari = {};
 const userGradients = {};
+const activeGuests = {};
 
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
@@ -198,10 +199,15 @@ socket.on('gradientChange', (data) => {
       socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
     }
   });
+socket.on('tabOpened', function(data) {
+    activeGuests[data.nickname] = true;
+});
 
-setInterval(() => { socket.emit('stillHere'); }, 180000);
+socket.on('tabClosed', function(data) {
+    delete activeGuests[data.nickname];
+});
 
-    // Obrada diskonekcije korisnika
+   // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
