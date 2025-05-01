@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use(sessionMiddleware);
 
 io.use((socket, next) => {
-    sessionMiddleware(socket.request, socket.request.res, next); // Povezivanje session-a sa socket-om
+    sessionMiddleware(socket.request, {}, next); // Ispravljeno: prazan objekat umesto socket.request.res
 });
 
 
