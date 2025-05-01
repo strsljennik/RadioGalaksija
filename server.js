@@ -10,9 +10,6 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-
 
 const app = express();
 const server = http.createServer(app);
@@ -24,14 +21,23 @@ const io = socketIo(server, {
         credentials: true
     }
 });
-
-app.use(cookieParser());
-app.use(session({
+//KOLACICI
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const sessionMiddleware = session({
     secret: 'tajniKljuč',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false, httpOnly: true }
-}));
+});
+
+app.use(cookieParser());
+app.use(sessionMiddleware);
+
+io.use((socket, next) => {
+    sessionMiddleware(socket.request, socket.request.res, next); // Povezivanje session-a sa socket-om
+});
+
 
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
