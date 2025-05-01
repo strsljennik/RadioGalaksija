@@ -82,3 +82,25 @@ function enableGuestFeatures() {
     console.log("Gost funkcionalnosti omogućene!");
     // Kod za omogućavanje gost funkcionalnosti
 }
+//   ZA BROJEVE   GOST-5555
+socket.on('userLoggedIn', (data) => {
+    currentUser = data.username;
+    myNickname = data.username;
+    window.currentUser = { username: data.username };
+
+    // Provera da li je korisnik "Gost-XXXX" i tretiraj ga kao registrovanog
+    if (currentUser.startsWith('Gost-')) {
+        markAsRegisteredGuest();
+    } else {
+        if (data.role === 'admin') {
+            enableAdminFeatures();
+        } else {
+            enableGuestFeatures();
+        }
+    }
+});
+
+// Funkcija za obeležavanje gosta kao registrovanog korisnika
+function markAsRegisteredGuest() {
+    document.getElementById("userStatus").innerText = "Registrovani gost";
+}
