@@ -10,9 +10,6 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const session = require('express-session');
-const sharedsession = require('express-socket.io-session');
-const cookieParser = require('cookie-parser');
 
 const app = express();
 const server = http.createServer(app);
@@ -24,19 +21,6 @@ const io = socketIo(server, {
         credentials: true
     }
 });
-//KOLACICI
-const sessionMiddleware = session({
-    secret: 'tajniKljuč',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false, httpOnly: true }
-});
-
-app.use(cookieParser());
-app.use(sessionMiddleware);
-
-io.use(sharedsession(sessionMiddleware, { autoSave: true }));
-
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
 slikemodul.setSocket(io);
@@ -46,7 +30,6 @@ app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 app.set('trust proxy', true);
 app.use(cors());
-io.use(sharedsession(sessionMiddleware, { autoSave: true }));
 
 // Rute za registraciju i prijavu
 app.post('/register', (req, res) => register(req, res, io));
@@ -94,15 +77,6 @@ const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.addres
         assignedNumbers.add(number);
         return number;
     }
-//KOLACICI ZA SVE GOSTE
-    const sessionId = generateSessionId();
-socket.handshake.session.sessionId = sessionId; 
-    socket.handshake.session.save();
-
-function generateSessionId() {
-    return Math.random().toString(36).substr(2); // Generišemo random session ID
-}
-
 // Emitovanje događaja da bi ostali korisnici videli novog gosta
     socket.broadcast.emit('newGuest', nickname);
 io.emit('updateGuestList', Object.values(guests));
