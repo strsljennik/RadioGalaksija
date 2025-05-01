@@ -10,6 +10,9 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -21,6 +24,14 @@ const io = socketIo(server, {
         credentials: true
     }
 });
+
+app.use(cookieParser());
+app.use(session({
+    secret: 'tajniKljuč',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly: true }
+}));
 
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
@@ -51,7 +62,6 @@ const assignedNumbers = new Set(); // Set za generisane brojeve
 const userColors = {}; // Ovdje čuvamo boje korisnika
 const sviAvatari = {};
 const userGradients = {};
-const activeGuests = {};
 
 // Dodavanje socket događaja iz banmodula
 setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u banmodul
@@ -79,6 +89,13 @@ const ipAddress = ipList ? ipList.split(',')[0].trim() : socket.handshake.addres
         assignedNumbers.add(number);
         return number;
     }
+//KOLACICI ZA SVE GOSTE
+    const sessionId = generateSessionId();
+socket.handshake.session.sessionId = sessionId; // Čuvanje session ID-a u session
+
+function generateSessionId() {
+    return Math.random().toString(36).substr(2); // Generišemo random session ID
+}
 
 // Emitovanje događaja da bi ostali korisnici videli novog gosta
     socket.broadcast.emit('newGuest', nickname);
@@ -199,15 +216,8 @@ socket.on('gradientChange', (data) => {
       socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
     }
   });
-socket.on('tabOpened', function(data) {
-    activeGuests[data.nickname] = true;
-});
 
-socket.on('tabClosed', function(data) {
-    delete activeGuests[data.nickname];
-});
-
-   // Obrada diskonekcije korisnika
+  // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
