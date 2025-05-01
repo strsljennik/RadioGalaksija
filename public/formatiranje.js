@@ -1,19 +1,8 @@
-let myNickname = '';
+let myNickname = ''; // biće postavljen od servera
 
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
-    sessionStorage.setItem('activeTabId', myNickname);
-    socket.emit('tabOpened', { nickname: myNickname });
 });
-
-window.addEventListener('beforeunload', function() {
-    const storedNick = sessionStorage.getItem('activeTabId');
-    if (storedNick) {
-        socket.emit('tabClosed', { nickname: storedNick });
-        sessionStorage.removeItem('activeTabId');
-    }
-});
-
 
 let isBold = false;
 let isItalic = false;
