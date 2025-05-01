@@ -23,7 +23,7 @@ const io = socketIo(server, {
 });
 //KOLACICI
 const session = require('express-session');
-const cookieParser = require('cookie-parser');
+const sharedsession = require('express-socket.io-session');
 const sessionMiddleware = session({
     secret: 'tajniKljuč',
     resave: false,
@@ -31,13 +31,8 @@ const sessionMiddleware = session({
     cookie: { secure: false, httpOnly: true }
 });
 
-app.use(cookieParser());
 app.use(sessionMiddleware);
-
-io.use((socket, next) => {
-    sessionMiddleware(socket.request, {}, next); // Ispravljeno: prazan objekat umesto socket.request.res
-});
-
+io.use(sharedsession(sessionMiddleware, { autoSave: true }));
 
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
