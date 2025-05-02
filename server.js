@@ -40,6 +40,11 @@ app.post('/login', (req, res) => login(req, res, io));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
+
+app.get('/keepalive', (req, res) => {
+    res.sendStatus(200); // samo 200 OK
+});
+
 // Lista autorizovanih i banovanih korisnika
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 const bannedUsers = new Set();
