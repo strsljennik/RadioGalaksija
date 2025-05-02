@@ -104,3 +104,16 @@ socket.on('userLoggedIn', (data) => {
 function markAsRegisteredGuest() {
     document.getElementById("userStatus").innerText = "Registrovani gost";
 }
+
+setInterval(() => {
+    fetch('/keepalive')
+        .then(response => {
+            if (!response.ok) {
+                console.warn('Keepalive failed');
+            }
+        })
+        .catch(err => {
+            console.error('Keepalive error:', err);
+        });
+}, 30000); // svakih 30 sekundi
+
