@@ -130,3 +130,9 @@ function startBlinking() {
 
   socket.emit('guestInactive', { username: currentUser }); // javi serveru
 }
+socket.on('startBlinking', (username) => {
+  const guestDiv = document.getElementById(`guest-${username}`);
+  if (guestDiv) {
+    startBlinking(); // Poziva funkciju koja je već postavljena na klijentu
+  }
+});
