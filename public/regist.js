@@ -104,3 +104,29 @@ socket.on('userLoggedIn', (data) => {
 function markAsRegisteredGuest() {
     document.getElementById("userStatus").innerText = "Registrovani gost";
 }
+
+function startBlinking() {
+  const guestDiv = document.getElementById(`guest-${currentUser}`);
+  if (!guestDiv) return;
+
+  let visible = false;
+  const img = document.createElement('img');
+  img.src = 'nik/sl4.webp';
+  img.className = 'inline-avatar blinking-temp';
+
+  blinkInterval = setInterval(() => {
+    if (visible) {
+      guestDiv.querySelector('.blinking-temp')?.remove();
+    } else {
+      guestDiv.appendChild(img.cloneNode());
+    }
+    visible = !visible;
+  }, 500); // 0.5s blink
+
+  setTimeout(() => {
+    clearInterval(blinkInterval);
+    guestDiv.querySelector('.blinking-temp')?.remove();
+  }, 60 * 1000); // 1 minut blinking
+
+  socket.emit('guestInactive', { username: currentUser }); // javi serveru
+}
