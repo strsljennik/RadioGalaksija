@@ -83,56 +83,52 @@ function enableGuestFeatures() {
     // Kod za omogućavanje gost funkcionalnosti
 }
 //   ZA BROJEVE   GOST-5555
-socket.on('userLoggedIn', (data) => {
-    currentUser = data.username;
-    myNickname = data.username;
-    window.currentUser = { username: data.username };
+let inactivityTimer;
+let activeTime = 0;
+let showImageTimer;
+let guestDiv;
 
-    // Provera da li je korisnik "Gost-XXXX" i tretiraj ga kao registrovanog
-    if (currentUser.startsWith('Gost-')) {
-        markAsRegisteredGuest();
-    } else {
-        if (data.role === 'admin') {
-            enableAdminFeatures();
-        } else {
-            enableGuestFeatures();
-        }
-    }
-});
-
-// Funkcija za obeležavanje gosta kao registrovanog korisnika
-function markAsRegisteredGuest() {
-    document.getElementById("userStatus").innerText = "Registrovani gost";
-}
-
-function startBlinking() {
-  const guestDiv = document.getElementById(`guest-${currentUser}`);
-  if (!guestDiv) return;
-
-  let visible = false;
-  const img = document.createElement('img');
-  img.src = 'nik/sl4.webp';
-  img.className = 'inline-avatar blinking-temp';
-
-  blinkInterval = setInterval(() => {
-    if (visible) {
-      guestDiv.querySelector('.blinking-temp')?.remove();
-    } else {
-      guestDiv.appendChild(img.cloneNode());
-    }
-    visible = !visible;
-  }, 500); // 0.5s blink
-
-  setTimeout(() => {
-    clearInterval(blinkInterval);
-    guestDiv.querySelector('.blinking-temp')?.remove();
-  }, 60 * 1000); // 1 minut blinking
-
-  socket.emit('guestInactive', { username: currentUser }); // javi serveru
-}
-socket.on('startBlinking', (username) => {
-  const guestDiv = document.getElementById(`guest-${username}`);
-  if (guestDiv) {
-    startBlinking(); // Poziva funkciju koja je već postavljena na klijentu
+// Osluškujemo promenu taba (vidljivost stranice)
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    // Kada tab postane neaktivan, resetujemo aktivno vreme
+    activeTime = 0;
+    inactivityTimer = setInterval(() => {
+      activeTime++;
+      if (activeTime >= 15) {
+        // Ako je korisnik neaktivan 15 minuta, prikazujemo sliku
+        showInactiveImage();
+      }
+    }, 1000); // svakih 1 sekund merimo
+  } else {
+    // Kada korisnik se vrati na tab, zaustavljamo brojanje neaktivnosti
+    clearInterval(inactivityTimer);
+    removeInactiveImage(); // uklanjamo sliku odmah
   }
 });
+
+function showInactiveImage() {
+  guestDiv = document.getElementById(`guest-${currentUser}`);
+  if (!guestDiv) return;
+
+  const img = document.createElement('img');
+  img.src = 'nik/sl4.webp';
+  img.className = 'inline-avatar inactive-image';
+
+  guestDiv.appendChild(img); // Dodajemo sliku
+
+  // Postavljamo tajmer da uklonimo sliku posle 1 minuta
+  showImageTimer = setTimeout(() => {
+    removeInactiveImage();
+  }, 60 * 1000); // ukloni sliku posle 1 minuta
+}
+
+function removeInactiveImage() {
+  if (guestDiv) {
+    const img = guestDiv.querySelector('.inactive-image');
+    if (img) {
+      guestDiv.removeChild(img); // Uklonimo sliku
+    }
+  }
+}
+
