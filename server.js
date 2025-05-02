@@ -57,7 +57,7 @@ setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u 
 privatmodul(io, guests);
 let currentBackground = "";
 let textElements = [];
-setupDefaultUsers(io, guests);
+setupDefaultUsers(io, guests, app);
 
 // Socket.io događaji
 io.on('connection', (socket) => {
