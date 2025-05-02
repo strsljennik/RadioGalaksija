@@ -1,6 +1,4 @@
 let myNickname = ''; // biće postavljen od servera
-let inactivityTimer = null;
-let notified = false; // da se ne šalje više puta
 
 socket.on('yourNickname', function(nick) {
     myNickname = nick;
