@@ -17,7 +17,18 @@ function setupDefaultUsers(io, guests, app) {
     app.post('/ping', express.json(), async (req, res) => {
         const { username } = req.body;
         console.log(`Primljen ping od ${username}`);
-        res.sendStatus(200);
+        
+        // Ažuriraj vreme poslednje aktivnosti
+        try {
+            await DefaultUser.updateOne(
+                { username: username },
+                { $set: { updatedAt: new Date() } }
+            );
+            res.sendStatus(200);
+        } catch (err) {
+            console.error(`Greška kod ping za ${username}:`, err);
+            res.sendStatus(500);
+        }
     });
 
     io.on('connection', async (socket) => {
@@ -29,10 +40,6 @@ function setupDefaultUsers(io, guests, app) {
         // Emituj nickname
         socket.emit('setNickname', nickname);
         socket.emit('yourNickname', nickname);
-        
-       });
-}
-
 
         // Upisi u kolekciju 'default'
         const user = new DefaultUser({ username: nickname, socketId: socket.id });
@@ -56,25 +63,7 @@ function setupDefaultUsers(io, guests, app) {
         }
     });
 
-    // ✅ HTTP PING endpoint
-    app.post('/ping', express.json(), async (req, res) => {
-        const username = req.body.username;
-        if (!username) return res.status(400).send('Username nedostaje');
-
-        try {
-            await DefaultUser.updateOne(
-                { username: username },
-                { $set: { updatedAt: new Date() } }
-            );
-            console.log(`Primljen ping od ${username}`);
-            res.sendStatus(200);
-        } catch (err) {
-            console.error(`Greška kod ping za ${username}:`, err);
-            res.sendStatus(500);
-        }
-    });
-
-    // ✅ ČIŠĆENJE neaktivnih korisnika svakih 5 minuta
+    // Čišćenje neaktivnih korisnika svakih 5 minuta
     setInterval(async () => {
         const cutoff = new Date(Date.now() - 2 * 60 * 1000); // 2 minuta
         const result = await DefaultUser.deleteMany({ updatedAt: { $lt: cutoff } });
