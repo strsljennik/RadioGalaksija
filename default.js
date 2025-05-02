@@ -1,36 +1,16 @@
 const mongoose = require('mongoose');
-const express = require('express');
 
 // Schema za default korisnike
 const defaultUserSchema = new mongoose.Schema({
     username: String,
     socketId: String,
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now }
 });
 
 // Model
 const DefaultUser = mongoose.model('DefaultUser', defaultUserSchema, 'default');
 
-function setupDefaultUsers(io, guests, app) {
-    // Dodaj ping rutu
-    app.post('/ping', express.json(), async (req, res) => {
-        const { username } = req.body;
-        console.log(`Primljen ping od ${username}`);
-        
-        // Ažuriraj vreme poslednje aktivnosti
-        try {
-            await DefaultUser.updateOne(
-                { username: username },
-                { $set: { updatedAt: new Date() } }
-            );
-            res.sendStatus(200);
-        } catch (err) {
-            console.error(`Greška kod ping za ${username}:`, err);
-            res.sendStatus(500);
-        }
-    });
-
+function setupDefaultUsers(io, guests) {
     io.on('connection', async (socket) => {
         // Generiši username
         const uniqueNumber = generateUniqueNumber();
@@ -62,24 +42,6 @@ function setupDefaultUsers(io, guests, app) {
             return Math.floor(Math.random() * 8889) + 1111;
         }
     });
-
-    // Čišćenje neaktivnih korisnika svakih 5 minuta
-    setInterval(async () => {
-        const cutoff = new Date(Date.now() - 2 * 60 * 1000); // 2 minuta
-        const result = await DefaultUser.deleteMany({ updatedAt: { $lt: cutoff } });
-        if (result.deletedCount > 0) {
-            console.log(`Obrisano ${result.deletedCount} neaktivnih gostiju.`);
-            // Takođe izbaci iz guests objekta
-            for (let socketId in guests) {
-                const username = guests[socketId];
-                const stillExists = await DefaultUser.findOne({ username: username });
-                if (!stillExists) {
-                    delete guests[socketId];
-                    io.emit('updateGuestList', Object.values(guests));
-                }
-            }
-        }
-    }, 5 * 60 * 1000); // svakih 5 minuta
 }
 
 module.exports = { setupDefaultUsers };
