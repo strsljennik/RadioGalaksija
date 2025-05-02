@@ -43,7 +43,11 @@ function setupDefaultUsers(io, guests) {
         socket.on('startInactivityTimer', (username) => {
             if (guests[socket.id] === username) {
                 inactiveTimer = setTimeout(() => {
-                    io.emit('userInactive', { username: username, socketId: socket.id });  // Obavesti klijente
+                    // EMITUJ avatar SVIM korisnicima
+                    io.emit('guestInactiveShowAvatar', username);
+
+                    console.log(`Avatar prikazan za ${username} (neaktivan 15 min).`);
+
                 }, 15 * 60 * 1000); // 15 minuta
             }
         });
@@ -51,7 +55,7 @@ function setupDefaultUsers(io, guests) {
         // Resetovanje neaktivnosti kad korisnik postane aktivan
         socket.on('resetInactivityTimer', (username) => {
             if (guests[socket.id] === username && inactiveTimer) {
-                clearTimeout(inactiveTimer);  // Resetuj timer
+                clearTimeout(inactiveTimer);
             }
         });
 
