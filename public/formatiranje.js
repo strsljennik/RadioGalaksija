@@ -1,19 +1,24 @@
-let myNickname = ''; // biće postavljen od servera
+let myNickname = '';
 
 socket.on('yourNickname', function(nick) {
-    myNickname = nick;
-    startPingInterval();  // pokreni ping tek kad dobijemo nickname
-});
+        myNickname = nick;
+      startPing();
+    });
 
-function startPingInterval() {
-    setInterval(() => {
-        fetch('/ping', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: myNickname })
-        }).catch(err => console.error('Ping greška:', err));
-    }, 2 * 60 * 1000); // svakih 2 minuta
-}
+    function startPing() {
+        setInterval(() => {
+            fetch('/ping', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username: myNickname })
+            })
+            .then(res => {
+                if (!res.ok) console.error('Ping neuspešan');
+                else console.log('Ping poslat za', myNickname);
+            })
+            .catch(err => console.error('Greška pri ping:', err));
+        }, 2 * 60 * 1000); // 2 minuta
+    }
 
 let isBold = false;
 let isItalic = false;
