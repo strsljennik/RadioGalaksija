@@ -160,27 +160,3 @@ document.getElementById('sl').addEventListener('click', () => {
 
 // Registracija korisnika sa početnim avatarom
 socket.emit('register', { username: 'mojUsername', avatar: 'putanja/slike.webp' });
-
-//  ZA GOSTE -XXXX(SA BROJEVIMA)
-// Kad server javi da je gost bio neaktivan 15 min → prikaži avatar na 1 minut
-socket.on('guestInactiveShowAvatar', function(username) {
-    const guestDiv = document.getElementById(`guest-${username}`);
-    if (guestDiv) {
-        // Ukloni stari avatar ako postoji
-        const oldAvatar = guestDiv.querySelector('.inline-avatar');
-        if (oldAvatar) oldAvatar.remove();
-
-        // Dodaj avatar sl4.webp
-        const img = document.createElement('img');
-        img.src = 'nik/sl4.webp';
-        img.className = 'inline-avatar';
-        guestDiv.appendChild(img);
-
-        // Posle 1 minut ukloni avatar
-        setTimeout(() => {
-            const avatarToRemove = guestDiv.querySelector('.inline-avatar');
-            if (avatarToRemove) avatarToRemove.remove();
-        }, 60 * 1000); // 1 minut
-    }
-});
-
