@@ -13,6 +13,13 @@ const defaultUserSchema = new mongoose.Schema({
 const DefaultUser = mongoose.model('DefaultUser', defaultUserSchema, 'default');
 
 function setupDefaultUsers(io, guests, app) {
+    // Dodaj ping rutu
+    app.post('/ping', express.json(), async (req, res) => {
+        const { username } = req.body;
+        console.log(`Primljen ping od ${username}`);
+        res.sendStatus(200);
+    });
+
     io.on('connection', async (socket) => {
         // Generiši username
         const uniqueNumber = generateUniqueNumber();
@@ -22,6 +29,10 @@ function setupDefaultUsers(io, guests, app) {
         // Emituj nickname
         socket.emit('setNickname', nickname);
         socket.emit('yourNickname', nickname);
+        
+       });
+}
+
 
         // Upisi u kolekciju 'default'
         const user = new DefaultUser({ username: nickname, socketId: socket.id });
