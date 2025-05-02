@@ -1,15 +1,3 @@
-const mongoose = require('mongoose');
-
-// Schema za default korisnike
-const defaultUserSchema = new mongoose.Schema({
-    username: String,
-    socketId: String,
-    createdAt: { type: Date, default: Date.now }
-});
-
-// Model
-const DefaultUser = mongoose.model('DefaultUser', defaultUserSchema, 'default');
-
 function setupDefaultUsers(io, guests) {
     io.on('connection', async (socket) => {
         // Generiši username
@@ -30,6 +18,12 @@ function setupDefaultUsers(io, guests) {
         socket.broadcast.emit('newGuest', nickname);
         io.emit('updateGuestList', Object.values(guests));
 
+        // Kada gost postane neaktivan (blinkanje slike)
+        socket.on('guestInactive', (data) => {
+            // Pošaljemo signal svim povezanim korisnicima
+            io.emit('startBlinking', data.username); // Svi korisnici dobijaju ovaj signal
+        });
+
         // Diskonekt
         socket.on('disconnect', async () => {
             await DefaultUser.deleteOne({ socketId: socket.id });
@@ -43,5 +37,3 @@ function setupDefaultUsers(io, guests) {
         }
     });
 }
-
-module.exports = { setupDefaultUsers };
