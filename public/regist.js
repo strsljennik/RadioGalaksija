@@ -70,6 +70,15 @@ socket.on('userLoggedIn', (data) => {
         enableGuestFeatures();
     }
 });
+socket.on('setNickname', (nickname) => {
+    console.log('Dobijen nadimak:', nickname);
+    currentUser = nickname;
+    myNickname = nickname;
+    window.currentUser = { username: nickname };
+
+    enableGuestFeatures(); // <<< DODAJ OVO OVDE
+});
+
 
 // Funkcija za omogućavanje admin funkcionalnosti
 function enableAdminFeatures() {
@@ -82,7 +91,3 @@ function enableGuestFeatures() {
     console.log("Gost funkcionalnosti omogućene!");
     // Kod za omogućavanje gost funkcionalnosti
 }
-// ZA UBIJANJE TABOVA
-socket.on('pingGuest', (data) => {
-    console.log('Primljen ping od servera', data);
-});
