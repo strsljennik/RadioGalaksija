@@ -1,22 +1,37 @@
-// Kada server pošalje ping, šaljemo pong nazad
-socket.on('ping', () => {
-    socket.emit('pong');
-});
+socket.on('setNickname', (nickname) => {
+    console.log('Dobijen nadimak:', nickname);
+    currentUser = nickname;
+    myNickname = nickname;
+    window.currentUser = { username: nickname };
 
-// Čuvanje vremena poslednje aktivnosti korisnika
-let lastActiveTime = Date.now();
-
-// Detektuj aktivnost korisnika (klik, skrolovanje, tastatura)
-window.addEventListener('mousemove', () => {
-    lastActiveTime = Date.now();  // Ažuriraj poslednju aktivnost korisnika
+    // POŠALJI NA SERVER DA “SIMULIRA” LOGIN
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-socket-id': socket.id
+        },
+        body: JSON.stringify({ username: nickname, password: 'dummy' }) // password može biti bilo šta
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Default gost “ulogovan” na server.');
+            socket.emit('userLoggedIn', nickname);  // isto kao i kod pravih korisnika
+            enableGuestFeatures();
+        } else {
+            console.warn('Server nije prihvatio default gosta.');
+        }
+    })
+    .catch(err => {
+        console.error('Greška pri loginu default gosta:', err);
+    });
 });
-window.addEventListener('keydown', () => {
-    lastActiveTime = Date.now();
-});
-
-// Ako korisnik nije aktivan duže vreme, server ga neće isključiti
-setInterval(() => {
-    if (Date.now() - lastActiveTime > 60000) {  // Ako nije bilo aktivnosti poslednjih 60 sekundi
-        console.log("Korisnik je neaktivan.");
+//   ZA SERVER   AKO ZATREBA  --DODATAK 
+if (username.startsWith('Gost-')) {
+    const role = 'guest';
+    const socket = io.sockets.sockets.get(socketId);
+    if (socket) {
+        socket.emit('userLoggedIn', { username, role });
     }
-}, 10000);  // Provjeravaj svakih 10 sekundi
+    return res.send('Logged in as guest');
+}
