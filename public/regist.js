@@ -1,4 +1,5 @@
 let currentUser = null;
+socket.on('heartbeat', (message) => {});
 
 // Registracija korisnika
 document.getElementById('registerForm').addEventListener('submit', function(event) {
