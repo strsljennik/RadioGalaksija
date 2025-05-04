@@ -1,15 +1,4 @@
 let currentUser = null;
-socket.on('heartbeat', (message) => {});
-
-setInterval(() => {
-    navigator.sendBeacon('/keep-alive');
-}, 15000);  // Ovaj interval je 15 sekundi
-
-document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState === 'hidden') {
-        navigator.sendBeacon('/keep-alive');  // Tab je u pozadini, šaljemo beacon
-    }
-});
 
 // Registracija korisnika
 document.getElementById('registerForm').addEventListener('submit', function(event) {
