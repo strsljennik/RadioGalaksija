@@ -79,7 +79,6 @@ socket.on('setNickname', (nickname) => {
     enableGuestFeatures(); // <<< DODAJ OVO OVDE
 });
 
-
 // Funkcija za omogućavanje admin funkcionalnosti
 function enableAdminFeatures() {
     console.log("Admin funkcionalnosti omogućene!");
