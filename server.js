@@ -39,8 +39,6 @@ app.post('/login', (req, res) => login(req, res, io));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
-app.get('/keep-alive', (req, res) => res.send('OK'));
-
 // Lista autorizovanih i banovanih korisnika
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 const bannedUsers = new Set();
@@ -85,10 +83,7 @@ io.emit('updateGuestList', Object.values(guests));
  console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
  io.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 
-  socket.on('heartbeat', (message) => {
-        console.log('Heartbeat primljen:', message);
-    });
- // Obrada prijave korisnika
+  // Obrada prijave korisnika
 socket.on('userLoggedIn', (username) => {
     const oldNickname = guests[socket.id]; // Sačuvamo trenutni nadimak
 
