@@ -43,23 +43,21 @@ document.addEventListener("DOMContentLoaded", function() {
           button.blur();
         if (isPlaying) {
             audio.pause();
-              button.textContent = "Play";
+          button.innerHTML = '<img src="emoji gif/slusalice.jpg">';
           isPlaying = false;
         } else {
             playStream();
         }
     });
 
- function playStream() {
-    const source = document.getElementById('audioSource');
-    audio.pause(); // zaustavi tihi audio
-    source.src = "https://stream.zeno.fm/krdfduyswxhtv"; // promeni na pravi stream
-    audio.load();
-    audio.play().then(() => {
-        button.textContent = "Pauza";
-        isPlaying = true;
-    }).catch(error => console.error("Greška pri puštanju zvuka:", error));
-}
+    function playStream() {
+        audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
+        audio.load();  
+        audio.play().then(() => {
+          button.innerHTML = '<img src="emoji gif/slusalice.jpg">';
+          isPlaying = true;
+        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
+    }
 
     // Automatsko ponovno pokretanje pri gubitku konekcije
     audio.addEventListener('error', function() {
