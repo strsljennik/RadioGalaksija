@@ -1,6 +1,12 @@
 let currentUser = null;
 socket.on('heartbeat', (message) => {});
 
+setInterval(() => {
+    fetch('/keep-alive')  // Ovo je dummy endpoint koji samo šalje odgovor serveru
+        .then(response => response.text())
+        .catch(error => console.error("Greška pri održavanju veze:", error));
+}, 15000);  // Ovaj interval je 15 sekundi
+
 // Registracija korisnika
 document.getElementById('registerForm').addEventListener('submit', function(event) {
     event.preventDefault();
