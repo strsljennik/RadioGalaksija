@@ -197,16 +197,8 @@ socket.on('gradientChange', (data) => {
       socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
     }
   });
-    setInterval(() => {
-    for (const [socketId, nickname] of Object.entries(guests)) {
-        const socket = io.sockets.sockets.get(socketId);
-        if (socket) {
-            socket.emit('pingGuest', { message: 'ping' });
-        }
-    }
-}, 30000);
-
-  // Obrada diskonekcije korisnika
+  
+ // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
