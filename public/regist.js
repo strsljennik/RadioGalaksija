@@ -2,10 +2,14 @@ let currentUser = null;
 socket.on('heartbeat', (message) => {});
 
 setInterval(() => {
-    fetch('/keep-alive')  // Ovo je dummy endpoint koji samo šalje odgovor serveru
-        .then(response => response.text())
-        .catch(error => console.error("Greška pri održavanju veze:", error));
+    navigator.sendBeacon('/keep-alive');
 }, 15000);  // Ovaj interval je 15 sekundi
+
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'hidden') {
+        navigator.sendBeacon('/keep-alive');  // Tab je u pozadini, šaljemo beacon
+    }
+});
 
 // Registracija korisnika
 document.getElementById('registerForm').addEventListener('submit', function(event) {
