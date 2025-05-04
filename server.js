@@ -85,10 +85,9 @@ io.emit('updateGuestList', Object.values(guests));
  console.log(`${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
  io.emit('new-log', `${guests[socket.id]} se povezao. IP adresa korisnika: ${ipAddress}`);
 
-    setInterval(() => {
-    socket.emit('heartbeat', 'ping'); // Saljemo ping svakih 30 sekundi
-}, 30000); // 30 sekundi
-
+  socket.on('heartbeat', (message) => {
+        console.log('Heartbeat primljen:', message);
+    });
  // Obrada prijave korisnika
 socket.on('userLoggedIn', (username) => {
     const oldNickname = guests[socket.id]; // Sačuvamo trenutni nadimak
