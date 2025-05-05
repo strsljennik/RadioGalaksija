@@ -107,7 +107,6 @@ window.onload = () => {
 };
 
 // SOCKET.IO
-const socket = io();
 socket.on('newMessage', ({ guestNickname, message }) => {
     const guest = virtualGuests.find(g => g.nickname === guestNickname) || permanentGuests.find(g => g.nickname === guestNickname);
     if (guest) {
