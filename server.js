@@ -10,7 +10,6 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const { setupDefaultUsers } = require('./default');
 
 const app = express();
 const server = http.createServer(app);
@@ -57,7 +56,6 @@ setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u 
 privatmodul(io, guests);
 let currentBackground = "";
 let textElements = [];
-setupDefaultUsers(io, guests);
 
 // Socket.io događaji
 io.on('connection', (socket) => {
