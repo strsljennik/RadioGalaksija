@@ -64,52 +64,81 @@ const virtualGuests = [
   { nickname: 'Higijenicar', messages: ['Kuku Lele Mene, ko ce sada sve ovo da pocisti ?????'], gradient: 'olive' },
 ];
 
-function sendMessageToChat(guest, message) {
+   function sendMessageToChat(guest, message) {
     const messageArea = document.getElementById('messageArea');
     const gradientBoxes = document.querySelectorAll('#gradijent .gradient-box');
 
+    // Funkcija koja vraća nasumičan gradijent
     function getRandomGradient() {
         const randomBox = gradientBoxes[Math.floor(Math.random() * gradientBoxes.length)];
         return window.getComputedStyle(randomBox).backgroundImage;
     }
 
+    // Kreiranje poruke sa nasumičnim gradijentom
     const randomGradient = getRandomGradient();
     
     const messageElement = document.createElement('div');
     messageElement.innerHTML = `<span style="background: ${randomGradient}; -webkit-background-clip: text; color: transparent; font-weight: bold; font-style: italic;">${guest.nickname}: ${message}</span>`;
 
+    // Dodavanje poruke na vrh
     messageArea.insertBefore(messageElement, messageArea.firstChild);
 
+    // Dodavanje razmaka između poruka
     const spacingElement = document.createElement('div');
-    spacingElement.style.height = '20px';
+    spacingElement.style.height = '10px';
     messageArea.insertBefore(spacingElement, messageArea.firstChild.nextSibling);
 
+    // Skrolovanje na vrh
     messageArea.scrollTop = 0;
 }
 
-function populateGuestList() {
-    const guestList = document.getElementById('guestList');
-    const allGuests = [...permanentGuests, ...virtualGuests];
-    const uniqueNicknames = [...new Set(allGuests.map(g => g.nickname))];
 
-    uniqueNicknames.forEach(nickname => {
-        const guestElement = document.createElement('div');
-        guestElement.classList.add('guest');
-        guestElement.textContent = nickname;
-        guestElement.style.color = 'white';
-        guestList.appendChild(guestElement);
+        function populatePermanentGuestList() {
+            const guestList = document.getElementById('guestList');
+            permanentGuests.forEach(guest => {
+                const guestElement = document.createElement('div');
+                guestElement.classList.add('guest');
+                guestElement.textContent = guest.nickname;
+                guestElement.style.color = guest.color;
+                guestElement.setAttribute('data-permanent', 'true'); // Oznaka za stalne goste
+                guestList.appendChild(guestElement);
+            });
+        }
+
+        function addGuestToList(guest) {
+            const guestList = document.getElementById('guestList');
+
+            // Proveri da li gost već postoji u listi
+            const guestExists = Array.from(guestList.children).some(el => el.textContent === guest.nickname);
+            if (!guestExists) {
+                const guestElement = document.createElement('div');
+                guestElement.classList.add('guest');
+                guestElement.textContent = guest.nickname;
+                guestElement.style.color = guest.color;
+                guestList.appendChild(guestElement);
+            }
+        }
+
+       function startVirtualGuests() {
+    let time = 0; // Početno vreme
+
+    virtualGuests.forEach((guest, guestIndex) => {
+        guest.messages.forEach((message, messageIndex) => {
+            setTimeout(() => {
+                sendMessageToChat(guest, message);
+                addGuestToList(guest); // Dodavanje gosta u listu
+            }, time * 1000);
+
+            time += 30; // Povećavanje vremena za 30 sekundi za svaku poruku
+        });
     });
+
+    setTimeout(startVirtualGuests, time * 1000); // Ponovni ciklus
 }
 
-// Pokretanje
-window.onload = () => {
-    populateGuestList();
-};
 
-// SOCKET.IO
-socket.on('newMessage', ({ guestNickname, message }) => {
-    const guest = virtualGuests.find(g => g.nickname === guestNickname) || permanentGuests.find(g => g.nickname === guestNickname);
-    if (guest) {
-        sendMessageToChat(guest, message);
-    }
-});
+        // Pokretanje popunjavanja liste i virtuelnih gostiju
+        window.onload = () => {
+            populatePermanentGuestList(); // Popuni listu sa stalnim gostima
+            startVirtualGuests(); // Pokreni slanje poruka
+        };
