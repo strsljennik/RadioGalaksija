@@ -80,7 +80,7 @@ socket.on('updateGuestList', guests => {
 
 // Primi sve postojeće avatare kada se korisnici prvi put povežu
 socket.on('initialAvatars', avatarsFromServer => {
-  avatars = avatarsFromServer || loadAvatarsFromStorage(); // Učitaj iz skladišta ako nema u memoriji
+avatars = avatarsFromServer || {};
 
   // Sačuvaj učitane avatare
   saveAvatarsToStorage();
@@ -96,17 +96,23 @@ socket.on('initialAvatars', avatarsFromServer => {
   }
 });
 
-// Primi promenu avatara
 socket.on('avatarChange', data => {
-  avatars[data.username] = data.avatar; // Ažuriraj avatar u memoriji
-  saveAvatarsToStorage(); // Spremi novu promenu u storage
+  if (data.avatar) {
+    avatars[data.username] = data.avatar;
+  } else {
+    delete avatars[data.username];
+  }
+  saveAvatarsToStorage();
 
   const guestDiv = document.getElementById(`guest-${data.username}`);
   if (guestDiv) {
     guestDiv.querySelector('.inline-avatar')?.remove();
-    guestDiv.appendChild(createAvatarImg(data.avatar));
+    if (data.avatar) {
+      guestDiv.appendChild(createAvatarImg(data.avatar));
+    }
   }
 });
+
 
 // Prikazivanje avatara za trenutnog korisnika kada klikne na avatar div
 document.getElementById('sl').addEventListener('click', () => {
