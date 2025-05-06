@@ -189,15 +189,19 @@ socket.on('gradientChange', (data) => {
     socket.emit('initialAvatars', sviAvatari);
   });
 
-  // Kad korisnik promeni avatar
-  socket.on('avatarChange', (data) => {
-    if (data.username && data.avatar) {
-      sviAvatari[data.username] = data.avatar; // Update stanje
-      socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima
+ // Kad korisnik promeni ili obriše avatar
+socket.on('avatarChange', (data) => {
+  if (data.username) {
+    if (data.avatar) {
+      sviAvatari[data.username] = data.avatar; // Dodaj ili promeni avatar
+    } else {
+      delete sviAvatari[data.username]; // Obrisi avatar iz server memorije
     }
-  });
-  
- // Obrada diskonekcije korisnika
+    socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima (i kad je avatar prazan)
+  }
+});
+
+   // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
