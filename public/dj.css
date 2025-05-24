@@ -233,23 +233,9 @@ iframe {
   bottom: 0;
   left: 0;
   width: 900px;
-  height: 900px;
+  height: 50px;
   border: 4px solid;
   border-image: linear-gradient(to top right, #ff0000, #00ff00, #0000ff) 1;
   background-color: black;
   z-index: 9998;
-}
-
-/* Overlay play ikona - ne ometa klikove */
-.iframe-overlay::after {
-  content: '';
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100px;
-  height: 100px;
-  background: url('https://upload.wikimedia.org/wikipedia/commons/e/e4/Play_Icon.png') center center no-repeat;
-  background-size: 40%;
-  pointer-events: none;
-  z-index: 9999;
 }
