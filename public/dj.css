@@ -229,7 +229,7 @@ h1 {
 
 /* Iframe osnovni stil */
 iframe {
-  position: fixed;
+  position: absolute;
   bottom:0px;
   width: 900px;
   left: 0;
