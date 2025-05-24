@@ -33,18 +33,22 @@ document.addEventListener("DOMContentLoaded", function() {
 const btn = document.getElementById('tube');
 const iframe = document.querySelector('iframe');
 
-let iframeVisible = true;
+let iframeVisible = false;
 let iframeClicked = false;
 
+// sakrij iframe i overlay na početku
+iframe.style.display = 'none';
+iframe.classList.add('iframe-overlay');
+
 btn.addEventListener('click', () => {
-    if (iframeVisible) {
+    if (!iframeVisible) {
+        iframe.style.display = 'block';
+        iframeVisible = true;
+    } else {
         iframe.style.display = 'none';
         iframeVisible = false;
         iframeClicked = false;
         iframe.style.pointerEvents = 'auto';
-    } else {
-        iframe.style.display = 'block';
-        iframeVisible = true;
     }
 });
 
@@ -55,3 +59,4 @@ iframe.addEventListener('click', () => {
         iframe.style.pointerEvents = 'none';
     }
 });
+
