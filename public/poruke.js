@@ -33,6 +33,39 @@ socket.on('chat-cleared', function() {
     const chatWindow = document.getElementById('messageArea');
     chatWindow.innerHTML = ""; // Briše sve unutar chata
 });
+
+// ZENO PLAYER NA DUGME
+document.addEventListener("DOMContentLoaded", function() {
+    var audio = document.getElementById('radioStream');
+    var button = document.getElementById('sound');
+    var isPlaying = false;
+
+    button.addEventListener('click', function() {
+          button.blur();
+        if (isPlaying) {
+            audio.pause();
+              button.textContent = "Play";
+          isPlaying = false;
+        } else {
+            playStream();
+        }
+    });
+
+    function playStream() {
+        audio.src = "https://stream.zeno.fm/krdfduyswxhtv";  
+        audio.load();  
+        audio.play().then(() => {
+            button.textContent = "Stop";
+          isPlaying = true;
+        }).catch(error => console.error("Greška pri puštanju zvuka:", error));
+    }
+
+    // Automatsko ponovno pokretanje pri gubitku konekcije
+    audio.addEventListener('error', function() {
+        setTimeout(playStream, 3000);
+    });
+});
+
 //  REGISTRACIJA I LOGIN TABLA
 document.getElementById('NIK').addEventListener('click', function() {
     var container = document.getElementById('authContainer');
