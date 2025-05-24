@@ -1,14 +1,13 @@
 body {
     font-family: Arial, sans-serif;
     background-color: black;
+    height: 2000px;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
-    
-    }
+}
 
   #authContainer {
     background-color: black; /* Crna pozadina */
