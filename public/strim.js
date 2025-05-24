@@ -30,35 +30,28 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-let iframeVisible = false;
+const btn = document.getElementById('tube');
+const iframe = document.querySelector('iframe');
+
+let iframeVisible = true;
 let iframeClicked = false;
 
-document.getElementById('tube').addEventListener('click', function () {
-    const container = document.getElementById('iframeContainer');
-
-    if (!iframeVisible) {
-        const iframe = document.createElement('iframe');
-        iframe.src = 'https://w2g.tv/embed?room_id=dthbo6gc3ya5j5dv4c';
-        iframe.width = '100';
-        iframe.height = '100';
-        iframe.frameBorder = '0';
-        iframe.allowFullscreen = true;
-        iframe.allow = 'autoplay; fullscreen; camera; microphone;';
-        iframe.id = 'tubeIframe';
-
-        iframe.addEventListener('click', function () {
-            if (!iframeClicked) {
-                iframeClicked = true;
-            } else {
-                iframe.style.pointerEvents = 'none';
-            }
-        });
-
-        container.appendChild(iframe);
-        iframeVisible = true;
-    } else {
-        container.innerHTML = '';
+btn.addEventListener('click', () => {
+    if (iframeVisible) {
+        iframe.style.display = 'none';
         iframeVisible = false;
         iframeClicked = false;
+        iframe.style.pointerEvents = 'auto';
+    } else {
+        iframe.style.display = 'block';
+        iframeVisible = true;
+    }
+});
+
+iframe.addEventListener('click', () => {
+    if (!iframeClicked) {
+        iframeClicked = true;
+    } else {
+        iframe.style.pointerEvents = 'none';
     }
 });
