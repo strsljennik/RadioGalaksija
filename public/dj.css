@@ -235,7 +235,7 @@ iframe {
   left: 0;
   width: 1500px;
   height: 800px;
-  border: 40px solid;
+  border: 5px solid;
   border-image: linear-gradient(to top right, #ff0000, #00ff00, #0000ff) 1;
   background-color: black;
   z-index: 1;
