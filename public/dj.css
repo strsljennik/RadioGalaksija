@@ -239,3 +239,7 @@ iframe {
   background-color: black;
   z-index: 1;
 }
+button {
+  position: absolute;
+  bottom: 10px;
+}
