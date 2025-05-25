@@ -240,3 +240,12 @@ iframe {
   background-color: black;
   z-index: 1;
 }
+#playerCover {
+  position: fixed;
+  top: 1100;
+  left: 0;
+  width: 1500px;
+  height: 200px;
+  z-index: 9999;
+  pointer-events: none;
+}
