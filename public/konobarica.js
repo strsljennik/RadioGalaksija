@@ -72,3 +72,14 @@ function decreaseFontSize() {
     var newSize = parseInt(currentSize) - 2; // Smanji veličinu fonta za 2px
     messageArea.style.fontSize = newSize + "px";
 }
+//ZA TUBE STRIM NA DUGME
+ const toggleBtn = document.getElementById('tube');
+  const retryBtn = document.getElementById('retryBtn');
+  const iframe = document.getElementById('w2g');
+
+  toggleBtn.addEventListener('click', () => {
+    const visible = iframe.style.display === 'block';
+
+    iframe.style.display = visible ? 'none' : 'block';
+    retryBtn.style.display = visible ? 'none' : 'inline-block';
+  });
