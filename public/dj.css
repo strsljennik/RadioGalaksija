@@ -234,8 +234,8 @@ iframe {
   display: none; /* možeš promeniti u block ili inline-block kad treba da se prikaže */
   position: absolute;
   top: 10px;
-  left: 4px;
-  width: 254px;
+  left: 5px;
+  width: 250px;
   height: 100px;
   padding: 0;
   font-size: 70px;
