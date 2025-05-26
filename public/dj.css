@@ -230,11 +230,11 @@ h1 {
 iframe {
   display: none; /* <-- dodato */
   position: absolute;
-  bottom: 0px;
-  left: 0;
+  top: 0px;
+  left: 0px;
   width: 250px;
   height: 250px;
-  border: 40px solid;
+  border: 5px solid;
   border-image: linear-gradient(to top right, #ff0000, #00ff00, #0000ff) 1;
   z-index: 1;
 }
@@ -244,11 +244,11 @@ iframe {
   display: none; /* <-- dodato */
   position: absolute;
   top: 10px;
-  left: 100px;
-  width: 50px;
-  height: 30px;
+  left: 0px;
+  width: 250px;
+  height: 100px;
   padding: 0;
-  font-size: 20px;
+  font-size: 70px;
   margin: 0;
   z-index: 2;
 }
