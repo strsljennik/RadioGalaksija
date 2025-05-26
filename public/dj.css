@@ -241,7 +241,7 @@ iframe {
 
 /* Dugme */
 #retryBtn {
-  display: none; /* <-- dodato */
+  display: none; /* možeš promeniti u block ili inline-block kad treba da se prikaže */
   position: absolute;
   top: 10px;
   left: 0px;
@@ -251,10 +251,16 @@ iframe {
   font-size: 70px;
   margin: 0;
   z-index: 2;
+
+  background-color: black; /* crna, neprozirna pozadina */
+  color: white;            /* bela boja teksta */
+  border: 20px;            /* bez ivice, možeš dodati ako želiš */
+  cursor: pointer;         /* pokazivač ruke na hover */
 }
+
 #retryBtn:hover {
-  opacity: 1 !important;           /* obavezno da prepiše eventualni opacity */
-  background-color: inherit !important; /* zadrži postojeću boju pozadine */
-  color: inherit !important;            /* zadrži boju teksta */
-  filter: none !important;              /* ukloni bilo kakav filter providnosti */
+  background-color: black !important; /* ostaje crna i na hover */
+  color: white !important;             /* tekst ostaje beo */
+  opacity: 1 !important;               /* bez providnosti */
+  filter: none !important;             /* ukloni filtere */
 }
