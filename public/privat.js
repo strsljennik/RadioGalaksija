@@ -134,7 +134,8 @@ document.addEventListener("DOMContentLoaded", function() {
           <option value="Times New Roman">Times New Roman</option>
         </select>
       </label>
-      <label>Animacija: 
+
+  <label>Animacija: 
         <select id="animationSelect">
           <option value="bounce">Bounce</option>
           <option value="fadeIn">Fade In</option>
@@ -159,6 +160,7 @@ document.addEventListener("DOMContentLoaded", function() {
       <button id="generateBtn">Generiši tekst</button>
       <button id="clearBtn">Obriši selektovani tekst</button>
       <button id="showListBtn">Kreiraj listu</button>
+     <button id="gradiani">Prikaži Gradijente</button>
       <div id="textCounter">Trenutni broj tekstova: 0</div>
     </div>
   `;
@@ -219,9 +221,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const popup = document.getElementById("popup");
   const popupOverlay = document.getElementById("popupOverlay");
   const closePopupBtn = document.getElementById("closePopupBtn");
+ const gradiani = document.getElementById('gradiani');
 
-
- let isAuthenticated = false;
   let textElements = []; // Svi tekstovi će biti pohranjeni u ovom nizu
   let selectedTextElement = null; // Trenutno selektovan tekst
 
@@ -246,37 +247,63 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Generiši novi tekst
-  generateBtn.addEventListener("click", function () {
-    const text = textInput.value;
-    const color = textColorInput.value;
-    const font = fontSelect.value;
-    const animation = animationSelect.value;
-    const speed = 20 - speedRange.value; // Brzina u opsegu od 1 do 20 (niži broj = brža animacija)
-    const fontSize = fontSizeRange.value + "px"; // Veličina fonta
+document.getElementById('gradiani').addEventListener('click', function () {
+  const gradijentDiv = document.getElementById('gradijent');
+  gradijentOpen = !gradijentOpen;
+  gradijentDiv.style.display = gradijentOpen ? 'grid' : 'none';
+});
 
-    // Kreiraj novi tekst
-    const textElement = document.createElement("div");
-    textElement.classList.add("text-display");
-    textElement.innerText = text;
+document.querySelectorAll('#gradijent .gradijent-box').forEach(box => {
+  box.addEventListener('click', () => {
+    document.querySelectorAll('#gradijent .gradijent-box').forEach(b => b.classList.remove('selected'));
+    box.classList.add('selected');
+    textColorInput.value = "#ffffff";
+  });
+});
+textColorInput.addEventListener('input', () => {
+  document.querySelectorAll('#gradijent .gradijent-box').forEach(b => b.classList.remove('selected'));
+});
+
+generateBtn.addEventListener("click", function () {
+  const text = textInput.value;
+  const color = textColorInput.value;
+  const font = fontSelect.value;
+  const animation = animationSelect.value;
+  const speed = 20 - speedRange.value;
+  const fontSize = fontSizeRange.value + "px";
+
+  const selectedGradient = document.querySelector('#gradijent .gradijent-box.selected');
+  const gradientStyle = selectedGradient ? getComputedStyle(selectedGradient).backgroundImage : null;
+
+  const textElement = document.createElement("div");
+  textElement.classList.add("text-display");
+  textElement.innerText = text;
+  textElement.style.fontFamily = font;
+  textElement.style.fontSize = fontSize;
+  textElement.style.animation = `${animation} ${speed}s ease infinite`;
+
+  if (gradientStyle) {
+    textElement.style.backgroundImage = gradientStyle;
+    textElement.style.webkitBackgroundClip = "text";
+    textElement.style.webkitTextFillColor = "transparent";
+  } else {
     textElement.style.color = color;
-    textElement.style.fontFamily = font;
-    textElement.style.fontSize = fontSize;
-    textElement.style.animation = `${animation} ${speed}s ease infinite`; // Animacija u loop-u
+    textElement.style.backgroundImage = "none";
+    textElement.style.webkitTextFillColor = "initial";
+  }
 
-    // Emituj novi tekst svim drugim korisnicima
-    socket.emit('newText', {
-      text,
-      color,
-      font,
-      animation,
-      speed,
-      fontSize,
-      x: 0,
-      y: 0
-    });
-
-    // Dodavanje drag funkcionalnosti
+  socket.emit('newText', {
+    text,
+    color,
+    font,
+    animation,
+    speed,
+    fontSize,
+    gradientStyle,
+    x: 0,
+    y: 0
+  });
+   // Dodavanje drag funkcionalnosti
     let isDragging = false;
     let offsetX, offsetY;
 
@@ -363,18 +390,27 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Prijem trenutnog stanja od servera
-  socket.on('currentState', function (data) {
-    textElements = data;
-    textElements.forEach((elementData, index) => {
-      const textElement = document.createElement("div");
-      textElement.classList.add("text-display");
-      textElement.innerText = elementData.text;
-      textElement.style.color = elementData.color;
-      textElement.style.fontFamily = elementData.font;
-      textElement.style.fontSize = elementData.fontSize;
-      textElement.style.animation = `${elementData.animation} ${elementData.speed}s ease infinite`;
-      textElement.style.left = `${elementData.x}px`;
-      textElement.style.top = `${elementData.y}px`;
+socket.on('currentState', function (data) {
+  textElements = data;
+  textElements.forEach((elementData, index) => {
+    const textElement = document.createElement("div");
+    textElement.classList.add("text-display");
+    textElement.innerText = elementData.text;
+    textElement.style.fontFamily = elementData.font;
+    textElement.style.fontSize = elementData.fontSize;
+    textElement.style.animation = `${elementData.animation} ${elementData.speed}s ease infinite`;
+    textElement.style.left = `${elementData.x}px`;
+    textElement.style.top = `${elementData.y}px`;
+
+   if (elementData.gradientStyle) {
+  textElement.style.backgroundImage = elementData.gradientStyle;
+  textElement.style.webkitBackgroundClip = "text";
+  textElement.style.webkitTextFillColor = "transparent";
+} else {
+  textElement.style.color = elementData.color;
+  textElement.style.backgroundImage = "none";
+  textElement.style.webkitTextFillColor = "initial";
+}
 
       // Dodavanje drag funkcionalnosti
       let isDragging = false;
@@ -425,22 +461,32 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Prijem događaja od drugih korisnika
-  socket.on('newText', function (data) {
-    const textElement = document.createElement("div");
-    textElement.classList.add("text-display");
-    textElement.innerText = data.text;
-    textElement.style.color = data.color;
-    textElement.style.fontFamily = data.font;
-    textElement.style.fontSize = data.fontSize;
-    textElement.style.animation = `${data.animation} ${data.speed}s ease infinite`;
-    textElement.style.left = `${data.x}px`;
-    textElement.style.top = `${data.y}px`;
+socket.on('newText', function (data) {
+  const textElement = document.createElement("div");
+  textElement.classList.add("text-display");
+  textElement.innerText = data.text;
+  textElement.style.fontFamily = data.font;
+  textElement.style.fontSize = data.fontSize;
+  textElement.style.animation = `${data.animation} ${data.speed}s ease infinite`;
+  textElement.style.left = `${data.x}px`;
+  textElement.style.top = `${data.y}px`;
 
-    textContainer.appendChild(textElement);
-    textElements.push(textElement);
-    updateTextList();
-    textCounter.innerText = `Trenutni broj tekstova: ${textElements.length}`;
-  });
+  if (data.gradientStyle) {
+    textElement.style.backgroundImage = data.gradientStyle;
+    textElement.style.webkitBackgroundClip = "text";
+    textElement.style.webkitTextFillColor = "transparent";
+  } else {
+    textElement.style.color = data.color;
+    textElement.style.backgroundImage = "none";
+    textElement.style.webkitTextFillColor = "initial";
+  }
+
+  textContainer.appendChild(textElement);
+  textElements.push(textElement);
+  updateTextList();
+  textCounter.innerText = `Trenutni broj tekstova: ${textElements.length}`;
+});
+
 
   socket.on('deleteText', function (data) {
     const textElement = textElements[data.index];
