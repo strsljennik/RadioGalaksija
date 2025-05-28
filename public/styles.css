@@ -97,17 +97,21 @@ body {
     top: 60px;
     left: 120px;
     width: 500px;
-    height: 20px;
+    min-height: 20px;
     padding: 5px;
     border-radius: 5px;
     border: 2px solid;
     border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
-    resize: none;
     font-size: 17px;
     background-color: black;
-    color: white;
-    overflow: hidden;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow-y: auto;
     outline: none;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 #chatInput:focus {
