@@ -146,7 +146,9 @@ document.addEventListener("DOMContentLoaded", function() {
           <option value="rotateZ">RotateZ</option>
           <option value="rotate3D">Rotate3D</option>
           <option value="marquee">Marquee</option>
-        </select>
+         <option value="animateLetter">Animate Letter</option>
+       
+     </select>
       </label>
       <label>Brzina animacije:
         <input type="range" id="speedRange" min="1" max="20" value="1">
