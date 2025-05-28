@@ -154,32 +154,27 @@ socket.on('gradientChange', (data) => {
         io.emit("updateBackground", url);
     });
 
-     // Emit current state to the new user
-    socket.emit('currentState', textElements);
+    // Emit current state to the new user
+socket.emit('currentState', textElements);
 
-    socket.on('newText', (data) => {
-        // Add the new text element to the current state
-        textElements.push(data);
-        // Emit to all other clients
-        socket.broadcast.emit('newText', data);
-    });
+socket.on('newText', (data) => {
+    textElements.push(data);
+    socket.broadcast.emit('newText', data);
+});
 
-    socket.on('deleteText', (data) => {
-        // Remove the text element from the current state
-        textElements = textElements.filter((_, index) => index !== data.index);
-        // Emit to all other clients
-        socket.broadcast.emit('deleteText', data);
-    });
+socket.on('deleteText', (data) => {
+    textElements = textElements.filter((_, index) => index !== data.index);
+    socket.broadcast.emit('deleteText', data);
+});
 
-    socket.on('positionChange', (data) => {
-        // Update the position of the text element in the current state
-        if (textElements[data.index]) {
-            textElements[data.index].x = data.x;
-            textElements[data.index].y = data.y;
-        }
-        // Emit to all other clients
-        socket.broadcast.emit('positionChange', data);
-    });
+socket.on('positionChange', (data) => {
+    if (textElements[data.index]) {
+        textElements[data.index].x = data.x;
+        textElements[data.index].y = data.y;
+    }
+    socket.broadcast.emit('positionChange', data);
+});
+
 
    socket.on('register', (data) => {
     username = data.username;
