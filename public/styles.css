@@ -108,9 +108,7 @@ body {
     color: white;
     overflow: hidden;
     outline: none;
-     -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+   
 }
 
 #chatInput:focus {
