@@ -223,8 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const closePopupBtn = document.getElementById("closePopupBtn");
  const gradiani = document.getElementById('gradiani');
 
+    let isAuthenticated = false;
   let textElements = []; // Svi tekstovi će biti pohranjeni u ovom nizu
   let selectedTextElement = null; // Trenutno selektovan tekst
+
 
   // Funkcija za ažuriranje liste teksta
   function updateTextList() {
