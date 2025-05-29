@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 socket.emit('private_message', {
                     to: recipient,
+                     from: myNickname,
                     message,
                     time,
                     bold: isBold,
