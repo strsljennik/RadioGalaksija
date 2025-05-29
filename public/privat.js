@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     time,
                     bold: isBold,
                     italic: isItalic,
+                     gradient: currentGradient,
                     color: currentColor,
                     underline: isUnderline,
                     overline: isOverline
