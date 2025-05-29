@@ -93,20 +93,42 @@ if (data.color) {
     // Dodavanje sadržaja poruke
     newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
+   const isNearTop = messageArea.scrollTop < 50;
+
+if (isNearTop) {
     messageArea.scrollTop = 0;
+}
 });
 
 socket.on('private_message', function(data) {
     let messageArea = document.getElementById('messageArea');
     let newMessage = document.createElement('div');
     newMessage.classList.add('message');
-    newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
+     newMessage.style.fontWeight = data.bold ? 'bold' : 'normal';
     newMessage.style.fontStyle = data.italic ? 'italic' : 'normal';
-    newMessage.style.color = data.color;
     newMessage.style.textDecoration = (data.underline ? 'underline ' : '') + (data.overline ? 'overline' : '');
-    newMessage.innerHTML = `<strong>${data.from} (Privatno):</strong> ${data.message} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+
+   if (data.color) {
+    newMessage.style.backgroundImage = '';
+    newMessage.style.backgroundClip = '';
+    newMessage.style.webkitBackgroundClip = '';
+    newMessage.style.webkitTextFillColor = '';
+    newMessage.style.color = data.color;
+} else if (data.gradient) {
+    newMessage.style.backgroundClip = 'text';
+    newMessage.style.webkitBackgroundClip = 'text';
+    newMessage.style.webkitTextFillColor = 'transparent';
+    newMessage.style.backgroundImage = getComputedStyle(document.querySelector(`.${data.gradient}`)).backgroundImage;
+}
+
+    // Dodavanje sadržaja poruke
+    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
+   const isNearTop = messageArea.scrollTop < 50;
+
+if (isNearTop) {
     messageArea.scrollTop = 0;
+}
 });
 
 // Kada nov gost dođe
