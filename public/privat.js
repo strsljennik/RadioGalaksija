@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     time,
                     bold: isBold,
                     italic: isItalic,
+                     color: currentColor,
                      gradient: currentGradient,
-                    color: currentColor,
                     underline: isUnderline,
                     overline: isOverline
                 });
@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bold: isBold,
                     italic: isItalic,
                     color: currentColor,
+                     gradient: currentGradient,
                     underline: isUnderline,
                     overline: isOverline
                 });
