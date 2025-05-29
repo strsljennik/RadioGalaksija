@@ -91,7 +91,7 @@ if (data.color) {
 }
 
     // Dodavanje sadržaja poruke
-    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {}/g, '&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
     messageArea.prepend(newMessage);
   const isNearTop = messageArea.scrollTop < 50;
 
