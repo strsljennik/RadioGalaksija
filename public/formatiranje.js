@@ -41,20 +41,21 @@ function updateInputStyle() {
     inputField.style.fontStyle = isItalic ? 'italic' : 'normal';
     inputField.style.textDecoration = (isUnderline ? 'underline ' : '') + (isOverline ? 'overline' : '');
 
-    // Ako postoji gradijent, postavi ga
     if (currentGradient) {
         inputField.style.backgroundClip = 'text';
         inputField.style.webkitBackgroundClip = 'text';
+        inputField.style.color = 'transparent'; // važno za rad na FireFox
         inputField.style.webkitTextFillColor = 'transparent';
         inputField.style.backgroundImage = getComputedStyle(document.querySelector(`.${currentGradient}`)).backgroundImage;
     } else {
-        // Ako nema gradijenta, postavi boju
-        inputField.style.backgroundImage = ''; // Očisti pozadinsku sliku
-        inputField.style.color = currentColor; // Postavi boju teksta u inputu
-        inputField.style.webkitBackgroundClip = ''; // Ukloni background-clip
-        inputField.style.webkitTextFillColor = '';  // Ukloni tekst boje sa gradijentom
+        inputField.style.backgroundImage = '';
+        inputField.style.backgroundClip = '';
+        inputField.style.webkitBackgroundClip = '';
+        inputField.style.webkitTextFillColor = '';
+        inputField.style.color = currentColor;
     }
 }
+
 
 let lastMessages = {}; // Objekt koji prati poslednju poruku svakog korisnika
 
