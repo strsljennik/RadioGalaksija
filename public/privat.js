@@ -93,13 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 socket.emit('private_message', {
                     to: recipient,
-                     from: myNickname,
                     message,
                     time,
                     bold: isBold,
                     italic: isItalic,
-                     color: currentColor,
-                     gradient: currentGradient,
+                    color: currentColor,
                     underline: isUnderline,
                     overline: isOverline
                 });
@@ -112,7 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     bold: isBold,
                     italic: isItalic,
                     color: currentColor,
-                     gradient: currentGradient,
                     underline: isUnderline,
                     overline: isOverline
                 });
