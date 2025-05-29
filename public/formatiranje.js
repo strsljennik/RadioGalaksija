@@ -91,14 +91,15 @@ if (data.color) {
 }
 
     // Dodavanje sadržaja poruke
-    newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
-    messageArea.prepend(newMessage);
-   const isNearTop = messageArea.scrollTop < 50;
+   newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+messageArea.prepend(newMessage);
+const isNearTop = messageArea.scrollTop < 50;
 
 if (isNearTop) {
     messageArea.scrollTop = 0;
 }
 });
+
 socket.on('private_message', function(data) {
     if (!myNickname) return;
 
@@ -131,13 +132,13 @@ socket.on('private_message', function(data) {
     }
 
     // Dodavanje sadržaja poruke
-    newMessage.innerHTML = `<strong>${data.from} (Privatno):</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
-    messageArea.prepend(newMessage);
+   newMessage.innerHTML = `<strong>${data.nickname}:</strong> ${text.replace(/\n/g, '<br>').replace(/ /g, '&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+messageArea.prepend(newMessage);
+const isNearTop = messageArea.scrollTop < 50;
 
-    const isNearTop = messageArea.scrollTop < 50;
-    if (isNearTop) {
-        messageArea.scrollTop = 0;
-    }
+if (isNearTop) {
+    messageArea.scrollTop = 0;
+}
 });
 
 
