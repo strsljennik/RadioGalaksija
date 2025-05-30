@@ -293,7 +293,9 @@ generateBtn.addEventListener("click", function () {
     textElement.style.backgroundImage = "none";
     textElement.style.webkitTextFillColor = "initial";
   }
-
+if (!authorizedUsers.has(currentUser)) {
+    textElement.style.pointerEvents = "none";
+  }
   socket.emit('newText', {
     text,
     color,
@@ -309,25 +311,26 @@ generateBtn.addEventListener("click", function () {
     let isDragging = false;
     let offsetX, offsetY;
 
-    textElement.addEventListener("mousedown", function (e) {
-      if (selectedTextElement === textElement) {
-        // Ako je tekst već selektovan, ukloni granice
-        textElement.classList.remove("selected");
-        selectedTextElement = null; // Ukloni selektovani tekst
-      } else {
-        // Ako nije selektovan, selektuj ga i dodaj granice
-        if (selectedTextElement) {
-          selectedTextElement.classList.remove("selected"); // Ukloni granice sa prethodno selektovanog
-        }
-        textElement.classList.add("selected");
-        selectedTextElement = textElement; // Postavi trenutni selektovani tekst
-      }
+   textElement.addEventListener("mousedown", function (e) {
+  if (!authorizedUsers.has(currentUser)) return;
 
-      isDragging = true;
-      offsetX = e.clientX - textElement.getBoundingClientRect().left;
-      offsetY = e.clientY - textElement.getBoundingClientRect().top;
-      textElement.style.cursor = "grabbing";
-    });
+  if (selectedTextElement === textElement) {
+    textElement.classList.remove("selected");
+    selectedTextElement = null;
+  } else {
+    if (selectedTextElement) {
+      selectedTextElement.classList.remove("selected");
+    }
+    textElement.classList.add("selected");
+    selectedTextElement = textElement;
+  }
+
+  isDragging = true;
+  offsetX = e.clientX - textElement.getBoundingClientRect().left;
+  offsetY = e.clientY - textElement.getBoundingClientRect().top;
+  textElement.style.cursor = "grabbing";
+});
+
 
     document.addEventListener("mousemove", function (e) {
       if (!isDragging) return;
@@ -413,8 +416,11 @@ socket.on('currentState', function (data) {
   textElement.style.backgroundImage = "none";
   textElement.style.webkitTextFillColor = "initial";
 }
+  if (!authorizedUsers.has(currentUser)) {
+      textElement.style.pointerEvents = "none";
+    }
 
-      // Dodavanje drag funkcionalnosti
+  // Dodavanje drag funkcionalnosti
       let isDragging = false;
       let offsetX, offsetY;
 
