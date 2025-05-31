@@ -135,22 +135,27 @@ document.addEventListener("DOMContentLoaded", function() {
         </select>
       </label>
 
-  <label>Animacija: 
-        <select id="animationSelect">
-          <option value="bounce">Bounce</option>
-          <option value="fadeIn">Fade In</option>
-          <option value="zoom">Zoom</option>
-          <option value="shake">Shake</option>
-          <option value="slideUp">Slide Up</option>
-          <option value="rotateX">RotateX</option>
-          <option value="rotateY">RotateY</option>
-          <option value="rotateZ">RotateZ</option>
-          <option value="rotate3D">Rotate3D</option>
-          <option value="marquee">Marquee</option>
-         <option value="animateLetter">Animate Letter</option>
-       
-     </select>
-      </label>
+<label>Animacija: 
+  <select id="animationSelect">
+    <option value="bounce">Bounce</option>
+    <option value="fadeIn">Fade In</option>
+    <option value="zoom">Zoom</option>
+    <option value="shake">Shake</option>
+    <option value="slideUp">Slide Up</option>
+    <option value="rotateX">RotateX</option>
+    <option value="rotateY">RotateY</option>
+    <option value="rotateZ">RotateZ</option>
+    <option value="rotate3D">Rotate3D</option>
+    <option value="marquee">Marquee</option>
+    <option value="animateLetter">Animate Letter</option>
+    <option value="float">Float</option>
+    <option value="flipIn">Flip In</option>
+    <option value="swirl">Swirl</option>
+    <option value="bounceInLeft">Bounce In Left</option>
+    <option value="jelly">Jelly</option>
+  </select>
+</label>
+
       <label>Brzina animacije:
         <input type="range" id="speedRange" min="1" max="20" value="1">
       </label>
