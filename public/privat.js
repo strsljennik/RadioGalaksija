@@ -98,8 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     bold: isBold,
                     italic: isItalic,
                     color: currentColor,
-                    underline: isUnderline,
-                    overline: isOverline
+                   gradient: currentGradient,
+                   underline: isUnderline,
+                   overline: isOverline
                 });
 
                 chatInput.value = `---->>> ${recipient} : `;
@@ -110,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bold: isBold,
                     italic: isItalic,
                     color: currentColor,
+                   gradient: currentGradient,
                     underline: isUnderline,
                     overline: isOverline
                 });
