@@ -5,8 +5,8 @@ style.textContent = `
     position: fixed;
     bottom: 0;
     right: 0;
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 500px;
     border: 5px solid;
     border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff) 1;
     background: #111;
@@ -16,8 +16,8 @@ style.textContent = `
     overflow-y: auto;
   }
   #avatar img {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     margin: 5px;
     cursor: pointer;
   }
