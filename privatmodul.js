@@ -27,41 +27,44 @@ io.on('connection', (socket) => {
         // Emituj ovaj događaj svim povezanim korisnicima
         socket.broadcast.emit('resetSelectedGuest');  // Ovaj događaj se šalje svim ostalim klijentima
     });
-  // Privatna poruka
-        socket.on('private_message', ({ to, message, time, bold, italic, color, underline, overline }) => {
-            // Proveri da li je privatni chat uključen pre slanja poruke
-            if (!isPrivateChatEnabled) {
-                return console.log('Privatni chat nije uključen');
-            }
+  
+      // Privatna poruka
+socket.on('private_message', ({ to, message, time, bold, italic, color, underline, overline, gradient }) => {
+    // Proveri da li je privatni chat uključen pre slanja poruke
+    if (!isPrivateChatEnabled) {
+        return console.log('Privatni chat nije uključen');
+    }
 
-            // Pronalazi socket.id primaoca na osnovu imena
-            const recipientSocketId = Object.keys(guests).find(id => guests[id] === to);
+    // Pronalazi socket.id primaoca na osnovu imena
+    const recipientSocketId = Object.keys(guests).find(id => guests[id] === to);
 
-            if (recipientSocketId) {
-                // Slanje privatne poruke primaocu
-                io.to(recipientSocketId).emit('private_message', {
-                    from: guests[socket.id],  // Pošiljalac
-                    message,
-                    time,
-                    bold,
-                    italic,
-                    color,
-                    underline,
-                    overline
-                });
-
-                // Slanje privatne poruke pošiljaocu (opciono)
-                socket.emit('private_message', {
-                    from: guests[socket.id],  // Pošiljalac (u odgovoru)
-                    message,
-                    time,
-                    bold,
-                    italic,
-                    color,
-                    underline,
-                    overline
-                });
-            }
+    if (recipientSocketId) {
+        // Slanje privatne poruke primaocu
+        io.to(recipientSocketId).emit('private_message', {
+            from: guests[socket.id],  // Pošiljalac
+            message,
+            time,
+            bold,
+            italic,
+            color,
+            gradient,
+            underline,
+            overline
         });
-    });
+
+        // Slanje privatne poruke pošiljaocu (opciono)
+        socket.emit('private_message', {
+            from: guests[socket.id],  // Pošiljalac (u odgovoru)
+            message,
+            time,
+            bold,
+            italic,
+            color,
+            gradient,
+            underline,
+            overline
+        });
+    }
+});
+});
 };
