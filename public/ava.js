@@ -9,7 +9,7 @@ style.textContent = `
     height: 500px;
     border: 5px solid;
     border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff) 1;
-    background: #111;
+    background: black;
     padding: 10px;
     box-sizing: border-box;
     z-index: 999;
@@ -125,7 +125,7 @@ document.getElementById('sl').addEventListener('click', () => {
   const username = window.currentUser.username;
 
   // Ovde nemoj brisati ceo innerHTML, samo dodaj slike za avatar
-  for (let i = 1; i <= 12; i++) {
+  for (let i = 1; i <= 18; i++) {
     const img = document.createElement('img');
     img.src = `nik/sl${i}.webp`;
     img.alt = `Slika ${i}`;
