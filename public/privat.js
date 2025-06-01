@@ -1,4 +1,3 @@
-// Ovaj deo ostaje isti
 let isPrivateChatEnabled = false; // Status privatnog chata
 let selectedGuest = null; // Selekcija gosta
 
@@ -16,36 +15,43 @@ document.getElementById('privateMessage').addEventListener('click', () => {
         console.log(`Selekcija gosta ${guest.textContent} ${isPrivateChatEnabled ? 'dozvoljena' : 'onemogućena'}`);
     });
 
-if (!isPrivateChatEnabled) {
-    // Ako se isključi privatni chat, ukloni selektovanog gosta i traku
-    if (selectedGuest) {
-        selectedGuest.style.backgroundColor = ''; // Resetuj boju pozadine
-        selectedGuest = null; // Resetuj selektovanog gosta
+    if (!isPrivateChatEnabled) {
+        // Ako se isključi privatni chat, ukloni selektovanog gosta i traku
+        if (selectedGuest) {
+            if (selectedGuest.classList.contains('use-gradient')) {
+                selectedGuest.classList.remove('selected-overlay');
+            } else {
+                selectedGuest.style.backgroundColor = '';
+            }
+            selectedGuest = null;
+        }
+
+        // Resetuj unos u chat inputu
+        chatInput.value = '';
+
+        // Emituj događaj serveru da resetuje selektovanog gosta
+        socket.emit('resetSelectedGuest');
     }
 
-    // Resetuj unos u chat inputu
-    chatInput.value = '';
-
-    // Emituj događaj serveru da resetuje selektovanog gosta
-    socket.emit('resetSelectedGuest');
-}
-
-console.log(statusText);
-alert(statusText);
+    console.log(statusText);
+    alert(statusText);
 });
 
 // Kada drugi korisnici prime događaj za resetovanje
 socket.on('resetSelectedGuest', () => {
     if (selectedGuest) {
-        selectedGuest.style.backgroundColor = ''; // Resetuj boju pozadine
-        selectedGuest = null; // Resetuj selektovanog gosta
+        if (selectedGuest.classList.contains('use-gradient')) {
+            selectedGuest.classList.remove('selected-overlay');
+        } else {
+            selectedGuest.style.backgroundColor = '';
+        }
+        selectedGuest = null;
     }
 
     if (chatInput) {
         chatInput.value = ''; // Resetuj chat input
     }
 });
-
 
 // Prilagodba selekcije gostiju kada server šalje status privatnog chata
 socket.on('private_chat_status', (status) => {
@@ -55,27 +61,40 @@ socket.on('private_chat_status', (status) => {
     });
 });
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const guestList = document.getElementById('guestList');
     const chatInput = document.getElementById('chatInput');
-    
-     guestList.addEventListener('click', (event) => {
+
+    guestList.addEventListener('click', (event) => {
         if (isPrivateChatEnabled && event.target.classList.contains('guest')) {
             if (selectedGuest === event.target) {
-                selectedGuest.style.backgroundColor = ''; // Uklanja traku selekcije
-                selectedGuest = null; // Resetuje selektovanog gosta
-                chatInput.value = ''; // Resetuje unos
+                if (selectedGuest.classList.contains('use-gradient')) {
+                    selectedGuest.classList.remove('selected-overlay');
+                } else {
+                    selectedGuest.style.backgroundColor = '';
+                }
+                selectedGuest = null;
+                chatInput.value = '';
                 console.log("Privatni chat isključen.");
                 return;
             }
 
             if (selectedGuest) {
-                selectedGuest.style.backgroundColor = ''; // Ukloni stil sa prethodnog gosta
+                if (selectedGuest.classList.contains('use-gradient')) {
+                    selectedGuest.classList.remove('selected-overlay');
+                } else {
+                    selectedGuest.style.backgroundColor = '';
+                }
             }
 
             selectedGuest = event.target;
-            selectedGuest.style.backgroundColor = 'lightblue'; // Obeleži novog gosta
+
+            if (selectedGuest.classList.contains('use-gradient')) {
+                selectedGuest.classList.add('selected-overlay');
+            } else {
+                selectedGuest.style.backgroundColor = 'rgba(128,128,128,0.3)'; // siva prozirna boja
+            }
+
             chatInput.value = `---->>> ${selectedGuest.textContent} : `;
             console.log("Privatni chat sa:", selectedGuest.textContent);
         }
@@ -98,9 +117,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     bold: isBold,
                     italic: isItalic,
                     color: currentColor,
-                   gradient: currentGradient,
-                   underline: isUnderline,
-                   overline: isOverline
+                    gradient: currentGradient,
+                    underline: isUnderline,
+                    overline: isOverline
                 });
 
                 chatInput.value = `---->>> ${recipient} : `;
@@ -111,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bold: isBold,
                     italic: isItalic,
                     color: currentColor,
-                   gradient: currentGradient,
+                    gradient: currentGradient,
                     underline: isUnderline,
                     overline: isOverline
                 });
@@ -121,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
 document.addEventListener("DOMContentLoaded", function() {
   // HTML sadržaj kao stringovi
   const commandTableHTML = `
