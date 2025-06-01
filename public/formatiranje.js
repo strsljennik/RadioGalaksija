@@ -129,10 +129,10 @@ socket.on('private_message', function(data) {
         newMessage.style.backgroundImage = getComputedStyle(document.querySelector(`.${data.gradient}`)).backgroundImage;
     }
 
-    newMessage.innerHTML = `<strong>${data.from} (Privatno):</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
-    messageArea.prepend(newMessage);
+   newMessage.innerHTML = `<strong>${data.from}:</strong> ${text.replace(/\n/g, '<br>').replace(/ {2}/g, '&nbsp;&nbsp;')} <span style="font-size: 0.8em; color: gray;">(${data.time})</span>`;
+ messageArea.prepend(newMessage);
 
-    const isNearTop = messageArea.scrollTop < 50;
+ const isNearTop = messageArea.scrollTop < 50;
     if (isNearTop) {
         messageArea.scrollTop = 0;
     }
@@ -258,7 +258,7 @@ socket.on('colorChange', (data) => {
         myDiv.style.color = data.color;
     }
 });
-//     ZA GRADIJENTE 
+// ZA GRADIJENTE
 document.getElementById('farbe').addEventListener('click', function () {
     const gradijentDiv = document.getElementById('gradijent');
     gradijentOpen = !gradijentOpen;
@@ -282,16 +282,18 @@ document.getElementById('farbe').addEventListener('click', function () {
                             }
                         });
                         myDiv.classList.remove('use-gradient');
-                        myDiv.style.color = ''; // Očisti boju teksta
-                        myDiv.style.backgroundImage = ''; // Očisti pozadinsku sliku
+                        myDiv.classList.remove('gradient-user'); // <- ukloni staru klasu
+                        myDiv.style.color = '';
+                        myDiv.style.backgroundImage = '';
 
                         // Dodavanje novog gradijenta
                         myDiv.classList.add(currentGradient);
                         myDiv.classList.add('use-gradient');
+                        myDiv.classList.add('gradient-user'); // <- nova klasa
                         myDiv.style.backgroundImage = getComputedStyle(this).backgroundImage;
                     }
 
-                    updateInputStyle(); // Ažuriraj stil za input polje
+                    updateInputStyle();
 
                     socket.emit('gradientChange', { nickname: myNickname, gradient: currentGradient });
                 };
@@ -304,19 +306,19 @@ socket.on('gradientChange', function (data) {
     const myDivId = `guest-${data.nickname}`;
     const myDiv = document.getElementById(myDivId);
     if (myDiv) {
-        // Ukloni stari gradijent ako postoji
         myDiv.classList.forEach(cls => {
             if (cls.startsWith('gradient-')) {
                 myDiv.classList.remove(cls);
             }
         });
         myDiv.classList.remove('use-gradient');
-        myDiv.style.color = ''; // Očisti boju
-        myDiv.style.backgroundImage = ''; // Očisti pozadinsku sliku
+        myDiv.classList.remove('gradient-user'); // <- ukloni staru klasu
+        myDiv.style.color = '';
+        myDiv.style.backgroundImage = '';
 
-        // Dodaj novi gradijent
         myDiv.classList.add(data.gradient);
         myDiv.classList.add('use-gradient');
+        myDiv.classList.add('gradient-user'); // <- nova klasa
         myDiv.style.backgroundImage = getComputedStyle(document.querySelector(`.${data.gradient}`)).backgroundImage;
     }
 });
@@ -328,6 +330,7 @@ socket.on('allGradients', (gradients) => {
         if (div) {
             div.classList.add(gradients[nickname]);
             div.classList.add('use-gradient');
+            div.classList.add('gradient-user'); // <- nova klasa
             div.style.backgroundImage = getComputedStyle(document.querySelector(`.${gradients[nickname]}`)).backgroundImage;
         }
     }
