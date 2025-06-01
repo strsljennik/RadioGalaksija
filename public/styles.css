@@ -158,9 +158,23 @@ body {
 }
 
 .guest::before, .virtual-guest::before {
-    content: "•"; 
+    content: "✔"; 
+    left: 1px;
     margin-right: 10px;
-    font-size: 18px;
+    font-size: 16px;
+}
+.guest.selected-overlay {
+    position: relative;
+}
+
+.guest.selected-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(128, 128, 128, 0.3);
+    pointer-events: none;
+    border-radius: 3px; /* ako koristiš zaobljenje */
+    z-index: 10;
 }
 
  /* CSS ZA MIXER DODATAK IZ HTML MIXER */
