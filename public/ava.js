@@ -125,7 +125,7 @@ document.getElementById('sl').addEventListener('click', () => {
   const username = window.currentUser.username;
 
   // Ovde nemoj brisati ceo innerHTML, samo dodaj slike za avatar
-  for (let i = 1; i <= 18; i++) {
+  for (let i = 1; i <= 20; i++) {
     const img = document.createElement('img');
     img.src = `nik/sl${i}.webp`;
     img.alt = `Slika ${i}`;
