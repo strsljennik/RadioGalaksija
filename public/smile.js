@@ -109,11 +109,12 @@ const allItems = [
     ...['☕', '😀', '😂', '😍', '😎', '😢', '😡',  '👍', '👎',  '❤️', '💔', '🖤', '💛', '💚', '🌷','👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
     ...[
          'xat2.webp', 'xat3.webp', 'xat5.webp', 'xat8.webp', 
+         'mesa.webp', 'luster.webp', 'bye.webp', 'crveni.webp', 
         'slika1.avifs', 'slika2.avifs', 'slika3.avifs', 'slika4.avifs', 'bub.gif', 
   'stik1.png', 'stik2.png', 'stik3.png', 'stik4.png', 'stik5.png', 
   'stik6.png', 'stik7.png', 'stik8.png', 'ok.gif', 'stik9.png', 
   'uzivam.gif', 'stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 
-  'dance3.gif', 'ily1.gif', 'ily2.gif', 
+  'dance3.gif', 'ily1.gif', 'ily2.gif', 'beba.gif', 
  'rg.gif', 'x.gif', 'x1.gif', 'kiss.gif', 'kiss1.gif', 
  'patak1.avifs', 'patak2.avifs', 'jerry1.avifs', 'jerry2.avifs', 'jerry3.avifs', 
   'kiss2.gif', 'srce.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif', 
