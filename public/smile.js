@@ -106,23 +106,20 @@ if (!document.getElementById('smileModal')) document.body.insertAdjacentHTML('be
 // Folder za slike
 const emojiFolder = 'emoji gif/';
 const allItems = [
-    ...['☕', '😀', '😂', '😍', '😎', '😢', '😡',  '👍', '👎',  '❤️', '💔', '🖤', '💛', '💚', '🌷','👁️‍🗨️', '👀'].map(e => ({ type: 'emoji', content: e })),
+    ...['☕', '🖤', '💛', '💚','👀'].map(e => ({ type: 'emoji', content: e })),
     ...[
-         'xat2.webp', 'xat3.webp', 'xat5.webp', 'xat8.webp', 
+        
          'mesa.webp', 'luster.webp', 'bye.webp', 'crveni.webp', 
-        'slika1.avifs', 'slika3.avifs', 'slika4.avifs', 'bub.gif', 
-  'stik1.png', 'stik2.png', 'stik3.png', 'stik4.png', 'stik5.png', 
-  'stik6.png', 'stik7.png', 'stik8.png', 'ok.gif', 'stik9.png', 
-  'uzivam.gif', 'stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 
-  'dance3.gif', 'ily1.gif', 'ily2.gif', 'beba.gif', 
- 'rg.gif', 'x.gif', 'x1.gif', 'kiss.gif', 'kiss1.gif', 
- 'patak1.avifs', 'patak2.avifs', 'jerry1.avifs', 'jerry2.avifs', 'jerry3.avifs', 
-  'kiss2.gif', 'srce.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif', 
+        'slika1.avifs', 'slika3.avifs', 'slika4.avifs', 'bub.gif', 'ok.gif', 
+        'uzivam.gif', 'stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 
+        'dance3.gif', 'ily1.gif', 'ily2.gif', 'beba.gif', 
+        'rg.gif', 'x.gif', 'x1.gif', 'kiss.gif', 'kiss1.gif', 
+        'patak1.avifs', 'patak2.avifs', 'jerry1.avifs', 'jerry2.avifs', 'jerry3.avifs', 
+  'kiss2.gif', 'srce2.gif', 'srce3.gif', 'srce4.gif', 
   'nov1.gif', 'nov3.gif', 'nov4.gif', 'nov5.gif', 'nov6.gif', 
   'nov7.gif', 'nov8.gif', 'nov9.gif', 'nov10.gif', 'nov11.gif', 'nov12.gif', 
   'nov13.gif', 'nov15.gif', 'nov16.gif', 'nov17.gif', 'nov18.gif', 
-          'sec1.avifs', 'hig1.avif', 'hig2.avif', 
-  'nov19.gif', 'nov20.gif', 'nov21.gif'
+           'nov19.gif', 'nov20.gif', 'nov21.gif'
 ].map(img => ({ type: 'image', content: img }))
 ];
 
