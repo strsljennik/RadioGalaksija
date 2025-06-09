@@ -144,16 +144,17 @@ socket.on('newGuest', function (nickname) {
     const guestList = document.getElementById('guestList');
     const newGuest = document.createElement('div');
     newGuest.classList.add('guest');
-    newGuest.id = guestId; // Dodaj ID za svakog gosta
+    newGuest.id = guestId;
     newGuest.textContent = nickname;
 
-    // Dodaj novog gosta u guestsData ako ne postoji
     if (!guestsData[guestId]) {
-        guestsData[guestId] = { nickname, color: '' }; // Ako ne postoji, dodajemo ga sa podrazumevanom bojom
+        guestsData[guestId] = { nickname, color: '' };
     }
-    guestList.appendChild(newGuest); // Dodaj novog gosta u listu
+
+    guestList.appendChild(newGuest);
 });
 
+// Ažuriranje liste gostiju bez resetovanja stilova
 socket.on('updateGuestList', function (users) {
     const guestList = document.getElementById('guestList');
     const currentGuests = Array.from(guestList.children).map(guest => guest.textContent);
@@ -161,8 +162,7 @@ socket.on('updateGuestList', function (users) {
     // Ukloni goste koji više nisu u listi
     currentGuests.forEach(nickname => {
         if (!users.includes(nickname)) {
-            delete guestsData[`guest-${nickname}`]; // Ukloni iz objekta
-
+            delete guestsData[`guest-${nickname}`];
             const guestElement = Array.from(guestList.children).find(guest => guest.textContent === nickname);
             if (guestElement) {
                 guestList.removeChild(guestElement);
@@ -170,21 +170,19 @@ socket.on('updateGuestList', function (users) {
         }
     });
 
-    // Očisti listu i guestsData za pravilno dodavanje
-    while (guestList.firstChild) {
-        guestList.removeChild(guestList.firstChild);
-    }
-    for (let key in guestsData) delete guestsData[key];
-
-    // Reorder: Radio Galaksija na vrhu
+    // Reorder: "Radio Galaksija" na vrhu
     if (users.includes("Radio Galaksija")) {
         users = ["Radio Galaksija", ...users.filter(n => n !== "Radio Galaksija")];
-    }
 
-    // Trenutni korisnik odmah ispod Radio Galaksije ako nije on
-    if (myNickname !== "Radio Galaksija") {
+        // Ulogovani korisnik na drugo mesto ako nije Galaksija
+        if (myNickname !== "Radio Galaksija") {
+            users = users.filter(n => n !== myNickname);
+            users.splice(1, 0, myNickname);
+        }
+    } else {
+        // Ako nema Galaksije, korisnik ide na prvo mesto
         users = users.filter(n => n !== myNickname);
-        users.splice(1, 0, myNickname);
+        users.unshift(myNickname);
     }
 
     // Dodaj nove goste
@@ -200,11 +198,20 @@ socket.on('updateGuestList', function (users) {
             guestsData[guestId] = { nickname, color: newGuest.style.color };
 
             newGuest.setAttribute('data-guest-id', guestId);
-
             guestList.appendChild(newGuest);
         }
     });
+
+    // Poređaj DOM elemente po redosledu iz `users`
+    users.forEach(nickname => {
+        const guestId = `guest-${nickname}`;
+        const guestElement = document.getElementById(guestId);
+        if (guestElement) {
+            guestList.appendChild(guestElement);
+        }
+    });
 });
+
 //  COLOR PICKER -OBICNE BOJE
 document.getElementById('colorBtn').addEventListener('click', function() {
     document.getElementById('colorPicker').click();
