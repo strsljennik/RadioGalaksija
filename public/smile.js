@@ -111,6 +111,7 @@ const allItems = [
         
          'mesa.webp', 'luster.webp', 'bye.webp', 'crveni.webp', 
         'slika1.avifs', 'slika3.avifs', 'slika4.avifs', 'bub.gif', 'ok.gif', 
+         'slika5.avifs', 'slika6.avifs', 'slika7.avifs','slika8.avifs', 'nag1.webp', 
         'uzivam.gif', 'stik10.png', 'dance.gif', 'dance1.gif', 'dance2.gif', 
         'dance3.gif', 'ily1.gif', 'ily2.gif', 'beba.gif', 
         'rg.gif', 'x.gif', 'x1.gif', 'kiss.gif', 'kiss1.gif', 
