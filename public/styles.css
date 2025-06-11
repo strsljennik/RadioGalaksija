@@ -27,15 +27,19 @@ body {
 #chatContainer {
     width: 900px;
     height: 550px;
+    position: absolute;
+    top: 300px;
+    left: 300px;
+    /* ostalo ostaje isto */
     margin: auto;
-     display: flex;
-    position: absolute; 
+    display: flex;
     flex-direction: column;
     overflow: hidden;
     z-index: 1;
-  border: 5px solid white;
-   border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
+    border: 5px solid white;
+    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
 }
+
 
 #toolbar {
     width: 100%;
