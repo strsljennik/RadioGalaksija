@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 module.exports = (io) => {
-    let chatContainerState = { x: 300, y: 100, width: 900, height: 600 };
+    let chatContainerState = { x: 300, y: 300, width: 900, height: 600 };
     const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
   
   // **Šema i model za banovane IP adrese**
