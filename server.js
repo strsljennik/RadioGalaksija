@@ -10,7 +10,6 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const os = require('os');
 
 const app = express();
 const server = http.createServer(app);
@@ -57,12 +56,7 @@ setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u 
 privatmodul(io, guests);
 let currentBackground = "";
 let textElements = [];
-
-setInterval(() => {
-  const usedMem = process.memoryUsage().rss / 1024 / 1024; // MB
-  const load = os.loadavg(); // CPU load (1, 5, 15 minuta)
-  console.log(`RAM: ${usedMem.toFixed(2)} MB | CPU: ${load[0].toFixed(2)}`);
-}, 180000); // svakih 3 minuta
+ let trenutnaProzirnost = 1;
 
 // Socket.io događaji
 io.on('connection', (socket) => {
@@ -203,7 +197,14 @@ socket.on('avatarChange', (data) => {
   }
 });
 
-   // Obrada diskonekcije korisnika
+   socket.emit('prozirnost', trenutnaProzirnost);
+
+socket.on('prozirnost', (alfa) => {
+  trenutnaProzirnost = alfa;
+  io.emit('prozirnost', alfa);
+});
+
+  // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
