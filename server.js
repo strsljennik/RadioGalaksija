@@ -57,7 +57,6 @@ setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u 
 privatmodul(io, guests);
 let currentBackground = "";
 let textElements = [];
- let trenutnaProzirnost = 0;
 
 setInterval(() => {
   const usedMem = process.memoryUsage().rss / 1024 / 1024; // MB
@@ -204,14 +203,7 @@ socket.on('avatarChange', (data) => {
   }
 });
 
-   socket.emit('prozirnost', trenutnaProzirnost);
-
-socket.on('prozirnost', (alfa) => {
-  trenutnaProzirnost = alfa;
-  io.emit('prozirnost', alfa);
-});
-
-  // Obrada diskonekcije korisnika
+   // Obrada diskonekcije korisnika
     socket.on('disconnect', () => {
         console.log(`${guests[socket.id]} se odjavio. IP adresa korisnika: ${ipAddress}`);
         delete guests[socket.id];
