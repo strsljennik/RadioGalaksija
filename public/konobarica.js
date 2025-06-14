@@ -83,3 +83,21 @@ function decreaseFontSize() {
     iframe.style.display = visible ? 'none' : 'block';
     retryBtn.style.display = visible ? 'none' : 'inline-block';
   });
+
+// SLIKE ZA POZADINU 
+document.getElementById("pozadina").addEventListener("click", function() {
+    var url = prompt("Unesite URL slike:");
+    if (url) {
+        document.body.style.backgroundImage = "url('" + url + "')";
+        socket.emit("changeBackground", url); // Ovo šalje serveru
+    } else {
+        document.body.style.backgroundImage = "url('default_image_url.jpg')";
+        socket.emit("changeBackground", "default_image_url.jpg");
+
+    }
+});
+
+socket.on("updateBackground", (url) => {
+    document.body.style.backgroundImage = "url('" + url + "')";
+});
+
