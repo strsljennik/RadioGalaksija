@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
-
-    // **Šema i model za banovane IP adrese**
+  
+  // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
         ipAddress: { type: String, required: true, unique: true }
     });
@@ -109,6 +109,6 @@ const Guest = mongoose.model('Guest', GuestSchema);
         });
     });
 
-  socket.on('disconnect', () => {});
+      socket.on('disconnect', () => {});
     });
 };
