@@ -21,9 +21,6 @@ const io = socketIo(server, {
     }
 });
 
-// EXPORT IDE OVDE, POSLE DEFINICIJE server i io, PRE KORIŠĆENJA IO U DRUGIM MODULIMA
-module.exports = { server, io };
-
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
 
