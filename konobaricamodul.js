@@ -3,9 +3,7 @@ const mongoose = require('mongoose');
 module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
-  let currentLayout = null;
-let isReset = false;
-
+ 
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
         ipAddress: { type: String, required: true, unique: true }
