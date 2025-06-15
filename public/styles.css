@@ -128,8 +128,7 @@ body {
     height: calc(100% - 70px);
    color: white; /* Default color remains white for non-dynamic text */
    border-left: 2px solid white;
-     bottom: 0px;
-    border-bottom: 3px solid white;
+   border-bottom: 10px solid white;
  border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
     overflow-y: auto;
    }
