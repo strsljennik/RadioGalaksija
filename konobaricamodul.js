@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
- 
-  
-  // **Šema i model za banovane IP adrese**
+  let currentLayout = null;
+let isReset = false;
+
+   // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
         ipAddress: { type: String, required: true, unique: true }
     });
@@ -109,6 +110,23 @@ const Guest = mongoose.model('Guest', GuestSchema);
             console.log(`Info sačuvan za ${ipAddress}: ${note}`);
         });
     });
+
+      if (isReset) {
+    socket.emit('reset-layout');
+  } else if (currentLayout) {
+    socket.emit('chat-layout-update', currentLayout);
+  }
+
+  socket.on('chat-layout-update', data => {
+    currentLayout = data;
+    socket.broadcast.emit('chat-layout-update', data);
+  });
+
+  socket.on('reset-layout', () => {
+    isReset = true;
+    currentLayout = null;
+    io.emit('reset-layout');
+  });
 
   socket.on('disconnect', () => {});
     });
