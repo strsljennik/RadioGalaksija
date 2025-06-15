@@ -119,7 +119,7 @@ if (currentLayout) {
 // Kada neko učita fajl i pošalje update
 socket.on('chat-layout-update', data => {
   currentLayout = data;
-  socket.broadcast.emit('chat-layout-update', data);
+  io.emit('chat-layout-update', data);
 });
 
 if (isReset) {
