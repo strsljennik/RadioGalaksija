@@ -41,6 +41,15 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
+app.get("/stats", (req, res) => {
+    const used = process.memoryUsage();
+    const ram = (used.rss / 1024 / 1024).toFixed(2);
+    const cpu = process.cpuUsage();
+    const cpuPercent = ((cpu.user + cpu.system) / 10000).toFixed(2); // grubo
+
+    res.json({ ram, cpu: cpuPercent });
+});
+
 // Lista autorizovanih i banovanih korisnika
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 const bannedUsers = new Set();
