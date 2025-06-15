@@ -1,3 +1,5 @@
+const { io } = require("./server");
+
 let io;
 let newImage = [];
 let userImages = {}; // Mapa korisničkih slika
