@@ -1,3 +1,5 @@
+module.exports = { server, io };
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -21,6 +23,7 @@ const io = socketIo(server, {
         credentials: true
     }
 });
+
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
 slikemodul.setSocket(io);
@@ -208,4 +211,3 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server je pokrenut na portu ${PORT}`);
 });
-module.exports = { server, io };
