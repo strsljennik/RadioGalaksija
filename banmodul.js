@@ -1,3 +1,5 @@
+const { io } = require("./server");
+
 let privilegedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']); // Privilegovani korisnici
 let bannedUsers = new Set(); // Banovani korisnici
 const userSockets = new Map(); // Mapa koja čuva socket.id → username
