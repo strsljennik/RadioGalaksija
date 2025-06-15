@@ -376,7 +376,7 @@ document.getElementById('load').addEventListener('click', () => {
         const data = JSON.parse(event.target.result);
 
         // Emituj podatke svim korisnicima preko socket.io
-    socket.emit('chat-layout-update', { ...data, fromFile: true });
+      socket.emit('chat-layout-update', data);
 
         // Vrati pozadinu
         const chatContainer = document.getElementById('chatContainer');
@@ -401,11 +401,7 @@ document.getElementById('load').addEventListener('click', () => {
           el.style.height = item.height;
         });
 
-       if (!data.fromFile) {
-  document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
-}
-
-        // Dodaj slike iz fajla
+      // Dodaj slike iz fajla
         data.images.forEach(imgData => {
           const img = document.createElement('img');
           img.id = imgData.id;
@@ -530,11 +526,6 @@ socket.on('chat-layout-update', data => {
     el.style.width = item.width;
     el.style.height = item.height;
   });
-
-  // Ukloni postojeće slike
-  if (!data.fromFile) {
-    document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
-  }
 
   // Dodaj slike iz fajla
   data.images.forEach(imgData => {
