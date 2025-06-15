@@ -1,3 +1,5 @@
+const { io } = require("./server");
+
 const mongoose = require('mongoose');
 
 module.exports = (io) => {
