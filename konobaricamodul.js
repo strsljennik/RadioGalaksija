@@ -112,20 +112,17 @@ const Guest = mongoose.model('Guest', GuestSchema);
     });
 
  // Pošalji stanje novom korisniku
-if (currentLayout) {
+
+  if (currentLayout) {
   socket.emit('chat-layout-update', currentLayout);
 }
 
+// Kada neko učita fajl i pošalje update
 socket.on('chat-layout-update', data => {
-  // Sačuvaj samo potrebne delove iz data, a slike posebno
-  if (!currentLayout) currentLayout = {};
-  
-  currentLayout.background = data.background || currentLayout.background;
-  currentLayout.elements = data.elements || currentLayout.elements;
-  currentLayout.images = data.images || currentLayout.images;
-
-  io.emit('chat-layout-update', currentLayout);
+  currentLayout = data;
+  io.emit('chat-layout-update', data);
 });
+
 
 if (isReset) {
   socket.emit('reset-layout');
