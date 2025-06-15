@@ -1,3 +1,5 @@
+const { io } = require("./server");
+
 module.exports = function (io, guests) {
     // Privatna poruka
 let isPrivateChatEnabled = false; // Status privatnog chata
