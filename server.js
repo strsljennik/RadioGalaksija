@@ -56,6 +56,8 @@ setupSocketEvents(io, guests, bannedUsers); // Dodavanje guests i bannedUsers u 
 privatmodul(io, guests);
 let currentBackground = "";
 let textElements = [];
+let currentLayout = null;
+let isReset = false;
 
 // Socket.io događaji
 io.on('connection', (socket) => {
@@ -194,6 +196,26 @@ socket.on('avatarChange', (data) => {
     }
     socket.broadcast.emit('avatarChange', data); // Pošalji svima ostalima (i kad je avatar prazan)
   }
+});
+
+      if (currentLayout) {
+  socket.emit('chat-layout-update', currentLayout);
+}
+
+// Kada neko učita fajl i pošalje update
+socket.on('chat-layout-update', data => {
+  currentLayout = data;
+  io.emit('chat-layout-update', data);
+});
+
+if (isReset) {
+  socket.emit('reset-layout');
+}
+
+socket.on('reset-layout', () => {
+  isReset = true;
+  currentLayout = null;
+  io.emit('reset-layout');
 });
 
    // Obrada diskonekcije korisnika
