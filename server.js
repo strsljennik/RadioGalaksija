@@ -1,3 +1,15 @@
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const { connectDB } = require('./mongo');
+const { register, login } = require('./prijava');
+const { setupSocketEvents } = require('./banmodul'); // Uvoz funkcije iz banmodula
+const konobaricaModul = require('./konobaricamodul'); // Uvoz konobaricamodul.js
+const pingService = require('./ping');
+const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
+require('dotenv').config();
+const cors = require('cors');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -8,24 +20,12 @@ const io = socketIo(server, {
         credentials: true
     }
 });
-module.exports = { server, io };
 
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const { connectDB } = require('./mongo');
-const { register, login } = require('./prijava');
-const { setupSocketEvents } = require('./banmodul'); // Uvoz funkcije iz banmodula
-const konobaricaModul = require('./konobaricamodul'); // Uvoz konobaricamodul.js
-const slikemodul = require('./slikemodul');
-const pingService = require('./ping');
-const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
-require('dotenv').config();
-const cors = require('cors');
+// EXPORT IDE OVDE, POSLE DEFINICIJE server i io, PRE KORIŠĆENJA IO U DRUGIM MODULIMA
+module.exports = { server, io };
 
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
-slikemodul.setSocket(io);
 
 // Middleware za parsiranje JSON podataka i serviranje statičkih fajlova
 app.use(express.json());
@@ -41,6 +41,7 @@ app.post('/login', (req, res) => login(req, res, io));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
+
 // Lista autorizovanih i banovanih korisnika
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 const bannedUsers = new Set();
