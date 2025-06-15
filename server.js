@@ -1,3 +1,13 @@
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: '*', // Omogućava svim domenima da se povežu putem WebSocket-a
+        methods: ['GET', 'POST'],
+        allowedHeaders: ['Content-Type'],
+        credentials: true
+    }
+});
 module.exports = { server, io };
 
 const express = require('express');
@@ -12,17 +22,6 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-        origin: '*', // Omogućava svim domenima da se povežu putem WebSocket-a
-        methods: ['GET', 'POST'],
-        allowedHeaders: ['Content-Type'],
-        credentials: true
-    }
-});
 
 connectDB(); // Povezivanje na bazu podataka
 konobaricaModul(io);
