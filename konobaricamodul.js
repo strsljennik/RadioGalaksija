@@ -4,6 +4,7 @@ module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
      let currentLayout = null;
+      let isReset = false;
   
   // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
@@ -120,7 +121,12 @@ socket.on('chat-layout-update', data => {
   socket.broadcast.emit('chat-layout-update', data);
 });
 
- socket.on('reset-layout', () => {
+ if (isReset) {
+    socket.emit('reset-layout');
+  }
+
+  socket.on('reset-layout', () => {
+    isReset = true;
     io.emit('reset-layout');
   });
 
