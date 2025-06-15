@@ -30,6 +30,7 @@ body {
     position: absolute;
     top: 100px;
     left: 300px;
+    background-color: black;
     /* ostalo ostaje isto */
     margin: auto;
     display: flex;
