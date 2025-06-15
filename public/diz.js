@@ -655,12 +655,12 @@ function performReset() {
     }
 
     // Resetuj stilove
-    el.style.position = '';
-    el.style.top = '';
-    el.style.left = '';
-    el.style.width = '';
-    el.style.height = '';
-    el.style.boxShadow = '';
+    el.style.position = 'static';
+el.style.top = 'auto';
+el.style.left = 'auto';
+el.style.width = 'auto';
+el.style.height = 'auto';
+ el.style.boxShadow = '';
     el.style.border = '';
     el.style.userSelect = '';
     el.style.padding = '';
