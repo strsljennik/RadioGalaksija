@@ -401,8 +401,9 @@ document.getElementById('load').addEventListener('click', () => {
           el.style.height = item.height;
         });
 
-        // Ukloni sve postojeće slike sa id img-
-        document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
+       if (!data.fromFile) {
+  document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
+}
 
         // Dodaj slike iz fajla
         data.images.forEach(imgData => {
