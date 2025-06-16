@@ -10,6 +10,8 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
+const tracer = require('dd-trace').init();
+
 
 const app = express();
 const server = http.createServer(app);
