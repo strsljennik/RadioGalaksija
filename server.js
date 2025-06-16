@@ -10,8 +10,6 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const tracer = require('dd-trace').init();
-
 
 const app = express();
 const server = http.createServer(app);
@@ -42,14 +40,10 @@ app.post('/login', (req, res) => login(req, res, io));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
-
-app.get("/stats", (req, res) => {
-    const used = process.memoryUsage();
-    const ram = (used.rss / 1024 / 1024).toFixed(2);
-    const cpu = process.cpuUsage();
-    const cpuPercent = ((cpu.user + cpu.system) / 10000).toFixed(2); // grubo
-
-    res.json({ ram, cpu: cpuPercent });
+app.get('/metrics', (req, res) => {
+  const memoryUsage = process.memoryUsage();
+  const cpuUsage = process.cpuUsage();
+  res.json({ memoryUsage, cpuUsage });
 });
 
 // Lista autorizovanih i banovanih korisnika
