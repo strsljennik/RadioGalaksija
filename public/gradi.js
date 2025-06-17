@@ -13,19 +13,25 @@ document.addEventListener("DOMContentLoaded", () => {
     "openModal",
     "smilesBtn",
     "GBtn",
-    "gostimodal",
     "tube",
     "sound",
-    "gradijent",
+ 
   
   ];
 
-  const paket = ["openModal", "smilesBtn", "GBtn", "gostimodal", "tube", "sound"];
+  const paket = ["openModal", "smilesBtn", "GBtn","tube", "sound"];
 
-  const neonBoje = [
-    "red", "yellow", "lime", "white", "blue", "gray", "pink", "purple",
-    "orange", "cyan", "magenta", "turquoise", "gold", "silver", "navy", "teal"
-  ];
+const neonBoje = [
+  "red", "yellow", "lime", "white", "blue", "gray", "pink", "purple",
+  "orange", "cyan", "magenta", "turquoise", "gold", "silver", "navy", "teal",
+  "darkred",            // trula višnja
+  "fuchsia",            // jarka roze-ljubičasta
+  "orchid",             // nežno ljubičasta
+  "hotpink",            // intenzivna roze
+  "lightcoral",         // bledo crvena
+  "plum"                // svetlo ljubičasta
+];
+
 
   gradiBtn.addEventListener("click", () => {
     if (gradijentTabla.style.display === "none") {
