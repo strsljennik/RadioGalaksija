@@ -42,17 +42,16 @@ document.head.appendChild(style);
 let avatars = {};
 
 // Funkcija za sačuvavanje avatara u sessionStorage i localStorage
+// Funkcija za sačuvavanje avatara u sessionStorage
 function saveAvatarsToStorage() {
   sessionStorage.setItem('avatars', JSON.stringify(avatars));
-  localStorage.setItem('avatars', JSON.stringify(avatars));
 }
 
-// Funkcija za učitavanje avatara iz sessionStorage ili localStorage
+// Funkcija za učitavanje avatara iz sessionStorage
 function loadAvatarsFromStorage() {
-  const storedAvatars = sessionStorage.getItem('avatars') || localStorage.getItem('avatars');
+  const storedAvatars = sessionStorage.getItem('avatars');
   return storedAvatars ? JSON.parse(storedAvatars) : {};
 }
-
 // Pomoćna funkcija za kreiranje avatara
 function createAvatarImg(src) {
   const img = document.createElement('img');
