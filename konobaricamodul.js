@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
+  const trenutnoStanje = {};
  
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
@@ -19,42 +20,36 @@ const GuestSchema = new mongoose.Schema({
 const Guest = mongoose.model('Guest', GuestSchema);
 
 
-  io.on('connection', (socket) => {
-    socket.emit('updateChatContainer', { ...chatContainerState });
+io.on('connection', (socket) => {
+  socket.emit('updateChatContainer', { ...chatContainerState });
 
   socket.on('new_guest', () => {
-            const greetingMessage = `Dobro došli , osećajte se kao kod kuće, i budite raspoloženi! Sada će vam vaša Konobarica posluziti kaficu ☕, 
-                                    a naši DJ-evi će se pobrinuti da vam ispune muzičke želje. Registrovanje , Logovanje , Biranje boje , Muzika i sve ostalo 
-                                    sto vam je potrebno mozete naci na tabli koja se otvara klikom na dugme G`;
-            io.emit('message', {
-                username: '<span class="konobarica">Konobarica</span>',
-                color: 'orange',
-                message: greetingMessage,
-                isSystemMessage: true
-            });
-        });
+    const greetingMessage = `Dobro došli , osećajte se kao kod kuće...`;
+    io.emit('message', {
+      username: '<span class="konobarica">Konobarica</span>',
+      color: 'orange',
+      message: greetingMessage,
+      isSystemMessage: true
+    });
+  });
 
-        socket.emit('updateChatContainer', { ...chatContainerState });
+  socket.on('moveChatContainer', (data) => {
+    if (typeof data.x === 'number' && typeof data.y === 'number') {
+      chatContainerState.x = data.x;
+      chatContainerState.y = data.y;
+      io.emit('updateChatContainer', { ...chatContainerState });
+    }
+  });
 
-        socket.on('moveChatContainer', (data) => {
-            if (typeof data.x === 'number' && typeof data.y === 'number') {
-                chatContainerState.x = data.x;
-                chatContainerState.y = data.y;
-                io.emit('updateChatContainer', { ...chatContainerState });
-            }
-        });
+  socket.on('resizeChatContainer', (data) => {
+    if (typeof data.width === 'number' && typeof data.height === 'number' && data.width > 50 && data.height > 50) {
+      chatContainerState.width = data.width;
+      chatContainerState.height = data.height;
+      io.emit('updateChatContainer', { ...chatContainerState });
+    }
+  });
 
-        socket.on('resizeChatContainer', (data) => {
-            if (typeof data.width === 'number' && typeof data.height === 'number' && data.width > 50 && data.height > 50) {
-                chatContainerState.width = data.width;
-                chatContainerState.height = data.height;
-                io.emit('updateChatContainer', { ...chatContainerState });
-            }
-        });
-
-        socket.emit('updateChatContainer', { ...chatContainerState });
-
-        // **BANIRANJE IP ADRESE**
+    // **BANIRANJE IP ADRESE**
         let ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
         if (ipAddress.includes(',')) {
             ipAddress = ipAddress.split(',')[0].trim(); // Uzimamo prvi IP ako ih ima više
@@ -108,6 +103,13 @@ const Guest = mongoose.model('Guest', GuestSchema);
             console.log(`Info sačuvan za ${ipAddress}: ${note}`);
         });
     });
+
+      socket.emit('pocetnoStanje', trenutnoStanje);
+
+  socket.on('promeniGradijent', (data) => {
+    trenutnoStanje[data.id] = { type: data.type, gradijent: data.gradijent };
+    socket.broadcast.emit('promeniGradijent', data);
+  });
 
   socket.on('disconnect', () => {});
     });
