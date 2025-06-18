@@ -37,8 +37,8 @@ body {
     flex-direction: column;
     overflow: hidden;
     z-index: 1;
-       border: 3px solid white;
-   box-shadow: 0 0 15px white;
+    border: 5px solid white;
+    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
 }
 
 
@@ -49,13 +49,14 @@ body {
     justify-content: space-around;
     align-items: center;
     border-bottom: 2px solid white;
-box-shadow: 0 4px 4px rgba(255, 255, 255, 0.5);
+ border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
 }
 
 .toolbarBtn {
-    padding: 5px 10px;
+    padding: 10px 20px;
     background-color: black;
-    border: 1px solid white;
+    border: 2px solid white;
     color: white;
     cursor: pointer;
     font-size: 18px;
@@ -86,7 +87,7 @@ box-shadow: 0 4px 4px rgba(255, 255, 255, 0.5);
 }
 
 #messageArea::-webkit-scrollbar-thumb {
-  background: black
+  background: linear-gradient(to bottom, green, skyblue, red);
   border-radius: 5px;
 }
 
@@ -103,6 +104,7 @@ box-shadow: 0 4px 4px rgba(255, 255, 255, 0.5);
     padding: 5px;
     border-radius: 5px;
     border: 2px solid;
+    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
     resize: none;
     font-size: 17px;
     background-color: black;
@@ -127,6 +129,7 @@ box-shadow: 0 4px 4px rgba(255, 255, 255, 0.5);
    color: white; /* Default color remains white for non-dynamic text */
    border-left: 2px solid white;
    border-bottom: 10px solid white;
+ border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
     overflow-y: auto;
    }
 #guestList::-webkit-scrollbar {
@@ -134,7 +137,8 @@ box-shadow: 0 4px 4px rgba(255, 255, 255, 0.5);
 }
 
 #guestList::-webkit-scrollbar-thumb {
- border-radius: 5px;
+  background: linear-gradient(to bottom, hotpink, black, yellow);
+  border-radius: 5px;
 }
 
 #guestList::-webkit-scrollbar-track {
