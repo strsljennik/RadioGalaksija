@@ -109,7 +109,7 @@ const allItems = [
     ...['☕', '🖤', '💛', '💚','👀'].map(e => ({ type: 'emoji', content: e })),
     ...[
         
-         'mesa.webp', 'luster.webp', 'bye.webp', 'crveni.webp', 
+         'mesa.webp', 'luster.webp', 'bye.webp', 'crveni.webp', 'sl.webp', 
          'slika9.avifs', 'slika10.avifs', 'slika11.avifs','slika12.avifs','slika13.avifs',
         'slika1.avifs', 'slika3.avifs', 'slika4.avifs', 'bub.gif', 'ok.gif', 
          'slika5.avifs', 'slika6.avifs', 'slika7.avifs','slika8.avifs', 'nag1.webp', 
