@@ -24,10 +24,9 @@ io.on('connection', (socket) => {
   socket.emit('updateChatContainer', { ...chatContainerState });
 
   socket.on('new_guest', () => {
-    const greetingMessage = `Dobro došli , osećajte se kao kod kuće...`;
-    io.emit('message', {
+  const greetingMessage = `Dobro došli #n, znam da vam FLATCAST nedostaje <img src="emoji gif/luster.webp" alt="emoji"> osećajte se kao kod kuće...`;
+  io.emit('message', {
       username: '<span class="konobarica">Konobarica</span>',
-      color: 'orange',
       message: greetingMessage,
       isSystemMessage: true
     });
@@ -103,13 +102,6 @@ io.on('connection', (socket) => {
         });
     });
 
-      socket.emit('pocetnoStanje', trenutnoStanje);
-
-  socket.on('promeniGradijent', (data) => {
-    trenutnoStanje[data.id] = { type: data.type, gradijent: data.gradijent };
-    socket.broadcast.emit('promeniGradijent', data);
-  });
-
-  socket.on('disconnect', () => {});
+      socket.on('disconnect', () => {});
     });
 };
