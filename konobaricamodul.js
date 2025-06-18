@@ -19,9 +19,10 @@ const GuestSchema = new mongoose.Schema({
 
 const Guest = mongoose.model('Guest', GuestSchema);
 
-
-io.on('connection', (socket) => {
-  socket.emit('updateChatContainer', { ...chatContainerState });
+  io.on('connection', (socket) => {
+   socket.on('requestInitialChatContainerData', () => {
+    socket.emit('initialChatContainerData', chatContainerState);
+  });
 
   socket.on('new_guest', () => {
  const greetingMessage = `Dobro došli , znam da vam FLATCAST nedostaje, osećajte se kao kod kuće... <img src="emoji gif/luster.webp" alt="emoji">`;
@@ -32,27 +33,36 @@ io.on('connection', (socket) => {
     });
   });
 
-   socket.emit('updateChatContainer', { ...chatContainerState });
+    socket.on('moveChatContainer', (data) => {
+    if (typeof data.x === 'number' && typeof data.y === 'number') {
+      chatContainerState.x = data.x;
+      chatContainerState.y = data.y;
+      // Emituj svim ostalim klijentima
+      socket.broadcast.emit('updateChatContainer', { x: data.x, y: data.y });
+    }
+  });
 
-        socket.on('moveChatContainer', (data) => {
-            if (typeof data.x === 'number' && typeof data.y === 'number') {
-                chatContainerState.x = data.x;
-                chatContainerState.y = data.y;
-                io.emit('updateChatContainer', { ...chatContainerState });
-            }
-        });
+  // Kada korisnik promeni veličinu chata
+  socket.on('resizeChatContainer', (data) => {
+    if (
+      typeof data.width === 'number' && typeof data.height === 'number' &&
+      typeof data.x === 'number' && typeof data.y === 'number'
+    ) {
+      chatContainerState.width = data.width;
+      chatContainerState.height = data.height;
+      chatContainerState.x = data.x;
+      chatContainerState.y = data.y;
+      // Emituj svim ostalim klijentima
+      socket.broadcast.emit('updateChatContainer', {
+        width: data.width,
+        height: data.height,
+        x: data.x,
+        y: data.y
+      });
+    }
+  });
 
-        socket.on('resizeChatContainer', (data) => {
-            if (typeof data.width === 'number' && typeof data.height === 'number' && data.width > 50 && data.height > 50) {
-                chatContainerState.width = data.width;
-                chatContainerState.height = data.height;
-                io.emit('updateChatContainer', { ...chatContainerState });
-            }
-        });
-
-        socket.emit('updateChatContainer', { ...chatContainerState });
-  
-   // **BANIRANJE IP ADRESE**
+     // **BANIRANJE IP ADRESE**
         let ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
         if (ipAddress.includes(',')) {
             ipAddress = ipAddress.split(',')[0].trim(); // Uzimamo prvi IP ako ih ima više
