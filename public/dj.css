@@ -9,8 +9,8 @@
 .konobarica {
     font-weight: bold;
     font-style: italic;
-  background: radial-gradient(circle, purple, yellow, blue, green, red);
-    -webkit-background-clip: text;
+background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crvena, bela, roza, tirkiz */
+   -webkit-background-clip: text;
     color: transparent; /* Tekst je transparentan da bi se video gradijent */
 }
 
@@ -18,8 +18,8 @@
 .system-message {
   font-weight: bold;
     font-style: italic;
-    background: linear-gradient(45deg, #ff6347, #ffea00, #ff1493, #00ff00); /* Crvena, žuta, roza, zelena */
-    -webkit-background-clip: text;
+ background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crvena, bela, roza, tirkiz */
+   -webkit-background-clip: text;
     color: transparent; /* Tekst je transparentan da bi se video gradijent */
 }
 
