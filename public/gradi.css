@@ -33,7 +33,7 @@
 
 
 /* Gradijenti */
-#gradijent .gradijent-box.gradient-1 { background-image: linear-gradient(45deg, #ff6347, #ffea00, #ff1493, #00ff00); }
+#gradijent .gradijent-box.gradient-1 {background-image: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); }
 #gradijent .gradijent-box.gradient-2 { background-image: radial-gradient(circle, #ff6347, #ffea00, #ff1493, #00ff00); }
 #gradijent .gradijent-box.gradient-3 { background-image: linear-gradient(to right, #00f, #ff6347, #ff1493, #ffea00); }
 #gradijent .gradijent-box.gradient-4 { background-image: radial-gradient(circle, #00ff00, #00f, #ff1493, #ff6347); }
