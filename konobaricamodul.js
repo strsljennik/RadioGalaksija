@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
   socket.emit('updateChatContainer', { ...chatContainerState });
 
   socket.on('new_guest', () => {
-  const greetingMessage = `Dobro došli #n, znam da vam FLATCAST nedostaje <img src="emoji gif/luster.webp" alt="emoji"> osećajte se kao kod kuće...`;
+ const greetingMessage = `Dobro došli , znam da vam FLATCAST nedostaje, osećajte se kao kod kuće... <img src="emoji gif/luster.webp" alt="emoji">`;
   io.emit('message', {
       username: '<span class="konobarica">Konobarica</span>',
       message: greetingMessage,
