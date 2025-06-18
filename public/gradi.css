@@ -55,22 +55,24 @@
 #gradijent .gradijent-box.gradient-19 { background-image: linear-gradient(60deg, #4169e1, #9acd32, #d3d3d3); }
 #gradijent .gradijent-box.gradient-20 { background-image: radial-gradient(circle, #00bfff, #ffff00, #2f4f4f); }
 
-#gradijent .gradijent-box.gradient-21 { background-image: linear-gradient(45deg, #ff6347, #ff00ff, #ff1493, #00ff00); }
-#gradijent .gradijent-box.gradient-22 { background-image: radial-gradient(circle, #f00, #ff1493, #00ff00, #ffea00); }
-#gradijent .gradijent-box.gradient-23 { background-image: linear-gradient(to right, #ff6347, #ffea00, #ff00ff); }
-#gradijent .gradijent-box.gradient-24 { background-image: radial-gradient(circle, #ff00ff, #ff1493, #ff6347, #00f); }
-#gradijent .gradijent-box.gradient-25 { background-image: linear-gradient(to left, #ff6347, #ff1493, #f00, #ffea00); }
-#gradijent .gradijent-box.gradient-26 { background-image: radial-gradient(circle, #ff00ff, #ff1493, #00f, #ff6347); }
-#gradijent .gradijent-box.gradient-27 { background-image: linear-gradient(to right, #ff6347, #00ff00, #ff1493, #00ffff); }
-#gradijent .gradijent-box.gradient-28 { background-image: radial-gradient(circle, #ff1493, #f00, #ff6347); }
-#gradijent .gradijent-box.gradient-29 { background-image: linear-gradient(45deg, #ffea00, #ff6347, #ff1493, #f00); }
-#gradijent .gradijent-box.gradient-30 { background-image: radial-gradient(circle, #ff6347, #00ffff, #ff1493, #ff00ff); }
+#gradijent .gradijent-box.gradient-21 { background-image: radial-gradient(circle, white, red, yellow, pink); }
+#gradijent .gradijent-box.gradient-22 { background-image: linear-gradient(135deg, white, #00ffff, #ff1493, #ffff00); }
+#gradijent .gradijent-box.gradient-23 { background-image: radial-gradient(circle, white, #ff00ff, #add8e6); }
+#gradijent .gradijent-box.gradient-24 { background-image: linear-gradient(to right, white, #ff1493, #00ffff, #ffea00); }
+#gradijent .gradijent-box.gradient-25 { background-image: radial-gradient(circle, white, #ff6347, #00ffff, #ffc0cb); }
+#gradijent .gradijent-box.gradient-26 { background-image: linear-gradient(to left, white, #ff00ff, #add8e6, #ffea00, #ff1493); }
+#gradijent .gradijent-box.gradient-27 { background-image: radial-gradient(circle, white, #ff00ff, #ff1493, #00ffff); }
+#gradijent .gradijent-box.gradient-28 { background-image: linear-gradient(45deg, white, #ffea00, #ff00ff, #add8e6); }
+#gradijent .gradijent-box.gradient-29 { background-image: radial-gradient(circle, white, pink, red, #00ffff); }
+#gradijent .gradijent-box.gradient-30 { background-image: linear-gradient(to bottom, white, #ff1493, #ffea00, #00ffff); }
 
-#gradijent .gradijent-box.gradient-31 { background-image: linear-gradient(to right, #4682b4, #2e8b57); } /* nebo plavo, zelena */
-#gradijent .gradijent-box.gradient-32 { background-image: radial-gradient(circle, #ffa500, #8b4513); } /* narandza, kafena */
-#gradijent .gradijent-box.gradient-33 { background-image: linear-gradient(45deg, #708090, #000000cc); } /* siva, polucrna */
-#gradijent .gradijent-box.gradient-34 { background-image: radial-gradient(circle, #00ced1, #f5f5f5); } /* tirkiz, bela */
-#gradijent .gradijent-box.gradient-35 { background-image: linear-gradient(to left, #1e90ff, #00fa9a); } /* more plavo, zelena */
+
+#gradijent .gradijent-box.gradient-31 { background-image: radial-gradient(circle, white, #ff1493, #00ced1, #ffea00); }
+#gradijent .gradijent-box.gradient-32 { background-image: linear-gradient(90deg, white, #ff00ff, #add8e6, #f00); }
+#gradijent .gradijent-box.gradient-33 { background-image: radial-gradient(circle, white, #ffc0cb, #00ffff, #ff6347); }
+#gradijent .gradijent-box.gradient-34 { background-image: linear-gradient(to right, white, #ffea00, #00ffff, #ff1493); }
+#gradijent .gradijent-box.gradient-35 { background-image: radial-gradient(circle, white, #ff1493, #add8e6, #ffff00, #ff00ff); }
+
 
 #gradijent .gradijent-box.gradient-36 { background-image: linear-gradient(45deg, #ff4da6, #ff66cc); } /* neon roze */
 #gradijent .gradijent-box.gradient-37 { background-image: radial-gradient(circle, #ff99cc, #ff4da6); } /* neon ružičasta */
