@@ -32,21 +32,26 @@ io.on('connection', (socket) => {
     });
   });
 
-   socket.on('moveChatContainer', (data) => {
-    if (typeof data.x === 'number' && typeof data.y === 'number') {
-      chatContainerState.x = data.x;
-      chatContainerState.y = data.y;
-      io.emit('updateChatContainer', { ...chatContainerState });
-    }
-  });
+   socket.emit('updateChatContainer', { ...chatContainerState });
 
-  socket.on('resizeChatContainer', (data) => {
-    if (typeof data.width === 'number' && typeof data.height === 'number' && data.width > 50 && data.height > 50) {
-      chatContainerState.width = data.width;
-      chatContainerState.height = data.height;
-      io.emit('updateChatContainer', { ...chatContainerState });
-    }
-  });
+        socket.on('moveChatContainer', (data) => {
+            if (typeof data.x === 'number' && typeof data.y === 'number') {
+                chatContainerState.x = data.x;
+                chatContainerState.y = data.y;
+                io.emit('updateChatContainer', { ...chatContainerState });
+            }
+        });
+
+        socket.on('resizeChatContainer', (data) => {
+            if (typeof data.width === 'number' && typeof data.height === 'number' && data.width > 50 && data.height > 50) {
+                chatContainerState.width = data.width;
+                chatContainerState.height = data.height;
+                io.emit('updateChatContainer', { ...chatContainerState });
+            }
+        });
+
+        socket.emit('updateChatContainer', { ...chatContainerState });
+  
    // **BANIRANJE IP ADRESE**
         let ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
         if (ipAddress.includes(',')) {
