@@ -1,8 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => {
-    document.addEventListener('contextmenu', event => event.preventDefault());
-});
-
-
 // Kada se povežemo sa serverom, emitujemo događaj za novog gosta
 socket.emit('new_guest');
 
