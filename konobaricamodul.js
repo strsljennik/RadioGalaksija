@@ -26,7 +26,8 @@ const Guest = mongoose.model('Guest', GuestSchema);
   });
 socket.on('new_guest', () => {
   const greetingMessage = `Dobro došli, osećajte se kao kod kuće. Vase muzicke zelje potrudice se da vam ispune Dj LiLi, Dj Sandra i moja malenkost, amater Dj *__X__*. 
-  Kada nismo na smeni tu je nama uvek nas dragi Auto Dj. Uzivajte <img src="emoji gif/luster.webp" alt="emoji">`;
+  Kada nismo na smeni tu je nama uvek nas dragi Auto Dj.  Uzivajte
+  <img src="emoji gif/luster.webp" alt="emoji">`;
   io.emit('message', {
     username: '<span class="konobarica">Konobarica</span>',
     message: greetingMessage,
