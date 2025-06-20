@@ -1,7 +1,7 @@
  const animations = {
   rotateLetters: `@keyframes rotateLetters {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(360deg); }
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
   }
   .rotate-letter {
     display: inline-block;
