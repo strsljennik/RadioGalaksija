@@ -142,32 +142,33 @@ function applyAnimationToNick(nickname, animationName, speed = animationSpeed) {
 
   userDiv.innerHTML = '';
 
-  for (let i = 0; i < text.length; i++) {
+for (let i = 0; i < text.length; i++) {
+  if (text[i] === ' ') {
+    const spaceSpan = document.createElement('span');
+    spaceSpan.textContent = '\u00A0'; // nedeljivi razmak
+    spaceSpan.classList.add(animationName === 'rotateLetters' ? 'rotate-letter' : animationName === 'glowBlink' ? 'glow-letter' : '');
+    spaceSpan.style.animationDuration = `${speed}s`;
+    spaceSpan.style.animationDelay = `${i * 0.1}s`;
+    spaceSpan.style.animationIterationCount = animationName === 'rotateLetters' ? '1' : 'infinite';
+    spaceSpan.style.webkitFontSmoothing = 'antialiased';
+    spaceSpan.style.MozOsxFontSmoothing = 'grayscale';
+    spaceSpan.style.backfaceVisibility = 'hidden';
+    spaceSpan.style.transformStyle = 'preserve-3d';
+    userDiv.appendChild(spaceSpan);
+  } else {
     const span = document.createElement('span');
     span.textContent = text[i];
     span.classList.add(animationName === 'rotateLetters' ? 'rotate-letter' : animationName === 'glowBlink' ? 'glow-letter' : '');
     span.style.animationDuration = `${speed}s`;
     span.style.animationDelay = `${i * 0.1}s`;
     span.style.animationIterationCount = animationName === 'rotateLetters' ? '1' : 'infinite';
-
-    if (bgImage && bgImage !== 'none') {
-      span.style.backgroundImage = bgImage;
-      span.style.backgroundClip = 'text';
-      span.style.webkitBackgroundClip = 'text';
-      span.style.webkitTextFillColor = 'transparent';
-    } else {
-      span.style.color = textColor;
-    }
-
-    // Antialiasing i bolje performanse
     span.style.webkitFontSmoothing = 'antialiased';
     span.style.MozOsxFontSmoothing = 'grayscale';
     span.style.backfaceVisibility = 'hidden';
     span.style.transformStyle = 'preserve-3d';
-
     userDiv.appendChild(span);
   }
-
+}
   if (animationName === 'rotateLetters') {
     let completedSpans = 0;
     const spans = userDiv.querySelectorAll('.rotate-letter');
