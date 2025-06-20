@@ -65,21 +65,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const guestList = document.getElementById('guestList');
     const chatInput = document.getElementById('chatInput');
 
-    guestList.addEventListener('click', (event) => {
-        if (isPrivateChatEnabled && event.target.classList.contains('guest')) {
-            if (selectedGuest === event.target) {
-                if (selectedGuest.classList.contains('use-gradient')) {
-                    selectedGuest.classList.remove('selected-overlay');
-                } else {
-                    selectedGuest.style.backgroundColor = '';
-                }
-                selectedGuest = null;
-                chatInput.value = '';
-                console.log("Privatni chat isključen.");
-                return;
+  guestList.addEventListener('contextmenu', (event) => {
+    event.preventDefault(); // spreči browser meni
+    if (isPrivateChatEnabled && event.target.classList.contains('guest')) {
+        if (selectedGuest === event.target) {
+            if (selectedGuest.classList.contains('use-gradient')) {
+                selectedGuest.classList.remove('selected-overlay');
+            } else {
+                selectedGuest.style.backgroundColor = '';
             }
+            selectedGuest = null;
+            chatInput.value = '';
+            console.log("Privatni chat isključen.");
+            return;
+        }
 
-            if (selectedGuest) {
+         if (selectedGuest) {
                 if (selectedGuest.classList.contains('use-gradient')) {
                     selectedGuest.classList.remove('selected-overlay');
                 } else {
