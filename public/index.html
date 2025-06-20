@@ -54,52 +54,46 @@
 
 <!-- Modal -->
 <div id="gostimodal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        
-        <!-- Dugmici unutar modala -->
-        <button class="toolbarBtn" id="NIK"> REGISTRACIJA / LOGIN</button>
-        <button class="toolbarBtn" id="font">Font</button>
-         <button class="toolbarBtn" id="boldBtn">Bold</button>
-        <button class="toolbarBtn" id="italicBtn">Italic</button>
-         <button class="toolbarBtn" id="farbe">Farbe</button>
-        <button class="toolbarBtn" id="colorBtn">Color</button>
-        <input type="color" id="colorPicker" style="display: none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+    <!-- Dugmici unutar modala -->
+    <button class="toolbarBtn" id="NIK">REGISTRACIJA / LOGIN</button>
+    <button class="toolbarBtn" id="font">Font</button>
+    <button class="toolbarBtn" id="boldBtn">Bold</button>
+    <button class="toolbarBtn" id="italicBtn">Italic</button>
+    <button class="toolbarBtn" id="farbe">Farbe</button>
+    <button class="toolbarBtn" id="colorBtn">Color</button>
+    <input type="color" id="colorPicker" style="display: none;">
+
+    <!-- Dodaj druge dugmice po potrebi -->
+    <button class="toolbarBtn" id="plusBtn" onclick="increaseFontSize()">+</button>
+    <button class="toolbarBtn" id="minusBtn" onclick="decreaseFontSize()">-</button>
+    <button class="toolbarBtn" id="linijadoleBtn">Temelj</button>
+    <button class="toolbarBtn" id="linijagoreBtn">Krov</button>
+    <button class="toolbarBtn" id="sl">Slike</button>
+  </div>
+</div>
     
-        <!-- Dodaj druge dugmice po potrebi -->
-       <button class="toolbarBtn" id="plusBtn" onclick="increaseFontSize()">+</button>
-<button class="toolbarBtn" id="minusBtn" onclick="decreaseFontSize()">-</button>
-<button class="toolbarBtn" id="linijadoleBtn">Temelj</button>
-<button class="toolbarBtn" id="linijagoreBtn">Krov</button>
-         <button class="toolbarBtn" id="sl">Slike</button>
-      
-     
-          </div>
-</div>
+
 <div id="functionModal" class="modal" style="display: none;" draggable="true">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h2>Funkcije</h2>
-        
-        <div class="foregroundFunctions">
-            <button id="clearChat">Obriši chat</button>
-            <button id="privateMessage">Privat</button>
-           <button id="pozadina">Pozadina</button>
-            <button id="anitext">anitext</button>
-            <button id="spisak">Spisak</button>
-       
-    </div>
-        
-        <div class="backgroundFunctions">
-              <button id="addImage"> Slika</button>
-              <button id="chat"> Chat </button>
-               <button id="ram">Ram</button>
-            <button id="pesme"> Mixer </button>
-            <button id="govna"> *__X__*</button>
-          
-         </div>
-    </div>
+  <span class="close" id="closeModal">&times;</span>
+  <h2>Galaksija</h2>
+
+  <button id="clearChat">Obriši chat</button>
+  <button id="privateMessage">Privat</button>
+  <button id="pozadina">Pozadina</button>
+  <button id="anitext">anitext</button>
+  <button id="spisak">Spisak</button>
+
+  <button id="nik">Nik</button>
+  <button id="addImage">Slika</button>
+  <button id="chat">Chat</button>
+  <button id="ram">Ram</button>
+  <button id="pesme">Mixer</button>
+  <button id="govna">*__X__*</button>
 </div>
+
 
 <div id="uuidModal" style="display: none;">
     <h3>BY *__X__*</h3>
@@ -214,6 +208,7 @@
      <script src="slike.js"></script>
       <script src="stats.js"></script>
       <script src="mixer.js"></script>
+      <script src="nikani.js"></script>
     
     
            <!-- Default Statcounter code for Galaksija
