@@ -4,6 +4,7 @@ module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
   const trenutnoStanje = {};
+  const currentAnimations = {};
  
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
@@ -23,16 +24,15 @@ const Guest = mongoose.model('Guest', GuestSchema);
    socket.on('requestInitialChatContainerData', () => {
     socket.emit('initialChatContainerData', chatContainerState);
   });
-
-  socket.on('new_guest', () => {
- const greetingMessage = `Dobro došli , znam da vam FLATCAST nedostaje, osećajte se kao kod kuće... <img src="emoji gif/luster.webp" alt="emoji">`;
+socket.on('new_guest', () => {
+  const greetingMessage = `Dobro došli, osećajte se kao kod kuće. Vase muzicke zelje potrudice se da vam ispune Dj LiLi, Dj Sandra i moja malenkost, amater Dj *__X__*. 
+  Kada nismo na smeni tu je nama uvek nas dragi Auto Dj. Uzivajte <img src="emoji gif/luster.webp" alt="emoji">`;
   io.emit('message', {
-      username: '<span class="konobarica">Konobarica</span>',
-      message: greetingMessage,
-      isSystemMessage: true
-    });
+    username: '<span class="konobarica">Konobarica</span>',
+    message: greetingMessage,
+    isSystemMessage: true
   });
-
+});
     socket.on('moveChatContainer', (data) => {
     if (typeof data.x === 'number' && typeof data.y === 'number') {
       chatContainerState.x = data.x;
@@ -41,9 +41,7 @@ const Guest = mongoose.model('Guest', GuestSchema);
       socket.broadcast.emit('updateChatContainer', { x: data.x, y: data.y });
     }
   });
-
-  // Kada korisnik promeni veličinu chata
-  socket.on('resizeChatContainer', (data) => {
+   socket.on('resizeChatContainer', (data) => {
     if (
       typeof data.width === 'number' && typeof data.height === 'number' &&
       typeof data.x === 'number' && typeof data.y === 'number'
@@ -116,6 +114,12 @@ const Guest = mongoose.model('Guest', GuestSchema);
             console.log(`Info sačuvan za ${ipAddress}: ${note}`);
         });
     });
+     socket.emit('currentAnimations', currentAnimations);
+
+  socket.on('animationChange', ({ nickname, animation, speed }) => {
+    currentAnimations[nickname] = { animation, speed };
+    io.emit('animationChange', { nickname, animation, speed });
+  });
 
       socket.on('disconnect', () => {});
     });
