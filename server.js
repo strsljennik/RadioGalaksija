@@ -10,7 +10,7 @@ const pingService = require('./ping');
 const privatmodul = require('./privatmodul'); // Podesi putanju ako je u drugom folderu
 require('dotenv').config();
 const cors = require('cors');
-const { initSocket } = require('./kula');
+
 
 const app = express();
 const server = http.createServer(app);
@@ -50,7 +50,6 @@ app.get('/metrics', (req, res) => {
 // Lista autorizovanih i banovanih korisnika
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 const bannedUsers = new Set();
-initSocket(io);
 
 // Skladištenje informacija o gostima
 const guests = {};
