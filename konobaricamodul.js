@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const fetch = require('node-fetch');
 
 module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
@@ -62,7 +61,7 @@ socket.on('new_guest', () => {
     }
   });
 
-    // **BANIRANJE IP ADRESE**
+     // **BANIRANJE IP ADRESE**
         let ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
         if (ipAddress.includes(',')) {
             ipAddress = ipAddress.split(',')[0].trim(); // Uzimamo prvi IP ako ih ima više
@@ -96,29 +95,7 @@ socket.on('new_guest', () => {
                     });
             }
         });
-
-socket.use(async (packet, next) => {
-  let ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
-  if (ip.includes(',')) ip = ip.split(',')[0].trim();
-
-  try {
-    const response = await fetch(`https://proxycheck.io/v2/${ip}?vpn=1&asn=1&risk=1`);
-    const data = await response.json();
-
-    if (data[ip]?.proxy === "yes") {
-      console.log(`❌ VPN/proxy detektovan: ${ip}`);
-      socket.emit('banMessage', 'VPN/proxy nije dozvoljen!');
-      return socket.disconnect();
-    }
-
-    next(); // Nastavi ako nije proxy
-  } catch (err) {
-    console.error("Greška u proxycheck proveri:", err);
-    next(); // Nastavi i ako API ne radi (po izboru)
-  }
-});
-
-    //   ZA UNOS TEXTA U MODALU UUID
+//   ZA UNOS TEXTA U MODALU UUID
  // Proveri da li već postoji unos za ovu IP adresu
     Guest.findOne({ ipAddress }).then(existingGuest => {
         if (existingGuest) {
