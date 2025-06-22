@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const axios = require('axios');
 
 const banDataSchema = new mongoose.Schema({
   ipAddr: { type: String, required: true },
@@ -32,11 +33,27 @@ async function addBan(userData) {
 }
 
 function initSocket(io) {
-  io.on('connection', socket => {
+  io.on('connection', async (socket) => {
+    let ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+    if (ip.includes(',')) ip = ip.split(',')[0].trim();
+
+    // PROVERA VPN/PROXY/TOR i automatski disconnect
+    try {
+      const response = await axios.get(`https://ipapi.co/${ip}/json/`);
+      const isVPN = response.data.vpn || response.data.proxy || response.data.tor;
+      if (isVPN) {
+        console.log(`Blokiran VPN/proxy korisnik: ${ip}`);
+        socket.disconnect();
+        return;
+      }
+    } catch (e) {
+      console.log('Greška u proveri VPN:', e.message);
+    }
+
     socket.on('check-ban', async (userData, callback) => {
       try {
         const banned = await checkBan(userData);
-        callback({ banned }); // samo javimo da je banovan ili ne
+        callback({ banned }); // javimo da li je banovan ili ne
       } catch {
         callback({ banned: false });
       }
@@ -51,12 +68,6 @@ function initSocket(io) {
       }
     });
   });
-}
-const isVPN = response.data.vpn || response.data.proxy || response.data.tor;
-if (isVPN) {
-  console.log(`Blokiran VPN/proxy korisnik: ${ip}`);
-  socket.disconnect();
-  return;
 }
 
 module.exports = { initSocket, checkBan, addBan };
