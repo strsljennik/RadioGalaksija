@@ -4,8 +4,7 @@
   "main": "server.js",
   "dependencies": {
     "agent-base": "^6.0.2",
-     "node-fetch": "^2.6.1",
-    "axios": "^1.7.7",
+     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
