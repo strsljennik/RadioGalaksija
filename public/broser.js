@@ -1,3 +1,5 @@
+const socket = io();
+
 const button = document.getElementById('bro');
 const fin = document.createElement('div');
 fin.style.position = 'fixed';
@@ -16,7 +18,7 @@ document.body.appendChild(fin);
 
 let passwordEntered = false;
 let bannedUsers = new Set();
-let guestsData = {};
+let myVisitorId = null;
 
 function makeDraggable(element) {
   let isDragging = false;
@@ -56,13 +58,14 @@ button.addEventListener('click', async () => {
   if (fin.style.display === 'none') {
     fin.style.display = 'block';
 
+    // Uzmi fingerprint
     const fp = await FingerprintJS.load();
     const result = await fp.get();
-    const visitorId = result.visitorId;
+    myVisitorId = result.visitorId;
 
+    // Uzmi IP i geodata
     let ip = 'unknown';
     let geoData = {};
-
     try {
       const res = await fetch('https://ipapi.co/json/');
       geoData = await res.json();
@@ -72,8 +75,22 @@ button.addEventListener('click', async () => {
       geoData = {};
     }
 
-    // Traži server da ti pošalje listu korisnika sa svim podacima
-    socket.emit('requestUserList');
+    const userData = {
+      ip,
+      visitorId: myVisitorId,
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenSize: `${screen.width}x${screen.height}`,
+      country: geoData.country_name || 'unknown',
+      region: geoData.region || 'unknown',
+      city: geoData.city || 'unknown',
+      org: geoData.org || 'unknown',
+      timezone: geoData.timezone || 'unknown',
+    };
+
+    // Posalji serveru svoje podatke
+    socket.emit('user-data', userData);
 
   } else {
     fin.style.display = 'none';
@@ -81,52 +98,42 @@ button.addEventListener('click', async () => {
   }
 });
 
-// Reaguj na listu korisnika sa servera
-socket.on('updateGuestListWithData', (users) => {
-  guestsData = {};
+socket.on('update-user-list', users => {
   fin.innerHTML = '';
 
   users.forEach(user => {
-    guestsData[user.visitorId] = user;
-
     const userDiv = document.createElement('div');
     userDiv.style.border = '2px solid #0ff';
-    userDiv.style.color = bannedUsers.has(user.visitorId) ? 'red' : '#0ff';
+    userDiv.style.color = '#0ff';
     userDiv.style.padding = '10px';
     userDiv.style.marginBottom = '10px';
     userDiv.style.whiteSpace = 'pre-wrap';
     userDiv.style.cursor = 'pointer';
     userDiv.title = 'Dvaput klikni za ban';
 
-    const details = `
-Nickname: ${user.nickname}
-IP: ${user.ipAddress || 'unknown'}
-Provider: ${user.org || 'unknown'}
-Resolution: ${user.screen || 'unknown'}
-VisitorId: ${user.visitorId}
-UserAgent: ${user.userAgent || 'unknown'}
-Language: ${user.language || 'unknown'}
-Platform: ${user.platform || 'unknown'}
-Country: ${user.country || 'unknown'}
-Region: ${user.region || 'unknown'}
-City: ${user.city || 'unknown'}
-Timezone: ${user.timezone || 'unknown'}
-`;
+    userDiv.textContent = JSON.stringify(user, null, 2);
 
-    userDiv.textContent = details;
+    if (bannedUsers.has(user.visitorId)) {
+      userDiv.style.opacity = '0.5';
+      userDiv.style.textDecoration = 'line-through';
+    }
 
     userDiv.addEventListener('dblclick', () => {
-      if (!bannedUsers.has(user.visitorId)) {
-        bannedUsers.add(user.visitorId);
-        alert(`Korisnik ${user.nickname} banovan!`);
-        disableChat();
-        socket.emit('ban-user', user);
-        userDiv.style.color = 'red';
+      if (user.visitorId === myVisitorId) {
+        alert('Ne mozes banovati sebe');
+        return;
       }
+      bannedUsers.add(user.visitorId);
+      alert(`Korisnik ${user.visitorId} banovan!`);
+      socket.emit('ban-user', user);
     });
 
     fin.appendChild(userDiv);
   });
+
+  if (bannedUsers.has(myVisitorId)) {
+    disableChat();
+  }
 });
 
 function disableChat() {
