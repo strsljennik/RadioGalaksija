@@ -16,6 +16,7 @@ document.body.appendChild(fin);
 
 let passwordEntered = false;
 let bannedUsers = new Set();
+let guestsData = {};
 
 function makeDraggable(element) {
   let isDragging = false;
@@ -71,51 +72,61 @@ button.addEventListener('click', async () => {
       geoData = {};
     }
 
-    if (bannedUsers.has(visitorId)) {
-      alert('Korisnik banovan!');
-      disableChat();
-      return;
-    }
+    // Traži server da ti pošalje listu korisnika sa svim podacima
+    socket.emit('requestUserList');
 
-    const userData = {
-      ip,
-      visitorId,
-      userAgent: navigator.userAgent,
-      language: navigator.language,
-      platform: navigator.platform,
-      screen: `${screen.width}x${screen.height}`,
-      country: geoData.country_name || 'unknown',
-      region: geoData.region || 'unknown',
-      city: geoData.city || 'unknown',
-      org: geoData.org || 'unknown',
-      timezone: geoData.timezone || 'unknown',
-    };
+  } else {
+    fin.style.display = 'none';
+    fin.innerHTML = '';
+  }
+});
+
+// Reaguj na listu korisnika sa servera
+socket.on('updateGuestListWithData', (users) => {
+  guestsData = {};
+  fin.innerHTML = '';
+
+  users.forEach(user => {
+    guestsData[user.visitorId] = user;
 
     const userDiv = document.createElement('div');
     userDiv.style.border = '2px solid #0ff';
-    userDiv.style.color = '#0ff';
+    userDiv.style.color = bannedUsers.has(user.visitorId) ? 'red' : '#0ff';
     userDiv.style.padding = '10px';
     userDiv.style.marginBottom = '10px';
     userDiv.style.whiteSpace = 'pre-wrap';
     userDiv.style.cursor = 'pointer';
     userDiv.title = 'Dvaput klikni za ban';
 
-    userDiv.textContent = JSON.stringify(userData, null, 2);
+    const details = `
+Nickname: ${user.nickname}
+IP: ${user.ipAddress || 'unknown'}
+Provider: ${user.org || 'unknown'}
+Resolution: ${user.screen || 'unknown'}
+VisitorId: ${user.visitorId}
+UserAgent: ${user.userAgent || 'unknown'}
+Language: ${user.language || 'unknown'}
+Platform: ${user.platform || 'unknown'}
+Country: ${user.country || 'unknown'}
+Region: ${user.region || 'unknown'}
+City: ${user.city || 'unknown'}
+Timezone: ${user.timezone || 'unknown'}
+`;
+
+    userDiv.textContent = details;
 
     userDiv.addEventListener('dblclick', () => {
-      bannedUsers.add(visitorId);
-      fin.removeChild(userDiv);
-      alert('Korisnik banovan!');
-      disableChat();
-      // Ovde možeš poslati ban podatke serveru
+      if (!bannedUsers.has(user.visitorId)) {
+        bannedUsers.add(user.visitorId);
+        alert(`Korisnik ${user.nickname} banovan!`);
+        disableChat();
+        socket.emit('ban-user', user);
+        userDiv.style.color = 'red';
+      }
     });
 
     fin.appendChild(userDiv);
-
-  } else {
-    fin.style.display = 'none';
-    fin.innerHTML = '';
-  }
+  });
 });
 
 function disableChat() {
