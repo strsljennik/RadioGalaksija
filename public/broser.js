@@ -1,5 +1,3 @@
-const socket = io();
-
 const button = document.getElementById('bro');
 const fin = document.createElement('div');
 fin.style.position = 'fixed';
