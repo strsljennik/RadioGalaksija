@@ -62,61 +62,39 @@ socket.on('new_guest', () => {
   });
 
     // **BANIRANJE IP ADRESE**
-let ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
-if (ipAddress.includes(',')) {
-    ipAddress = ipAddress.split(',')[0].trim(); // Uzimamo prvi IP ako ih ima više
-}
-
-// **Provera da li je IP banovan iz baze**
-Banirani.findOne({ ipAddress })
-    .then((isBanned) => {
-        if (isBanned) {
-            console.log(`Blokiran korisnik pokušao da se poveže: ${ipAddress}`);
-            socket.emit('banMessage', 'Vaša IP adresa je banovana!');
-            return socket.disconnect(); // Prekidamo vezu
+        let ipAddress = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
+        if (ipAddress.includes(',')) {
+            ipAddress = ipAddress.split(',')[0].trim(); // Uzimamo prvi IP ako ih ima više
         }
 
-        // --- DODATAK: Provera naprednih uslova ---
-        const ua = socket.handshake.headers['user-agent'] || '';
-        const region = socket.handshake.headers['x-region'] || '';
-        const resolution = socket.handshake.headers['x-resolution'] || '';
-        const isp = socket.handshake.headers['x-isp'] || '';
-        const ipPrefix = ipAddress.split('.').slice(0, 2).join('.');
-
-        return Banirani.findOne({
-            ipPrefix,
-            userAgent: { $regex: ua.slice(0, 30), $options: 'i' },
-            region: { $regex: region, $options: 'i' },
-            resolution: { $regex: resolution, $options: 'i' },
-            isp: { $regex: isp, $options: 'i' }
-        });
-    })
-    .then((advancedBan) => {
-        if (advancedBan) {
-            console.log(`Blokiran korisnik po naprednim pravilima: ${ipAddress}`);
-            socket.emit('banMessage', 'Pristup blokiran!');
-            return socket.disconnect();
-        }
-    })
-    .catch(err => console.error("❌ Greška pri proveri banovanja:", err));
-
-// **Banovanje korisnika**
-socket.on('banUser', (ip) => {
-    if (ip) {
-        Banirani.create({ ipAddress: ip })
-            .then(() => {
-                console.log(`IP adresa ${ip} je banovana!`);
-                io.emit('userBanned', ip); // Obaveštavamo klijente
-            })
-            .catch(err => {
-                if (err.code === 11000) {
-                    console.error(`❌ IP ${ip} je već banovan!`);
-                } else {
-                    console.error("❌ Greška pri banovanju:", err);
+            // **Provera da li je IP banovan iz baze**
+        Banirani.findOne({ ipAddress })
+            .then((isBanned) => {
+                if (isBanned) {
+                    console.log(`Blokiran korisnik pokušao da se poveže: ${ipAddress}`);
+                    socket.emit('banMessage', 'Vaša IP adresa je banovana!');
+                    socket.disconnect(); // Prekidamo vezu
                 }
-            });
-    }
-});
+            })
+            .catch(err => console.error("❌ Greška pri proveri banovane IP adrese:", err));
+
+        // **Banovanje korisnika**
+        socket.on('banUser', (ip) => {
+            if (ip) {
+                Banirani.create({ ipAddress: ip })
+                    .then(() => {
+                        console.log(`IP adresa ${ip} je banovana!`);
+                        io.emit('userBanned', ip); // Obaveštavamo klijente
+                    })
+                    .catch(err => {
+                        if (err.code === 11000) {
+                            console.error(`❌ IP ${ip} je već banovan!`);
+                        } else {
+                            console.error("❌ Greška pri banovanju:", err);
+                        }
+                    });
+            }
+        });
 
 //   ZA UNOS TEXTA U MODALU UUID
  // Proveri da li već postoji unos za ovu IP adresu
