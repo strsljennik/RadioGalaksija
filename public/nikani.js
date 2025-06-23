@@ -9,6 +9,7 @@
     animation-timing-function: linear;
     animation-fill-mode: forwards;
   }`,
+
   glowBlink: `@keyframes glowBlink {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
@@ -19,9 +20,34 @@
     animation-timing-function: ease-in-out;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
+  }`,
+
+  fadeInOut: `@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  .fade-letter {
+    display: inline-block;
+    animation-name: fadeInOut;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+  }`,
+
+  bounce: `@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+  .bounce-letter {
+    display: inline-block;
+    animation-name: bounce;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
   }`
 };
 
+let allUserAnimations = {};
 let currentAnimation = null;
 let animationSpeed = 2;
 
@@ -48,15 +74,37 @@ function injectAnimationStyles() {
 }
 injectAnimationStyles();
 
-nikBtn.addEventListener('click', () => {
-  popnik.innerHTML = '';
+let popnikOpen = false;
+let isAuthorized = false;  // FLAG za uspešan unos lozinke
 
-  const btn = document.createElement('button');
-  btn.textContent = 'rotateLetters';
-  btn.style.margin = '5px';
-  btn.style.padding = '5px 12px';
-  btn.style.cursor = 'pointer';
-  btn.onclick = () => {
+nikBtn.addEventListener('click', () => {
+  if (!isAuthorized) {
+    const password = prompt('Unesi lozinku:');
+    if (password === 'lsx') {
+      isAuthorized = true;      // Zapamti da je korisnik uneo ispravnu lozinku
+      popnik.style.display = 'block';  // otvori prozor
+      popnikOpen = true;
+    } else {
+      alert('Pogrešna lozinka');
+    }
+  } else {
+    // Ako je već autorizovan, samo toggle prozora
+    if (!popnikOpen) {
+      popnik.style.display = 'block';  // otvori prozor
+      popnikOpen = true;
+    } else {
+      popnik.style.display = 'none';   // zatvori prozor
+      popnikOpen = false;
+    }
+  }
+});
+  // rotateLetters dugme
+  const btnRotate = document.createElement('button');
+  btnRotate.textContent = 'rotateLetters';
+  btnRotate.style.margin = '5px';
+  btnRotate.style.padding = '5px 12px';
+  btnRotate.style.cursor = 'pointer';
+  btnRotate.onclick = () => {
     currentAnimation = 'rotateLetters';
     applyAnimationToNick(myNickname, 'rotateLetters', animationSpeed);
     socket.emit('animationChange', {
@@ -66,8 +114,9 @@ nikBtn.addEventListener('click', () => {
     });
     popnik.style.display = 'none';
   };
-  popnik.appendChild(btn);
+  popnik.appendChild(btnRotate);
 
+  // glowBlink dugme
   const btnGlow = document.createElement('button');
   btnGlow.textContent = 'glowBlink';
   btnGlow.style.margin = '5px';
@@ -85,6 +134,43 @@ nikBtn.addEventListener('click', () => {
   };
   popnik.appendChild(btnGlow);
 
+  // fadeInOut dugme
+  const btnFade = document.createElement('button');
+  btnFade.textContent = 'fadeInOut';
+  btnFade.style.margin = '5px';
+  btnFade.style.padding = '5px 12px';
+  btnFade.style.cursor = 'pointer';
+  btnFade.onclick = () => {
+    currentAnimation = 'fadeInOut';
+    applyAnimationToNick(myNickname, 'fadeInOut', animationSpeed);
+    socket.emit('animationChange', {
+      nickname: myNickname,
+      animation: 'fadeInOut',
+      speed: animationSpeed
+    });
+    popnik.style.display = 'none';
+  };
+  popnik.appendChild(btnFade);
+
+  // bounce dugme
+  const btnBounce = document.createElement('button');
+  btnBounce.textContent = 'bounce';
+  btnBounce.style.margin = '5px';
+  btnBounce.style.padding = '5px 12px';
+  btnBounce.style.cursor = 'pointer';
+  btnBounce.onclick = () => {
+    currentAnimation = 'bounce';
+    applyAnimationToNick(myNickname, 'bounce', animationSpeed);
+    socket.emit('animationChange', {
+      nickname: myNickname,
+      animation: 'bounce',
+      speed: animationSpeed
+    });
+    popnik.style.display = 'none';
+  };
+  popnik.appendChild(btnBounce);
+
+  // Slider za brzinu animacije
   const speedLabel = document.createElement('label');
   speedLabel.textContent = `Brzina animacije: ${animationSpeed}s`;
   speedLabel.style.display = 'block';
@@ -110,6 +196,7 @@ nikBtn.addEventListener('click', () => {
   popnik.appendChild(speedLabel);
   popnik.appendChild(speedInput);
 
+  // Dugme za stop animacije
   const stopBtn = document.createElement('button');
   stopBtn.textContent = 'Stopuj animaciju';
   stopBtn.style.marginTop = '10px';
@@ -120,13 +207,16 @@ nikBtn.addEventListener('click', () => {
     const userDiv = document.getElementById(`guest-${myNickname}`);
     if (!userDiv) return;
     userDiv.style.animation = 'none';
-    userDiv.innerHTML = userDiv.textContent; // ukloni spanove
+    userDiv.innerHTML = userDiv.textContent;
+    socket.emit('animationChange', {
+      nickname: myNickname,
+      animation: null,
+      speed: animationSpeed
+    });
     popnik.style.display = 'none';
   };
   popnik.appendChild(stopBtn);
 
-  popnik.style.display = 'block';
-});
 function applyAnimationToNick(nickname, animationName, speed = animationSpeed) {
   const userDiv = document.getElementById(`guest-${nickname}`);
   if (!userDiv) return;
@@ -136,39 +226,53 @@ function applyAnimationToNick(nickname, animationName, speed = animationSpeed) {
   userDiv.innerHTML = userDiv.textContent || userDiv.innerText;
 
   const text = userDiv.textContent || userDiv.innerText;
-  const computed = getComputedStyle(userDiv);
-  const bgImage = computed.backgroundImage;
-  const textColor = computed.color;
 
   userDiv.innerHTML = '';
 
-for (let i = 0; i < text.length; i++) {
-  if (text[i] === ' ') {
-    const spaceSpan = document.createElement('span');
-    spaceSpan.textContent = '\u00A0'; // nedeljivi razmak
-    spaceSpan.classList.add(animationName === 'rotateLetters' ? 'rotate-letter' : animationName === 'glowBlink' ? 'glow-letter' : '');
-    spaceSpan.style.animationDuration = `${speed}s`;
-    spaceSpan.style.animationDelay = `${i * 0.1}s`;
-    spaceSpan.style.animationIterationCount = animationName === 'rotateLetters' ? '1' : 'infinite';
-    spaceSpan.style.webkitFontSmoothing = 'antialiased';
-    spaceSpan.style.MozOsxFontSmoothing = 'grayscale';
-    spaceSpan.style.backfaceVisibility = 'hidden';
-    spaceSpan.style.transformStyle = 'preserve-3d';
-    userDiv.appendChild(spaceSpan);
-  } else {
-    const span = document.createElement('span');
-    span.textContent = text[i];
-    span.classList.add(animationName === 'rotateLetters' ? 'rotate-letter' : animationName === 'glowBlink' ? 'glow-letter' : '');
-    span.style.animationDuration = `${speed}s`;
-    span.style.animationDelay = `${i * 0.1}s`;
-    span.style.animationIterationCount = animationName === 'rotateLetters' ? '1' : 'infinite';
-    span.style.webkitFontSmoothing = 'antialiased';
-    span.style.MozOsxFontSmoothing = 'grayscale';
-    span.style.backfaceVisibility = 'hidden';
-    span.style.transformStyle = 'preserve-3d';
-    userDiv.appendChild(span);
+  // Definiši znakove za koje ne želimo animaciju
+  const problematicChars = [' ', '*', '(', ')', '-', '_', '[', ']', '{', '}', '^', '$', '#', '@', '!', '+', '=', '~', '`', '|', '\\', '/', '<', '>', ',', '.', '?', ':', ';', '"', "'"];
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+
+    if (problematicChars.includes(char)) {
+      // Ubaci običan tekst bez animacije
+      userDiv.appendChild(document.createTextNode(char));
+    } else {
+      // Ubaci span sa animacijom
+      const span = document.createElement('span');
+      span.textContent = char;
+
+      // Dodaj klasu u zavisnosti od animacije
+      if (animationName === 'rotateLetters') {
+        span.classList.add('rotate-letter');
+        span.style.animationIterationCount = '1';
+      } else if (animationName === 'glowBlink') {
+        span.classList.add('glow-letter');
+        span.style.animationIterationCount = 'infinite';
+      } else if (animationName === 'fadeInOut') {
+        span.classList.add('fade-letter');
+        span.style.animationIterationCount = 'infinite';
+      } else if (animationName === 'bounce') {
+        span.classList.add('bounce-letter');
+        span.style.animationIterationCount = 'infinite';
+      } else {
+        // fallback bez klase i animacije
+        span.style.animationIterationCount = 'infinite';
+      }
+
+      span.style.animationDuration = `${speed}s`;
+      span.style.animationDelay = `${i * 0.1}s`;
+
+      span.style.webkitFontSmoothing = 'antialiased';
+      span.style.MozOsxFontSmoothing = 'grayscale';
+      span.style.backfaceVisibility = 'hidden';
+      span.style.transformStyle = 'preserve-3d';
+
+      userDiv.appendChild(span);
+    }
   }
-}
+
   if (animationName === 'rotateLetters') {
     let completedSpans = 0;
     const spans = userDiv.querySelectorAll('.rotate-letter');
@@ -187,14 +291,13 @@ for (let i = 0; i < text.length; i++) {
   }
 }
 
-
 function applyAnimationToNickWhenReady(nickname, animation, speed) {
   const tryApply = () => {
     const userDiv = document.getElementById(`guest-${nickname}`);
     if (userDiv) {
       applyAnimationToNick(nickname, animation, speed);
     } else {
-      setTimeout(tryApply, 100);
+      setTimeout(tryApply, 500);
     }
   };
   tryApply();
