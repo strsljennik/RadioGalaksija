@@ -4,7 +4,7 @@ module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
   const trenutnoStanje = {};
-  const currentAnimations = {};
+ let allUserAnimations = {}; 
  
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
@@ -115,11 +115,12 @@ socket.on('new_guest', () => {
             console.log(`Info sačuvan za ${ipAddress}: ${note}`);
         });
     });
-     socket.emit('currentAnimations', currentAnimations);
 
-  socket.on('animationChange', ({ nickname, animation, speed }) => {
-    currentAnimations[nickname] = { animation, speed };
-    io.emit('animationChange', { nickname, animation, speed });
+   socket.emit('currentAnimations', allUserAnimations);
+  socket.on('animationChange', (data) => {
+    const { nickname, animation, speed } = data;
+ allUserAnimations[nickname] = { animation, speed };
+  io.emit('animationChange', data);
   });
 
       socket.on('disconnect', () => {});
