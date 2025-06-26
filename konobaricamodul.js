@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 module.exports = (io) => {
   let chatContainerState = { x: 300, y: 100, width: 900, height: 550 };
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
-  const trenutnoStanje = {};
- let allUserAnimations = {}; 
+  const stanje = {}; //  BORDERI ELEMENATA 
+  let allUserAnimations = {}; 
  
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
@@ -122,6 +122,11 @@ Kada nismo na smeni, tu je uvek naš Auto DJ. Uživajte!`;
   io.emit('animationChange', data);
   });
 
+     socket.emit("pocetnoStanje", stanje);
+socket.on("promeniGradijent", (data) => {
+ socket.broadcast.emit("promeniGradijent", data);
+  stanje[data.id] = { gradijent: data.gradijent };
+});
       socket.on('disconnect', () => {});
     });
 };
