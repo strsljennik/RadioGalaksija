@@ -144,7 +144,7 @@ h1 {
     position: fixed;
     z-index: 9999;
     left: 50%;
-    top: 50%;
+    top: 100px;
     transform: translate(-50%, -50%);
     width: 300px;
     height: 600px;
