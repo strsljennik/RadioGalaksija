@@ -23,7 +23,7 @@ background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crven
     color: transparent; /* Tekst je transparentan da bi se video gradijent */
 }
 
-.uuidmodal {
+.modal {            /* FUNKCIONMODAL */
     display: none;
     position: fixed;
     z-index: 9999;
@@ -41,7 +41,7 @@ background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crven
     box-sizing: border-box;
 }
 
-.uuidmodal-content {
+.modal-content {
     background-color: black;
     color: #fff; /* Bela boja teksta */
     padding: 20px;
