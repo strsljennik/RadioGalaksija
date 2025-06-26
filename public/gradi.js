@@ -123,22 +123,39 @@ const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
       gradijentTabla.appendChild(dugme);
           });
 
+const defaultBtn = document.createElement("button");
+defaultBtn.textContent = "Default";
+Object.assign(defaultBtn.style, {
+  marginTop: "15px",
+  padding: "5px 10px",
+  border: "1px solid yellow",
+  backgroundColor: "black",
+  color: "yellow",
+  cursor: "pointer",
+  borderRadius: "5px"
+});
+
 defaultBtn.addEventListener("click", () => {
-  const idsZaReset = paket.includes(id) ? paket : [id];
-  idsZaReset.forEach(rid => {
-    const el = document.getElementById(rid);
+  const ids = paket.includes(id) ? paket : [id];
+  ids.forEach(elId => {
+    const el = document.getElementById(elId);
     if (el) {
+      el.style.borderImage = "";
       el.style.borderColor = "";
-      if (rid === "guestList") {
-        document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottomColor = "");
+      if (elId === "guestList") {
+        document.querySelectorAll('.guest, .virtual-guest').forEach(gost => gost.style.borderBottomColor = "");
         const styleTag = document.getElementById('guestList-scrollbar-style');
         if (styleTag) styleTag.remove();
       }
     }
-    socket.emit("promeniGradijent", { id: rid, type: "border", gradijent: "" });
-      });
-    prikaziPocetnuListu();
+    socket.emit("promeniGradijent", { id: elId, type: "border", gradijent: "" });
+  });
+  prikaziPocetnuListu();
 });
+
+gradijentTabla.appendChild(defaultBtn);
+gradijentTabla.appendChild(createBackButton());
+}
   function createBackButton() {
     const btn = document.createElement("button");
     btn.textContent = "Nazad";
