@@ -121,7 +121,7 @@ const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
       }
 
       gradijentTabla.appendChild(dugme);
-    });
+          });
 
 defaultBtn.addEventListener("click", () => {
   const idsZaReset = paket.includes(id) ? paket : [id];
@@ -136,8 +136,8 @@ defaultBtn.addEventListener("click", () => {
       }
     }
     socket.emit("promeniGradijent", { id: rid, type: "border", gradijent: "" });
-  });
-  prikaziPocetnuListu();
+      });
+    prikaziPocetnuListu();
 });
   function createBackButton() {
     const btn = document.createElement("button");
@@ -224,4 +224,3 @@ function primeniBoju(id, boja) {
       }
     }
   });
-});
