@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(gradijentTabla);
 
  const elementi = [
-  "chatContainer", "toolbar", "chatInput", "guestList", "openModal", "smilesBtn", "GBtn", "sound",
+  "chatContainer", "toolbar", "chatInput", "guestList", "openModal", "smilesBtn", "GBtn", "tube", "sound",
 ];
-const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
+const paket = ["openModal", "smilesBtn", "GBtn", "tube", "sound"];
 
   const neonBoje = [
     "red", "yellow", "lime", "white", "blue", "gray", "pink", "purple",
@@ -55,7 +55,7 @@ const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
       lista.appendChild(el);
     });
 
-  document.getElementById("resetujSve").addEventListener("click", () => {
+    document.getElementById("resetujSve").addEventListener("click", () => {
       elementi.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
@@ -72,16 +72,6 @@ const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
     });
   }
 
-  paket.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.borderColor = "";
-    }
-    socket.emit("promeniGradijent", { id: id, type: "border", gradijent: "" });
-  });
-
-  prikaziPocetnuListu();
-});
   function prikaziBoje(id) {
     gradijentTabla.innerHTML = `
       <h3 style='margin-bottom:10px;'>Izaberi boju za <span style='color:yellow;'>#${id}</span></h3>
@@ -124,41 +114,33 @@ const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
       }
 
       gradijentTabla.appendChild(dugme);
-          });
+    });
 
-const defaultBtn = document.createElement("button");
-defaultBtn.textContent = "Default";
-Object.assign(defaultBtn.style, {
-  marginTop: "15px",
-  padding: "5px 10px",
-  border: "1px solid yellow",
-  backgroundColor: "black",
-  color: "yellow",
-  cursor: "pointer",
-  borderRadius: "5px"
-});
-
-defaultBtn.addEventListener("click", () => {
-  const ids = paket.includes(id) ? paket : [id];
-  ids.forEach(elId => {
-    const el = document.getElementById(elId);
-    if (el) {
-      el.style.borderImage = "";
-      el.style.borderColor = "";
-      if (elId === "guestList") {
-        document.querySelectorAll('.guest, .virtual-guest').forEach(gost => gost.style.borderBottomColor = "");
-        const styleTag = document.getElementById('guestList-scrollbar-style');
-        if (styleTag) styleTag.remove();
+    const defaultBtn = document.createElement("button");
+    defaultBtn.textContent = "Default";
+    Object.assign(defaultBtn.style, {
+      marginTop: "15px", padding: "5px 10px", border: "1px solid yellow",
+      backgroundColor: "black", color: "yellow", cursor: "pointer",
+      borderRadius: "5px"
+    });
+    defaultBtn.addEventListener("click", () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.borderColor = "";
+        if (id === "guestList") {
+          document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottomColor = "");
+          const styleTag = document.getElementById('guestList-scrollbar-style');
+          if (styleTag) styleTag.remove();
+        }
       }
-    }
-    socket.emit("promeniGradijent", { id: elId, type: "border", gradijent: "" });
-  });
-  prikaziPocetnuListu();
-});
+      socket.emit("promeniGradijent", { id: id, type: "border", gradijent: "" });
+      prikaziPocetnuListu();
+    });
+    gradijentTabla.appendChild(defaultBtn);
 
-gradijentTabla.appendChild(defaultBtn);
-gradijentTabla.appendChild(createBackButton());
-}
+    gradijentTabla.appendChild(createBackButton());
+  }
+
   function createBackButton() {
     const btn = document.createElement("button");
     btn.textContent = "Nazad";
@@ -244,3 +226,4 @@ function primeniBoju(id, boja) {
       }
     }
   });
+});
