@@ -1,21 +1,41 @@
 const authorizedUsers = new Set(['Radio Galaksija', 'ZI ZU', '*__X__*']);
 
-// Event listener za dugme koje otvara modal
+const functionModal = document.getElementById('functionModal');
+let isDraggingFunc = false;
+let offsetXFunc = 0;
+let offsetYFunc = 0;
+
 document.getElementById('openModal').addEventListener('click', function () {
     if (authorizedUsers.has(currentUser)) {
-        // Ako je korisnik u listi ovlašćenih, otvara modal
-        document.getElementById('functionModal').style.display = "block";
+        functionModal.style.display = "block";
     } else {
-        // Ako korisnik nije ovlašćen
         alert('Nemate dozvolu da otvorite ovaj panel.');
     }
 });
 
-// Zatvaranje modala
 document.getElementById('closeModal').addEventListener('click', function () {
-    document.getElementById('functionModal').style.display = "none";
+    functionModal.style.display = "none";
 });
 
+// Drag start
+functionModal.addEventListener('mousedown', function (e) {
+    isDraggingFunc = true;
+    offsetXFunc = e.clientX - functionModal.offsetLeft;
+    offsetYFunc = e.clientY - functionModal.offsetTop;
+});
+
+// Drag move
+document.addEventListener('mousemove', function (e) {
+    if (isDraggingFunc) {
+        functionModal.style.left = (e.clientX - offsetXFunc) + 'px';
+        functionModal.style.top = (e.clientY - offsetYFunc) + 'px';
+    }
+});
+
+// Drag end
+document.addEventListener('mouseup', function () {
+    isDraggingFunc = false;
+});
 
 // Brisanje sadržaja chata
 document.getElementById('clearChat').addEventListener('click', function() {
