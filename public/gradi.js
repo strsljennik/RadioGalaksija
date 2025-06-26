@@ -55,19 +55,22 @@ const paket = ["openModal", "smilesBtn", "GBtn", "sound"];
       lista.appendChild(el);
     });
 
-    document.getElementById("resetujSve").addEventListener("click", () => {
-  elementi.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.style.borderColor = "";
-      if (id === "guestList") {
-        document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottomColor = "");
-        const styleTag = document.getElementById('guestList-scrollbar-style');
-        if (styleTag) styleTag.remove();
-      }
-    }
-    socket.emit("promeniGradijent", { id: id, type: "border", gradijent: "" });
-  });
+  document.getElementById("resetujSve").addEventListener("click", () => {
+      elementi.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.borderColor = "";
+          if (id === "guestList") {
+            document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottomColor = "");
+            const styleTag = document.getElementById('guestList-scrollbar-style');
+            if (styleTag) styleTag.remove();
+          }
+        }
+        socket.emit("promeniGradijent", { id: id, type: "border", gradijent: "" });
+      });
+      prikaziPocetnuListu();
+    });
+  }
 
   paket.forEach(id => {
     const el = document.getElementById(id);
