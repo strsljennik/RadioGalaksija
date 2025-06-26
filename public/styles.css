@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: black;
-     height: 2000px;
+     height: 1200px;
     color: white;
     display: flex;
     justify-content: center;
@@ -19,7 +19,7 @@ body {
     position: absolute; /* Zadržana pozicija */
     top: 0; /* Bez razmaka od vrha */
     left: 0; /* Bez razmaka od leve ivice */
-    box-shadow: 0px 0px 10px white; /* Bele neon linije */
+    box-shadow: 0px 0px 5px white; /* Bele neon linije */
     border: 1px solid rgba(255, 255, 255, 0.6); /* Neon bela ivica */
     z-index: 9999;
 }
@@ -31,16 +31,31 @@ body {
     top: 100px;
     left: 300px;
     background-color: black;
-    /* ostalo ostaje isto */
     margin: auto;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     z-index: 1;
-    border: 5px solid white;
-    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
+  border: 5px solid white;
+    box-shadow:
+        0 0 1px white,
+        0 0 2px white;
+
+    animation: neonPulse 2s ease-in-out infinite;
 }
 
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow:
+            0 0 4px white,
+            0 0 8px white;
+    }
+    50% {
+        box-shadow:
+            0 0 1px white,
+            0 0 1px white;
+    }
+}
 
 #toolbar {
     width: 100%;
@@ -48,9 +63,18 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-bottom: 2px solid white;
- border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid white;
+     box-shadow: 0 2px 1px white, 0 2px 3px rgba(255, 255, 255, 0.4);
+  animation: neonGlowToolbar 2s ease-in-out infinite;
+}
+
+@keyframes neonGlowToolbar {
+    0%, 100% {
+        box-shadow: 0 1px 2px white, 0 2px 3px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 2px 8px white, 0 3px 5px rgba(255, 255, 255, 0.5);
+    }
 }
 
 .toolbarBtn {
@@ -62,8 +86,19 @@ body {
     font-size: 18px;
     border-radius: 5px;
     transition: background-color 0.3s;
+    box-shadow: 0 2px 4px white, 0 4px 6px rgba(255, 255, 255, 0.4);
+
+    animation: neonGlowBtn 2s ease-in-out infinite;
 }
 
+@keyframes neonGlowBtn {
+    0%, 100% {
+        box-shadow: 0 2px 4px white, 0 4px 6px rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 2px 8px white, 0 4px 10px rgba(255, 255, 255, 0.5);
+    }
+}
 #messageArea {
     position: absolute;
     top: 100px;
@@ -103,46 +138,74 @@ body {
     height: 25px;
     padding: 5px;
     border-radius: 5px;
-    border: 2px solid;
-    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
-    resize: none;
-    font-size: 17px;
+    border: 2px solid white;
     background-color: black;
     color: white;
+    font-size: 17px;
+    resize: none;
     overflow: hidden;
     outline: none;
-   
+    
+    box-shadow: 0 0 2px white, 0 0 5px white;  /* Prvi subtalan efekat */
+    animation: neonGlowInput 2s ease-in-out infinite;
+}
+
+@keyframes neonGlowInput {
+    0%, 100% {
+        box-shadow: 0 0 1px white, 0 0 3px white;  /* Početni efekat */
+    }
+    50% {
+        box-shadow: 0 0 4px white, 0 0 6px white;  /* Pojačani efekat na sredini animacije */
+    }
 }
 
 #chatInput:focus {
-    border: 2px solid;
-    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
-    outline: none;
+    border: 2px solid white;
+    box-shadow: 0 0 8px white, 0 0 16px white; /* Intenziviran efekat kada je u fokusu */
+    animation: none;  /* Zaustavi animaciju kad je u fokusu */
 }
 
 #guestList {
     position: absolute;
-    right: 0;
     top: 60px;
+    right: 0;
+    bottom: 0;
     width: 150px;
-    height: calc(100% - 70px);
-   color: white; /* Default color remains white for non-dynamic text */
-   border-left: 2px solid white;
-   border-bottom: 10px solid white;
- border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff, #ffff00) 1;
     overflow-y: auto;
-   }
+    border: 2px solid white;
+    background-color: black;
+    
+    box-shadow:
+        0 0 4px white,
+        0 0 8px white;
+    
+    animation: neonGlowList 2s ease-in-out infinite;
+}
+
+@keyframes neonGlowList {
+    0%, 100% {
+        box-shadow:
+            0 0 2px white,
+            0 0 4px white;
+    }
+    50% {
+        box-shadow:
+            0 0 3px white,
+            0 0 7px white;
+    }
+}
+
 #guestList::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 #guestList::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, hotpink, black, yellow);
-  border-radius: 5px;
+    background: linear-gradient(to bottom, hotpink, black, yellow);
+    border-radius: 5px;
 }
 
 #guestList::-webkit-scrollbar-track {
-  background: black;
+    background: black;
 }
 
 /* Stilizovanje za stvarne i virtuelne goste */
@@ -178,7 +241,6 @@ body {
     border-radius: 3px; /* ako koristiš zaobljenje */
     z-index: 10;
 }
-
  /* CSS ZA MIXER DODATAK IZ HTML MIXER */
    #mixer {
     display: none;
