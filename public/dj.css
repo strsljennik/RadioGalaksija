@@ -23,7 +23,7 @@ background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crven
     color: transparent; /* Tekst je transparentan da bi se video gradijent */
 }
 
-.modal {
+.uuidmodal {
     display: none;
     position: fixed;
     z-index: 9999;
@@ -41,7 +41,7 @@ background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crven
     box-sizing: border-box;
 }
 
-.modal-content {
+.uuidmodal-content {
     background-color: black;
     color: #fff; /* Bela boja teksta */
     padding: 20px;
@@ -144,7 +144,7 @@ h1 {
     position: fixed;
     z-index: 9999;
     left: 50%;
-    top: 100px;
+    top: 50%;
     transform: translate(-50%, -50%);
     width: 300px;
     height: 600px;
