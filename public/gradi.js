@@ -5,33 +5,17 @@ document.addEventListener("DOMContentLoaded", () => {
   gradijentTabla.style.display = "none";
   document.body.appendChild(gradijentTabla);
 
-  const elementi = [
-    "chatContainer",
-    "toolbar",
-    "chatInput",
-    "guestList",
-    "openModal",
-    "smilesBtn",
-    "GBtn",
-    "tube",
-    "sound",
- 
-  
-  ];
-
-  const paket = ["openModal", "smilesBtn", "GBtn","tube", "sound"];
-
-const neonBoje = [
-  "red", "yellow", "lime", "white", "blue", "gray", "pink", "purple",
-  "orange", "cyan", "magenta", "turquoise", "gold", "silver", "navy", "teal",
-  "darkred",            // trula višnja
-  "fuchsia",            // jarka roze-ljubičasta
-  "orchid",             // nežno ljubičasta
-  "hotpink",            // intenzivna roze
-  "lightcoral",         // bledo crvena
-  "plum"                // svetlo ljubičasta
+ const elementi = [
+  "chatContainer", "toolbar", "chatInput", "guestList", "openModal", "smilesBtn", "GBtn", "tube", "sound",
 ];
+const paket = ["openModal", "smilesBtn", "GBtn", "tube", "sound"];
 
+  const neonBoje = [
+    "red", "yellow", "lime", "white", "blue", "gray", "pink", "purple",
+    "orange", "cyan", "magenta", "turquoise", "gold", "silver", "navy", "teal",
+    "darkred", "fuchsia", "orchid", "hotpink", "lightcoral", "plum",
+    "+"
+  ];
 
   gradiBtn.addEventListener("click", () => {
     if (gradijentTabla.style.display === "none") {
@@ -75,11 +59,9 @@ const neonBoje = [
       elementi.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-          el.style.border = "";
-          el.style.boxShadow = "";
+          el.style.borderColor = "";
           if (id === "guestList") {
-            el.style.borderBottom = "";
-            document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottom = "");
+            document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottomColor = "");
             const styleTag = document.getElementById('guestList-scrollbar-style');
             if (styleTag) styleTag.remove();
           }
@@ -99,10 +81,38 @@ const neonBoje = [
       const dugme = document.createElement("button");
       dugme.textContent = boja;
       Object.assign(dugme.style, {
-        background: boja, color: "black", margin: "5px",
-        padding: "6px 10px", cursor: "pointer"
+        background: boja !== "+" ? boja : "black",
+        color: boja !== "+" ? "black" : "yellow",
+        margin: "5px",
+        padding: "6px 10px",
+        cursor: "pointer",
+        border: boja === "+" ? "1px solid yellow" : "none"
       });
-      dugme.addEventListener("click", () => primeniBoju(id, boja));
+
+      if (boja === "+") {
+        dugme.id = "kafa";
+        dugme.addEventListener("click", () => {
+          // Prikaz gradijenata iz diva #gradijent .gradijent-box
+          const gradientBoxes = document.querySelectorAll("#gradijent .gradijent-box");
+          gradijentTabla.innerHTML = `<h3 style='margin-bottom:10px;'>Gradijenti za <span style='color:yellow;'>#${id}</span></h3>`;
+          gradientBoxes.forEach(box => {
+            const gBtn = box.cloneNode(true);
+            gBtn.style.width = "40px";
+            gBtn.style.height = "40px";
+            gBtn.style.margin = "5px";
+            gBtn.addEventListener("click", () => {
+              const style = window.getComputedStyle(box);
+              const bg = style.backgroundImage;
+              primeniBoju(id, bg);
+            });
+            gradijentTabla.appendChild(gBtn);
+          });
+          gradijentTabla.appendChild(createBackButton());
+        });
+      } else {
+        dugme.addEventListener("click", () => primeniBoju(id, boja));
+      }
+
       gradijentTabla.appendChild(dugme);
     });
 
@@ -116,11 +126,9 @@ const neonBoje = [
     defaultBtn.addEventListener("click", () => {
       const el = document.getElementById(id);
       if (el) {
-        el.style.border = "";
-        el.style.boxShadow = "";
+        el.style.borderColor = "";
         if (id === "guestList") {
-          el.style.borderBottom = "";
-          document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottom = "");
+          document.querySelectorAll('.guest').forEach(gost => gost.style.borderBottomColor = "");
           const styleTag = document.getElementById('guestList-scrollbar-style');
           if (styleTag) styleTag.remove();
         }
@@ -145,51 +153,76 @@ const neonBoje = [
     return btn;
   }
 
-  function primeniBoju(id, boja) {
-    const targetIds = paket.includes(id) ? paket : [id];
-    targetIds.forEach(eid => {
-      const el = document.getElementById(eid);
-      if (el) {
-        el.style.border = `2px solid ${boja}`;
-        el.style.boxShadow = `0 0 10px ${boja}`;
-        if (eid === "guestList") {
-          el.style.borderBottom = `10px solid ${boja}`;
-          document.querySelectorAll('.guest').forEach(gost => {
-            gost.style.borderBottom = `1px solid ${boja}`;
-          });
-          const styleId = 'guestList-scrollbar-style';
-          let styleTag = document.getElementById(styleId);
-          if (!styleTag) {
-            styleTag = document.createElement('style');
-            styleTag.id = styleId;
-            document.head.appendChild(styleTag);
-          }
-          styleTag.textContent = `
-            #guestList::-webkit-scrollbar-thumb {
-              background: ${boja};
-              border-radius: 5px;
-            }
-          `;
-        }
+function primeniBoju(id, boja) {
+  const targetIds = paket.includes(id) ? paket : [id];
+  targetIds.forEach(eid => {
+    const el = document.getElementById(eid);
+    if (el) {
+      if (boja.includes("gradient")) {
+        el.style.borderImage = boja;
+        el.style.borderImageSlice = 1;
+        el.style.borderColor = "";
+      } else {
+        el.style.borderImage = "";
+        el.style.borderColor = boja;
       }
-      socket.emit("promeniGradijent", { id: eid, type: "border", gradijent: boja });
-    });
-  }
+
+      if (eid === "guestList") {
+        // Promena border-bottom za goste
+        document.querySelectorAll('.guest, .virtual-guest').forEach(gost => {
+          gost.style.borderBottom = boja.includes("gradient")
+            ? "1px solid transparent"
+            : `1px solid ${boja}`;
+        });
+
+        // Scrollbar stil
+        const styleId = 'guestList-scrollbar-style';
+        let styleTag = document.getElementById(styleId);
+        if (!styleTag) {
+          styleTag = document.createElement('style');
+          styleTag.id = styleId;
+          document.head.appendChild(styleTag);
+        }
+        styleTag.textContent = `
+          #guestList::-webkit-scrollbar-thumb {
+            background: ${boja};
+            border-radius: 5px;
+          }
+        `;
+      }
+    }
+    socket.emit("promeniGradijent", { id: eid, type: "border", gradijent: boja });
+  });
+}
 
   socket.on("promeniGradijent", (data) => {
-    const el = document.getElementById(data.id);
-    if (el) {
-      el.style.border = `2px solid ${data.gradijent}`;
-      el.style.boxShadow = `0 0 10px ${data.gradijent}`;
-    }
+    setTimeout(() => {
+      const el = document.getElementById(data.id);
+      if (el) {
+        if (data.gradijent.includes("gradient")) {
+          el.style.borderImage = data.gradijent;
+          el.style.borderImageSlice = 1;
+          el.style.borderColor = "";
+        } else {
+          el.style.borderImage = "";
+          el.style.borderColor = data.gradijent;
+        }
+      }
+    }, 5000);  // 5 sekundi čekanja
   });
 
   socket.on("pocetnoStanje", (stanje) => {
     for (const id in stanje) {
       const el = document.getElementById(id);
       if (el) {
-        el.style.border = `2px solid ${stanje[id].gradijent}`;
-        el.style.boxShadow = `0 0 10px ${stanje[id].gradijent}`;
+        if (stanje[id].gradijent.includes("gradient")) {
+          el.style.borderImage = stanje[id].gradijent;
+          el.style.borderImageSlice = 1;
+          el.style.borderColor = "";
+        } else {
+          el.style.borderImage = "";
+          el.style.borderColor = stanje[id].gradijent;
+        }
       }
     }
   });
