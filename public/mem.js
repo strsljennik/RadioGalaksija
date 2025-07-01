@@ -36,6 +36,17 @@ document.getElementById('mem').addEventListener('click', () => {
 
     document.body.appendChild(sucur);
 
+    
+const allDraggables = [
+  '#openModal',
+  '#sound',
+  '#smilesBtn',
+  '#GBtn',
+  '#messageArea',
+  '#guestList',
+  '#chatInput'
+ ];
+
 
     function dodajSliku() {
   const url = prompt("Unesi URL slike:");
