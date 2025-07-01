@@ -2,20 +2,21 @@ const popup = document.createElement('div');
 popup.id = 'popup';
 popup.style.display = 'none';
 popup.style.position = 'fixed';
-popup.style.top = '5%';
-popup.style.left = '20%';
+popup.style.bottom = '5%';
+popup.style.left = '2%';
+popup.style.width = '200px';
+popup.style.height = '250px';
 popup.style.padding = '5px';
 popup.style.background = 'black';
 popup.style.border = '1px solid #fff';
 popup.style.zIndex = '1000';
 popup.innerHTML = `
   <button id="startstop">Start - Stop</button>
+  <button id="chatsl">Slike</button>
   <button id="chatpoz">Maska</button>
-   <button id="chatsl">Slike</button>
   <button id="save">Save</button>
-  <button id="load">Ucitaj</button>
+   <button id="load">Ucitaj</button>
   <button id="reset">Reset</button>
-
 `;
 document.body.appendChild(popup);
 
@@ -31,8 +32,37 @@ const allDraggables = [
   '#messageArea',
   '#guestList',
   '#chatInput'
-];
+ ];
 
+function dodajSliku() {
+  const url = prompt("Unesi URL slike:");
+  if (!url) return;
+  const img = document.createElement('img');
+  img.src = url;
+  img.id = 'img-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+  img.style.position = 'absolute';
+  img.style.top = '10px';
+  img.style.left = '10px';
+  img.style.width = '150px';
+  img.style.height = '150px';
+  img.style.zIndex = '1600';
+  img.style.cursor = 'move';
+  img.style.userSelect = 'none';
+  img.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    if (confirm('Da li želite da izbrišete ovu sliku?')) {
+      img.remove();
+      const index = allDraggables.indexOf(`#${img.id}`);
+      if (index !== -1) allDraggables.splice(index, 1);
+    }
+  });
+  document.body.appendChild(img);
+  allDraggables.push(`#${img.id}`);
+  setupInteract(img);
+}
+document.getElementById('chatsl').onclick = dodajSliku;
+
+// EDIT MOD 
 let editMode = false;
 
 function setupInteract(el) {
@@ -65,7 +95,6 @@ function setupInteract(el) {
         event.target.style.transform = `translate(${x}px, ${y}px)`;
         event.target.setAttribute('data-x', x);
         event.target.setAttribute('data-y', y);
-      
       }
     }
   });
@@ -85,41 +114,6 @@ document.getElementById('chatpoz').addEventListener('click', () => {
     chat.style.backgroundRepeat = 'no-repeat';
   }
 });
-
-// SLIKE
-document.getElementById('chatsl').addEventListener('click', () => {
-  const url = prompt("Unesi URL slike:");
-  if (!url) return;
-
-  const img = document.createElement('img');
-  img.src = url;
-  img.id = 'img-' + Date.now() + '-' + Math.floor(Math.random() * 1000); // jedinstveni ID
-  img.style.position = 'absolute';
-  img.style.top = '10px';
-  img.style.left = '10px';
-  img.style.width = '150px';
-  img.style.height = '150px';
-  img.style.zIndex = '1600';
-  img.style.cursor = 'move';
-  img.style.userSelect = 'none';
-
-  // Dodaj event za desni klik
-  img.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    if (confirm('Da li želite da izbrišete ovu sliku?')) {
-      img.remove();
-      // Po želji ukloni iz allDraggables ako koristiš
-      const index = allDraggables.indexOf(`#${img.id}`);
-      if (index !== -1) allDraggables.splice(index, 1);
-    }
-  });
-
-  document.body.appendChild(img); // izmenjeno sa chatContainer
-
-  allDraggables.push(`#${img.id}`); // dodaj u allDraggables za kasnije save/load
-  setupInteract(img); // aktivira drag + resize
-});
-
 
 const originalButtonText = new Map();
 
@@ -290,13 +284,11 @@ document.getElementById('startstop').addEventListener('click', () => {
     stopEditMode();
   }
 });
-
  // SAVE dugme
 document.getElementById('save').addEventListener('click', () => {
   const chatContainer = document.getElementById('chatContainer');
 
   // Pozadina chatContainer-a
-   // Pozadina chatContainer-a
   const bg = {
     image: chatContainer.style.backgroundImage || '',
     size: chatContainer.style.backgroundSize || '',
@@ -330,8 +322,7 @@ document.getElementById('save').addEventListener('click', () => {
     width: img.style.width || img.offsetWidth + 'px',
     height: img.style.height || img.offsetHeight + 'px'
   }));
-
-  const saveData = { background: bg, elements, images };
+ const saveData = { background: bg, elements, images };
   const json = JSON.stringify(saveData, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -360,163 +351,36 @@ function applyEditModeStyles() {
     if (el) el.style.zIndex = '1000';
   });
 }
-// LOAD 
-document.getElementById('load').addEventListener('click', () => {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'application/json';
+// Funkcija za renderovanje layouta
+function renderLayout(data) {
+  // Očisti stare slike
+  document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
 
-  input.onchange = e => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // Očisti draggable elemente koji nisu deo nove verzije
+  allDraggables.forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el && el.id && !data.elements.find(e => e.id === el.id)) {
+      el.remove();
+    }
+  });
+  allDraggables.length = 0;
 
-    const reader = new FileReader();
-    reader.onload = event => {
-      try {
-        const data = JSON.parse(event.target.result);
-
-        // Emituj podatke svim korisnicima preko socket.io
-      socket.emit('chat-layout-update', data);
-
-        // Vrati pozadinu
-        const chatContainer = document.getElementById('chatContainer');
-        if (chatContainer && data.background) {
-          chatContainer.style.backgroundImage = data.background.image;
-          chatContainer.style.backgroundSize = data.background.size;
-          chatContainer.style.backgroundPosition = data.background.position;
-          chatContainer.style.backgroundRepeat = data.background.repeat;
-          chatContainer.style.width = data.background.width;
-          chatContainer.style.height = data.background.height;
-          chatContainer.style.border = 'none';
-        }
-
-        // Vrati pozicije i dimenzije elemenata
-        data.elements.forEach(item => {
-          const el = document.getElementById(item.id);
-          if (!el) return;
-          el.style.position = 'absolute';
-          el.style.top = item.top;
-          el.style.left = item.left;
-          el.style.width = item.width;
-          el.style.height = item.height;
-        });
-
-      // Dodaj slike iz fajla
-        data.images.forEach(imgData => {
-          const img = document.createElement('img');
-          img.id = imgData.id;
-          img.src = imgData.src;
-          img.style.position = 'absolute';
-          img.style.top = imgData.top;
-          img.style.left = imgData.left;
-          img.style.width = imgData.width;
-          img.style.height = imgData.height;
-          img.style.zIndex = '1600';
-          img.style.cursor = 'move';
-          img.style.userSelect = 'none';
-
-          document.body.appendChild(img);
-          allDraggables.push(`#${img.id}`);
-          setupInteract(img);
-        });
-
-        // Ukloni toolbar
-      const toolbar = document.getElementById('toolbar');
-if (toolbar && toolbar.parentNode) {
-  while (toolbar.firstChild) {
-    toolbar.parentNode.insertBefore(toolbar.firstChild, toolbar);
-  }
-  toolbar.remove();
-}
-
-        // Ukloni border bottom kod guest elemenata
-        let style = document.getElementById('remove-guest-borders');
-        if (!style) {
-          style = document.createElement('style');
-          style.id = 'remove-guest-borders';
-          document.head.appendChild(style);
-        }
-        style.textContent = `
-          .guest, .virtual-guest {
-            border-bottom: none !important;
-          }
-        `;
-
-        // Sakrij scrollbar u messageArea
-        let hideScrollbarStyle = document.getElementById('hide-scrollbar-style');
-        if (!hideScrollbarStyle) {
-          hideScrollbarStyle = document.createElement('style');
-          hideScrollbarStyle.id = 'hide-scrollbar-style';
-          hideScrollbarStyle.textContent = `
-            #messageArea {
-              scrollbar-width: none;
-              -ms-overflow-style: none;
-            }
-            #messageArea::-webkit-scrollbar {
-              display: none;
-            }
-          `;
-          document.head.appendChild(hideScrollbarStyle);
-        }
-
-        // Stilizuj sve draggable elemente kao da je edit mode bio aktivan
-        allDraggables.forEach(sel => {
-          const el = document.querySelector(sel);
-          if (!el) return;
-
-          el.style.zIndex = '1400';
-          el.style.border = 'none';
-          el.style.boxShadow = 'none';
-          el.style.userSelect = 'none';
-          el.style.margin = '0';
-          el.style.padding = '0';
-          el.style.pointerEvents = 'auto';
-
-          if (el.id === 'chatInput' || el.id === 'messageArea' || el.id === 'guestList') {
-            el.style.background = 'transparent';
-          }
-
-          if (el.tagName.toUpperCase() === 'BUTTON') {
-            el.style.position = 'absolute';
-            el.style.background = 'transparent';
-            el.style.color = 'transparent';
-            el.style.border = 'none';
-            el.innerText = '';
-
-            if (el._blockClickHandler) {
-              el.removeEventListener('click', el._blockClickHandler, true);
-              delete el._blockClickHandler;
-            }
-          }
-
-          try { interact(el).unset(); } catch (e) {}
-        });
-
-      } catch {
-        alert('Nevalidan fajl!');
-      }
-    };
-
-    reader.readAsText(file);
-  };
-
-  input.click();
-});
-
-socket.on('chat-layout-update', data => {
-  // Vrati pozadinu
+  // Postavi pozadinu
   const chatContainer = document.getElementById('chatContainer');
-  if (chatContainer && data.background) {
-    chatContainer.style.backgroundImage = data.background.image;
-    chatContainer.style.backgroundSize = data.background.size;
-    chatContainer.style.backgroundPosition = data.background.position;
-    chatContainer.style.backgroundRepeat = data.background.repeat;
-    chatContainer.style.width = data.background.width;
-    chatContainer.style.height = data.background.height;
+  if (chatContainer) {
+    chatContainer.style.backgroundImage = data.background?.image || '';
+    chatContainer.style.backgroundSize = data.background?.size || '';
+    chatContainer.style.backgroundPosition = data.background?.position || '';
+    chatContainer.style.backgroundRepeat = data.background?.repeat || '';
     chatContainer.style.border = 'none';
+
+    if (data.background) {
+      chatContainer.style.width = data.background.width;
+      chatContainer.style.height = data.background.height;
+    }
   }
 
-  // Vrati pozicije i dimenzije elemenata
+  // Postavi elemente
   data.elements.forEach(item => {
     const el = document.getElementById(item.id);
     if (!el) return;
@@ -525,9 +389,13 @@ socket.on('chat-layout-update', data => {
     el.style.left = item.left;
     el.style.width = item.width;
     el.style.height = item.height;
+
+    if (!allDraggables.includes(`#${item.id}`)) {
+      allDraggables.push(`#${item.id}`);
+    }
   });
 
-  // Dodaj slike iz fajla
+  // Dodaj slike
   data.images.forEach(imgData => {
     const img = document.createElement('img');
     img.id = imgData.id;
@@ -547,14 +415,13 @@ socket.on('chat-layout-update', data => {
   });
 
   // Ukloni toolbar
-const toolbar = document.getElementById('toolbar');
-if (toolbar && toolbar.parentNode) {
-  while (toolbar.firstChild) {
-    toolbar.parentNode.insertBefore(toolbar.firstChild, toolbar);
+  const toolbar = document.getElementById('toolbar');
+  if (toolbar && toolbar.parentNode) {
+    while (toolbar.firstChild) {
+      toolbar.parentNode.insertBefore(toolbar.firstChild, toolbar);
+    }
+    toolbar.remove();
   }
-  toolbar.remove();
-}
-
 
   // Ukloni border bottom kod guest elemenata
   let style = document.getElementById('remove-guest-borders');
@@ -618,7 +485,48 @@ if (toolbar && toolbar.parentNode) {
 
     try { interact(el).unset(); } catch (e) {}
   });
+}
+
+// Load blok sa socket emit
+document.getElementById('load').addEventListener('click', () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'application/json';
+
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = event => {
+      try {
+        const data = JSON.parse(event.target.result);
+
+        // Emituj podatke serveru
+        socket.emit('chat-layout-update', data);
+
+        // Renderuj lokalno odmah
+        renderLayout(data);
+
+      } catch {
+        alert('Nevalidan fajl!');
+      }
+    };
+
+    reader.readAsText(file);
+  };
+
+  input.click();
 });
+
+// Socket on za ažuriranje layouta sa servera
+socket.on('chat-layout-update', data => {
+  setTimeout(() => {
+    renderLayout(data);
+  }, 5000);
+});
+
+
 document.getElementById('reset').addEventListener('click', () => {
   socket.emit('reset-layout');      // emit svima
   performReset();                   // lokalni reset
@@ -704,6 +612,11 @@ el.innerText = originalButtonText.get(key) || '';
   // UKLONI SLIKE sa prefiksom img-
   document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
 
+ document.querySelectorAll('.text-display').forEach(el => el.remove());
+
+  // UKLONI POZADINU
+  document.body.style.backgroundImage = '';
+
   // Setuj editMode na false
   editMode = false;
 }
@@ -711,3 +624,4 @@ el.innerText = originalButtonText.get(key) || '';
 socket.on('reset-layout', () => {
   performReset();
 });
+
