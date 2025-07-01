@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css"> <!-- Povezivanje CSS datoteke -->
     <link rel="stylesheet" href="dj.css"> <!-- Povezivanje dj.css sa index.html -->
     <link rel="stylesheet" href="gradi.css"> <!-- Povezivanje gradi.css sa index.html -->
+     <script src="https://cdn.jsdelivr.net/npm/interactjs@1.10.11/dist/interact.min.js"></script>
 
     <script>
         window.socket = io(); // Inicializacija socket-a
@@ -90,7 +91,9 @@
   <button id="ram">Ram</button>
     <button id="gradi">Okvir</button>
   <button id="pesme">Mixer</button>
-  <button id="govna">*__X__*</button>
+    <button id="mem">Maska</button>
+     <button id="diz">Maska1</button>
+   <button id="govna">*__X__*</button>
   </div>
 
 
@@ -158,20 +161,11 @@
   <div class="gradijent-box gradient-50">50</div>
 </div>
 
-
-<div id="memoryForm" style="display: none;">
-    <h3>Unesite naziv stranice</h3>
-    <input type="text" id="pageNameInput" placeholder="Naziv stranice" />
-    <button id="savePageButton">Spremi stranicu</button>
-</div>
-<div id="savedPagesMenu"></div>
-
  <div id="messageArea"></div>
 
 <div id="messageInput">
     <textarea id="chatInput" rows="1" placeholder="Ispeci Pa Reci...Godjaja Lafi....." maxlength="200"></textarea>
 </div>
-
 
     <div id="guestList"></div>
       <div id="mixer">
@@ -209,10 +203,10 @@
       <script src="mixer.js"></script>
      <script src="nikani.js"></script>
       <script src="gradi.js"></script>
+      <script src="diz.js"></script>
+       <script src="mem.js"></script>
   
-    
-     
-        <!-- Default Statcounter code for Galaksija
+            <!-- Default Statcounter code for Galaksija
 https://radiogalaksija.onrender.com/ -->
 <script type="text/javascript">
 var sc_project=13110379; 
