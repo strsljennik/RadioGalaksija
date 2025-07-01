@@ -36,6 +36,74 @@ document.getElementById('mem').addEventListener('click', () => {
 
     document.body.appendChild(sucur);
 
+
+    function dodajSliku() {
+  const url = prompt("Unesi URL slike:");
+  if (!url) return;
+  const img = document.createElement('img');
+  img.src = url;
+  img.id = 'img-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+  img.style.position = 'absolute';
+  img.style.top = '10px';
+  img.style.left = '10px';
+  img.style.width = '150px';
+  img.style.height = '150px';
+  img.style.zIndex = '1600';
+  img.style.cursor = 'move';
+  img.style.userSelect = 'none';
+  img.addEventListener('contextmenu', e => {
+    e.preventDefault();
+    if (confirm('Da li želite da izbrišete ovu sliku?')) {
+      img.remove();
+      const index = allDraggables.indexOf(`#${img.id}`);
+      if (index !== -1) allDraggables.splice(index, 1);
+    }
+  });
+  document.body.appendChild(img);
+  allDraggables.push(`#${img.id}`);
+  setupInteract(img);
+}
+document.getElementById('chatsl').onclick = dodajSliku;
+
+// EDIT MOD 
+let editMode = false;
+
+function setupInteract(el) {
+  if (!authorizedUsers.has(currentUser)) return;
+
+  interact(el).draggable({
+    modifiers: [interact.modifiers.restrict({ restriction: 'body', endOnly: true })],
+    listeners: {
+      move(event) {
+        const target = event.target;
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
+      }
+    }
+  });
+
+  interact(el).resizable({
+    edges: { left: true, right: true, top: true, bottom: true },
+    listeners: {
+      move(event) {
+        let x = parseFloat(event.target.getAttribute('data-x')) || 0;
+        let y = parseFloat(event.target.getAttribute('data-y')) || 0;
+        event.target.style.width = event.rect.width + 'px';
+        event.target.style.height = event.rect.height + 'px';
+        x += event.deltaRect.left;
+        y += event.deltaRect.top;
+        event.target.style.transform = `translate(${x}px, ${y}px)`;
+        event.target.setAttribute('data-x', x);
+        event.target.setAttribute('data-y', y);
+      }
+    }
+  });
+}
+
+
     // Event za čuvanje
     her.addEventListener('click', () => {
       const elements = Array.from(document.querySelectorAll('.element')).map(el => ({
