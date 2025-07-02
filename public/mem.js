@@ -3,18 +3,19 @@ document.getElementById('mem').addEventListener('click', () => {
   let sucur = document.getElementById('sucur');
   if (!sucur) {
     // Napravi prozor
-    sucur = document.createElement('div');
-    sucur.id = 'sucur';
-    sucur.style.position = 'fixed';
-    sucur.style.top = '50px';
-    sucur.style.right = '50px';
-    sucur.style.padding = '20px';
-    sucur.style.background = '#f0f0f0';
-    sucur.style.border = '1px solid #aaa';
-    sucur.style.zIndex = '9999';
-    sucur.style.display = 'block';
+  sucur = document.createElement('div');
+sucur.id = 'sucur';
+sucur.style.position = 'fixed';
+sucur.style.top = '50px';
+sucur.style.right = '50px';
+sucur.style.padding = '20px';
+sucur.style.background = 'black';
+sucur.style.border = '2px solid white';
+sucur.style.boxShadow = '0 0 10px white';
+sucur.style.zIndex = '9999';
+sucur.style.display = 'block';
 
-    // Napravi dugme ČUVAJ
+   // Napravi dugme ČUVAJ
     const her = document.createElement('button');
     her.id = 'her';
     her.textContent = 'ČUVAJ';
