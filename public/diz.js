@@ -73,11 +73,10 @@ function setupInteract(el) {
     listeners: {
       move(event) {
         const target = event.target;
-        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-        target.style.transform = `translate(${x}px, ${y}px)`;
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
+        const left = (parseFloat(target.style.left) || 0) + event.dx;
+        const top = (parseFloat(target.style.top) || 0) + event.dy;
+        target.style.left = left + 'px';
+        target.style.top = top + 'px';
       }
     }
   });
@@ -86,21 +85,22 @@ function setupInteract(el) {
     edges: { left: true, right: true, top: true, bottom: true },
     listeners: {
       move(event) {
-        let x = parseFloat(event.target.getAttribute('data-x')) || 0;
-        let y = parseFloat(event.target.getAttribute('data-y')) || 0;
-        event.target.style.width = event.rect.width + 'px';
-        event.target.style.height = event.rect.height + 'px';
-        x += event.deltaRect.left;
-        y += event.deltaRect.top;
-        event.target.style.transform = `translate(${x}px, ${y}px)`;
-        event.target.setAttribute('data-x', x);
-        event.target.setAttribute('data-y', y);
+        const target = event.target;
+        let left = parseFloat(target.style.left) || 0;
+        let top = parseFloat(target.style.top) || 0;
+
+        target.style.width = event.rect.width + 'px';
+        target.style.height = event.rect.height + 'px';
+
+        left += event.deltaRect.left;
+        top += event.deltaRect.top;
+
+        target.style.left = left + 'px';
+        target.style.top = top + 'px';
       }
     }
   });
 }
-
-
 document.getElementById('chatpoz').addEventListener('click', () => {
   let imageSource = prompt("Unesi URL slike:");
   if (!imageSource) {
