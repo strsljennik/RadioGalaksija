@@ -235,13 +235,13 @@ body {
 
  /* ANITEXT CSS */
 .command-table {
-  background-color: #111;
+  background-color: black;
   width: 1500px;
      height: 200px;
     position: absolute; /* Dodaj ovo */
   bottom: 0;
    top: 1000px;
-  padding: 15px;
+  padding: 25px;
   color: #fff;
   border-bottom: 1px solid #444;
       z-index:9999;
@@ -254,9 +254,9 @@ body {
       color: #fff;
       background-color: black;
       border: 1px solid #444;
-      padding: 5px 10px;
+      padding: 15px 25px;
       margin: 5px;
-      font-size: 16px;
+      font-size: 24px;
     }
 
     .command-table button {
@@ -272,7 +272,8 @@ body {
   font-size: 50px;
   font-weight: bold;
   font-style: italic;
-  top: 0; /* Dodajte tačku-zarez */
+  top: 20px; /* Dodajte tačku-zarez */
+  left; 450px;
   color: #fff;
   white-space: nowrap;
   cursor: grab;
@@ -282,7 +283,7 @@ body {
 
 
     .selected {
-      border: 2px solid #fff; /* Neon bela linija oko selektovanog teksta */
+      border: 1px solid #fff; /* Neon bela linija oko selektovanog teksta */
       padding: 5px;
     }
 
