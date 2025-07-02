@@ -2,20 +2,20 @@ const popup = document.createElement('div');
 popup.id = 'popup';
 popup.style.display = 'none';
 popup.style.position = 'fixed';
-popup.style.top = '5%';
+popup.style.bottom = '5%';
 popup.style.left = '2%';
 popup.style.width = '200px';
 popup.style.height = '250px';
 popup.style.padding = '5px';
 popup.style.background = 'black';
-popup.style.border = '1px solid #fff';
+popup.style.border = '5px solid #fff';
 popup.style.zIndex = '1000';
 popup.innerHTML = `
   <button id="startstop">Start - Stop</button>
   <button id="chatsl">Slike</button>
   <button id="chatpoz">Maska</button>
   <button id="save">Save</button>
-  <button id="load">Ucitaj</button>
+   <button id="load">Ucitaj</button>
   <button id="reset">Reset</button>
 `;
 document.body.appendChild(popup);
@@ -33,7 +33,6 @@ const allDraggables = [
   '#guestList',
   '#chatInput'
  ];
-
 function dodajSliku() {
   const url = prompt("Unesi URL slike:");
   if (!url) return;
@@ -67,8 +66,20 @@ let editMode = false;
 function setupInteract(el) {
   if (!authorizedUsers.has(currentUser)) return;
 
+  el.style.position = 'absolute';
+  el.style.touchAction = 'none';
+
+  // Ceo element za drag
   interact(el).draggable({
-    modifiers: [interact.modifiers.restrict({ restriction: 'body', endOnly: true })],
+    allowFrom: el, // dozvoljava drag sa bilo kog dela elementa
+    modifiers: [
+      interact.modifiers.snap({
+        targets: [interact.snappers.grid({ x: 10, y: 10 })],
+        range: Infinity,
+        relativePoints: [{ x: 0, y: 0 }]
+      }),
+      interact.modifiers.restrict({ restriction: 'body', endOnly: true })
+    ],
     listeners: {
       move(event) {
         const target = event.target;
@@ -77,12 +88,19 @@ function setupInteract(el) {
         target.style.transform = `translate(${x}px, ${y}px)`;
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
+        target.style.cursor = 'move'; // osigurava move kursor
       }
     }
   });
 
+  // Resize samo na ivicama
   interact(el).resizable({
-    edges: { left: true, right: true, top: true, bottom: true },
+    edges: { top: true, left: true, bottom: true, right: true },
+    modifiers: [
+      interact.modifiers.snapSize({
+        targets: [interact.snappers.grid({ x: 10, y: 10 })]
+      })
+    ],
     listeners: {
       move(event) {
         let x = parseFloat(event.target.getAttribute('data-x')) || 0;
@@ -288,7 +306,6 @@ document.getElementById('save').addEventListener('click', () => {
   const chatContainer = document.getElementById('chatContainer');
 
   // Pozadina chatContainer-a
-   // Pozadina chatContainer-a
   const bg = {
     image: chatContainer.style.backgroundImage || '',
     size: chatContainer.style.backgroundSize || '',
@@ -322,8 +339,7 @@ document.getElementById('save').addEventListener('click', () => {
     width: img.style.width || img.offsetWidth + 'px',
     height: img.style.height || img.offsetHeight + 'px'
   }));
-
-  const saveData = { background: bg, elements, images };
+ const saveData = { background: bg, elements, images };
   const json = JSON.stringify(saveData, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -613,6 +629,11 @@ el.innerText = originalButtonText.get(key) || '';
   // UKLONI SLIKE sa prefiksom img-
   document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
 
+ document.querySelectorAll('.text-display').forEach(el => el.remove());
+
+  // UKLONI POZADINU
+  document.body.style.backgroundImage = '';
+
   // Setuj editMode na false
   editMode = false;
 }
@@ -620,3 +641,4 @@ el.innerText = originalButtonText.get(key) || '';
 socket.on('reset-layout', () => {
   performReset();
 });
+
