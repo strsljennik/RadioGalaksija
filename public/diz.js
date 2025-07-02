@@ -2,7 +2,7 @@ const popup = document.createElement('div');
 popup.id = 'popup';
 popup.style.display = 'none';
 popup.style.position = 'fixed';
-popup.style.bottom = '5%';
+popup.style.top = '5%';
 popup.style.left = '2%';
 popup.style.width = '200px';
 popup.style.height = '250px';
@@ -15,7 +15,7 @@ popup.innerHTML = `
   <button id="chatsl">Slike</button>
   <button id="chatpoz">Maska</button>
   <button id="save">Save</button>
-   <button id="load">Ucitaj</button>
+  <button id="load">Ucitaj</button>
   <button id="reset">Reset</button>
 `;
 document.body.appendChild(popup);
@@ -62,7 +62,6 @@ function dodajSliku() {
 }
 document.getElementById('chatsl').onclick = dodajSliku;
 
-// EDIT MOD 
 let editMode = false;
 
 function setupInteract(el) {
@@ -73,10 +72,11 @@ function setupInteract(el) {
     listeners: {
       move(event) {
         const target = event.target;
-        const left = (parseFloat(target.style.left) || 0) + event.dx;
-        const top = (parseFloat(target.style.top) || 0) + event.dy;
-        target.style.left = left + 'px';
-        target.style.top = top + 'px';
+        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+        target.style.transform = `translate(${x}px, ${y}px)`;
+        target.setAttribute('data-x', x);
+        target.setAttribute('data-y', y);
       }
     }
   });
@@ -85,22 +85,21 @@ function setupInteract(el) {
     edges: { left: true, right: true, top: true, bottom: true },
     listeners: {
       move(event) {
-        const target = event.target;
-        let left = parseFloat(target.style.left) || 0;
-        let top = parseFloat(target.style.top) || 0;
-
-        target.style.width = event.rect.width + 'px';
-        target.style.height = event.rect.height + 'px';
-
-        left += event.deltaRect.left;
-        top += event.deltaRect.top;
-
-        target.style.left = left + 'px';
-        target.style.top = top + 'px';
+        let x = parseFloat(event.target.getAttribute('data-x')) || 0;
+        let y = parseFloat(event.target.getAttribute('data-y')) || 0;
+        event.target.style.width = event.rect.width + 'px';
+        event.target.style.height = event.rect.height + 'px';
+        x += event.deltaRect.left;
+        y += event.deltaRect.top;
+        event.target.style.transform = `translate(${x}px, ${y}px)`;
+        event.target.setAttribute('data-x', x);
+        event.target.setAttribute('data-y', y);
       }
     }
   });
 }
+
+
 document.getElementById('chatpoz').addEventListener('click', () => {
   let imageSource = prompt("Unesi URL slike:");
   if (!imageSource) {
@@ -289,6 +288,7 @@ document.getElementById('save').addEventListener('click', () => {
   const chatContainer = document.getElementById('chatContainer');
 
   // Pozadina chatContainer-a
+   // Pozadina chatContainer-a
   const bg = {
     image: chatContainer.style.backgroundImage || '',
     size: chatContainer.style.backgroundSize || '',
@@ -322,7 +322,8 @@ document.getElementById('save').addEventListener('click', () => {
     width: img.style.width || img.offsetWidth + 'px',
     height: img.style.height || img.offsetHeight + 'px'
   }));
- const saveData = { background: bg, elements, images };
+
+  const saveData = { background: bg, elements, images };
   const json = JSON.stringify(saveData, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -612,11 +613,6 @@ el.innerText = originalButtonText.get(key) || '';
   // UKLONI SLIKE sa prefiksom img-
   document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
 
- document.querySelectorAll('.text-display').forEach(el => el.remove());
-
-  // UKLONI POZADINU
-  document.body.style.backgroundImage = '';
-
   // Setuj editMode na false
   editMode = false;
 }
@@ -624,4 +620,3 @@ el.innerText = originalButtonText.get(key) || '';
 socket.on('reset-layout', () => {
   performReset();
 });
-
