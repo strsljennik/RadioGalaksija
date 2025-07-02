@@ -37,25 +37,7 @@ body {
     overflow: hidden;
     z-index: 1;
   border: 5px solid white;
-    box-shadow:
-        0 0 1px white,
-        0 0 2px white;
-
-    animation: neonPulse 2s ease-in-out infinite;
-}
-
-@keyframes neonPulse {
-    0%, 100% {
-        box-shadow:
-            0 0 4px white,
-            0 0 8px white;
-    }
-    50% {
-        box-shadow:
-            0 0 1px white,
-            0 0 1px white;
-    }
-}
+   }
 
 #toolbar {
     width: 100%;
