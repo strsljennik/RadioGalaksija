@@ -240,7 +240,7 @@ body {
   align-items: center; /* vertikalno centriranje */
   justify-content: flex-start; /* poravnanje levo */
   background-color: black;
-  width: 1500px;
+  width: 1400px;
   height: 200px;
   position: absolute;
   bottom: 0;
