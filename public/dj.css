@@ -154,7 +154,8 @@ h1 {
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
     padding: 20px;
     text-align: center;
-    overflow: auto
+    overflow: auto;
+
 }
 
 /* Neon efekat na granici modal-a */
