@@ -7,8 +7,7 @@ module.exports = (io) => {
   let allUserAnimations = {}; 
   let isReset = false;       //  RESET MASKE
 let currentLayout = null; //  MASKE
-let fullLayoutData = null;   // BEZ MASKE 
- 
+
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
         ipAddress: { type: String, required: true, unique: true }
@@ -149,22 +148,6 @@ socket.on("promeniGradijent", (data) => {
             socket.broadcast.emit('chat-layout-update', data);
         });
 
- if (fullLayoutData) {
-    socket.emit('full-layout-load', fullLayoutData);
-  }
-
-  // Kad klijent pošalje novi layout
-  socket.on('full-layout-load', data => {
-    fullLayoutData = data;
-    socket.broadcast.emit('full-layout-load', data);
-  });
-
-  // Reset layout
-  socket.on('full-layout-reset', () => {
-    fullLayoutData = null;
-    socket.broadcast.emit('full-layout-reset');
-  });
-    
-      socket.on('disconnect', () => {});
+    socket.on('disconnect', () => {});
     });
 };
