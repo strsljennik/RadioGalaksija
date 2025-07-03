@@ -235,17 +235,23 @@ body {
 
  /* ANITEXT CSS */
 .command-table {
+.command-table {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; /* vertikalno centriranje */
+  justify-content: flex-start; /* poravnanje levo */
   background-color: black;
   width: 1500px;
-     height: 200px;
-    position: absolute; /* Dodaj ovo */
+  height: 200px;
+  position: absolute;
   bottom: 0;
-   top: 1000px;
+  top: 1000px;
   padding: 25px;
   color: #fff;
   border-bottom: 1px solid #444;
-      z-index:9999;
+  z-index: 9999;
 }
+
 
     .command-table label,
     .command-table select,
