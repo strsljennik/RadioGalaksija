@@ -235,7 +235,6 @@ body {
 
  /* ANITEXT CSS */
 .command-table {
-.command-table {
   display: flex;
   flex-wrap: wrap;
   align-items: center; /* vertikalno centriranje */
