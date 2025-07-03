@@ -20,10 +20,9 @@ popup.innerHTML = `
 `;
 document.body.appendChild(popup);
 
-document.getElementById('diz').addEventListener('click', () => {
-  popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
-});
-
+ document.getElementById('maska').addEventListener('click', () => {
+    popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+  });
 
 const allDraggables = [
   '#openModal',
