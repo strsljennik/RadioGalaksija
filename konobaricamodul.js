@@ -5,10 +5,8 @@ module.exports = (io) => {
   const blockedIPs = new Set(); // Lokalna lista blokiranih IP adresa
   const stanje = {}; //  BORDERI ELEMENATA 
   let allUserAnimations = {}; 
-  let isReset = false;       //  RESET MASKE
-let currentLayout = null; //  MASKE
- let fullLayoutData = null;   // BEZ MASKE 
-
+let fullLayoutData = null;   // BEZ MASKE 
+ 
    // **Šema i model za banovane IP adrese**
     const baniraniSchema = new mongoose.Schema({
         ipAddress: { type: String, required: true, unique: true }
@@ -131,25 +129,7 @@ socket.on("promeniGradijent", (data) => {
   stanje[data.id] = { gradijent: data.gradijent };
 });
 
-    if (isReset) {
-    socket.emit('reset-layout');
-  }
-
-  socket.on('reset-layout', () => {
-    isReset = true;
-    socket.broadcast.emit('reset-layout');
-  });
-
-  if (currentLayout) {
-            socket.emit('chat-layout-update', currentLayout);
-        }
-   socket.on('chat-layout-update', (data) => {
-            currentLayout = data;
-            newImage = data.images || [];
-            socket.broadcast.emit('chat-layout-update', data);
-        });
-
-     if (fullLayoutData) {
+ if (fullLayoutData) {
     socket.emit('full-layout-load', fullLayoutData);
   }
 
@@ -159,7 +139,12 @@ socket.on("promeniGradijent", (data) => {
     socket.broadcast.emit('full-layout-load', data);
   });
 
-
-    socket.on('disconnect', () => {});
+  // Reset layout
+  socket.on('full-layout-reset', () => {
+    fullLayoutData = null;
+    socket.broadcast.emit('full-layout-reset');
+  });
+    
+      socket.on('disconnect', () => {});
     });
 };
