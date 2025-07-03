@@ -225,3 +225,18 @@ socket.on('full-layout-load', data => {
     }
   }, 5000);
 });
+
+document.getElementById('pi').addEventListener('click', () => {
+socket.emit('full-layout-reset');
+
+  document.body.style.backgroundImage = '';
+  document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
+document.querySelectorAll('.text-display').forEach(el => el.remove());
+});
+socket.on('full-layout-reset', () => {
+  setTimeout(() => {
+    document.body.style.backgroundImage = '';
+    document.querySelectorAll('img[id^="img-"]').forEach(img => img.remove());
+    document.querySelectorAll('.text-display').forEach(el => el.remove());
+  }, 5000);
+});
