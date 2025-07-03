@@ -20,8 +20,7 @@ popup.innerHTML = `
 `;
 document.body.appendChild(popup);
 
-const diz = document.getElementById('diz');
-diz.addEventListener('click', () => {
+document.getElementById('diz').addEventListener('click', () => {
   popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
 });
 
