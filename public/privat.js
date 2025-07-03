@@ -206,8 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
       </label>
       <button id="generateBtn">Generiši tekst</button>
       <button id="clearBtn">Obriši selektovani tekst</button>
-      <button id="showListBtn">Kreiraj listu</button>
-     <button id="gradiani">Prikaži Gradijente</button>
+      <button id="gradiani">Prikaži Gradijente</button>
       <div id="textCounter">Trenutni broj tekstova: 0</div>
     </div>
   `;
@@ -215,20 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const textContainerHTML = `
     <div id="textContainer"></div>
   `;
-
-  const popupOverlayHTML = `
-    <div id="popupOverlay" class="popup-overlay"></div>
-  `;
-
-  const popupHTML = `
-    <div id="popup" class="popup">
-      <h2>Lista Tekstova</h2>
-      <ul id="textList" class="text-list"></ul>
-      <button id="closePopupBtn">Zatvori</button>
-    </div>
-  `;
-
-  // Dodavanje HTML sadržaja u body
+ // Dodavanje HTML sadržaja u body
   const body = document.body;
   body.insertAdjacentHTML('beforeend', commandTableHTML);
   body.insertAdjacentHTML('beforeend', textContainerHTML);
