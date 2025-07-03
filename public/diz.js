@@ -20,9 +20,11 @@ popup.innerHTML = `
 `;
 document.body.appendChild(popup);
 
-document.getElementById('diz').addEventListener('click', () => {
+const diz = document.getElementById('diz');
+diz.addEventListener('click', () => {
   popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
 });
+
 
 const allDraggables = [
   '#openModal',
