@@ -30,11 +30,11 @@ background: linear-gradient(45deg, #ff6347, #ffffff, #ff1493, #40e0d0); /* Crven
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 500px;
-    height: 200px;
+    width: 200px;
+    height: 500px;
     overflow: hidden;
     background-color: black; /* Potpuno crna pozadina */
-    border: 2px solid #fff; /* Bela neon ivica */
+    border: 15px solid #fff; /* Bela neon ivica */
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8); /* Neon svetlo oko */
     border-radius: 15px; /* Veći zaobljeni kutovi */
     padding: 20px;
