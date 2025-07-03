@@ -261,14 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const fontSizeRange = document.getElementById("fontSize");
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
- // const textContainer = document.getElementById("textContainer");  BLOKIRANJE DUGMETA I LISTE ZBOG LOSEG EVENT LISTNER ( OTVARA POPUP ZA MASKE ) 
-// const textCounter = document.getElementById("textCounter");
-// const textList = document.getElementById("textList");
-// const showListBtn = document.getElementById("showListBtn");
-// const popup = document.getElementById("popup");
-// const popupOverlay = document.getElementById("popupOverlay");
-// const closePopupBtn = document.getElementById("closePopupBtn");
- const gradiani = document.getElementById('gradiani');
+  const gradiani = document.getElementById('gradiani');
 
     let isAuthenticated = false;
   let textElements = []; // Svi tekstovi će biti pohranjeni u ovom nizu
@@ -422,25 +415,6 @@ if (!authorizedUsers.has(currentUser)) {
       });
     }
   });
-
-// Prikazivanje popup-a sa listom
-// showListBtn.addEventListener("click", function () {
-//   popup.style.display = "block";
-//   popupOverlay.style.display = "block";
-// });
-
-// Zatvaranje popup-a
-// closePopupBtn.addEventListener("click", function () {
-//   popup.style.display = "none";
-//   popupOverlay.style.display = "none";
-// });
-
-// Zatvori popup ako klikneš van njega
-// popupOverlay.addEventListener("click", function () {
-//   popup.style.display = "none";
-//   popupOverlay.style.display = "none";
-// });
-
 
   // Prijem trenutnog stanja od servera
 socket.on('currentState', function (data) {
