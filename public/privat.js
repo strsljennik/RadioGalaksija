@@ -206,7 +206,8 @@ document.addEventListener("DOMContentLoaded", function() {
       </label>
       <button id="generateBtn">Generiši tekst</button>
       <button id="clearBtn">Obriši selektovani tekst</button>
-      <button id="gradiani">Prikaži Gradijente</button>
+      <button id="showListBtn">Kreiraj listu</button>
+     <button id="gradiani">Prikaži Gradijente</button>
       <div id="textCounter">Trenutni broj tekstova: 0</div>
     </div>
   `;
@@ -214,7 +215,20 @@ document.addEventListener("DOMContentLoaded", function() {
   const textContainerHTML = `
     <div id="textContainer"></div>
   `;
- // Dodavanje HTML sadržaja u body
+
+  const popupOverlayHTML = `
+    <div id="popupOverlay" class="popup-overlay"></div>
+  `;
+
+  const popupHTML = `
+    <div id="popup" class="popup">
+      <h2>Lista Tekstova</h2>
+      <ul id="textList" class="text-list"></ul>
+      <button id="closePopupBtn">Zatvori</button>
+    </div>
+  `;
+
+  // Dodavanje HTML sadržaja u body
   const body = document.body;
   body.insertAdjacentHTML('beforeend', commandTableHTML);
   body.insertAdjacentHTML('beforeend', textContainerHTML);
@@ -247,7 +261,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const fontSizeRange = document.getElementById("fontSize");
   const generateBtn = document.getElementById("generateBtn");
   const clearBtn = document.getElementById("clearBtn");
-  const gradiani = document.getElementById('gradiani');
+  const textContainer = document.getElementById("textContainer");
+  const textCounter = document.getElementById("textCounter");
+  const textList = document.getElementById("textList");
+  const showListBtn = document.getElementById("showListBtn");
+  const popup = document.getElementById("popup");
+  const popupOverlay = document.getElementById("popupOverlay");
+  const closePopupBtn = document.getElementById("closePopupBtn");
+ const gradiani = document.getElementById('gradiani');
 
     let isAuthenticated = false;
   let textElements = []; // Svi tekstovi će biti pohranjeni u ovom nizu
@@ -400,6 +421,24 @@ if (!authorizedUsers.has(currentUser)) {
         index
       });
     }
+  });
+
+  // Prikazivanje popup-a sa listom
+  showListBtn.addEventListener("click", function () {
+    popup.style.display = "block";
+    popupOverlay.style.display = "block";
+  });
+
+  // Zatvaranje popup-a
+  closePopupBtn.addEventListener("click", function () {
+    popup.style.display = "none";
+    popupOverlay.style.display = "none";
+  });
+
+  // Zatvori popup ako klikneš van njega
+  popupOverlay.addEventListener("click", function () {
+    popup.style.display = "none";
+    popupOverlay.style.display = "none";
   });
 
   // Prijem trenutnog stanja od servera
